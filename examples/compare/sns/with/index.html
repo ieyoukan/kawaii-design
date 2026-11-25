@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ぷかり</title>
+<!--
+  Direction (kawaii-design)
+  前提 (おまかせのため仮定): 架空の SNS。対象は 10 代後半〜20 代の、ゆめかわな世界観が好きな人。
+         サービス名「ぷかり」、マスコット「ぷかちゃん」(しゃぼん玉)、ユーザーと投稿はすべて創作。
+
+  - Product:      思ったことをしゃぼん玉みたいに浮かべる、短文投稿の SNS「ぷかり」のホームタイムライン。
+  - Dialect:      ゆめかわ。依頼が「ゆめかわいい」で、SNS / コミュニティ向けの方言だから。
+  - Feel:         ふわっと浮かぶ、すこし夢うつつ、のぞくと虹色。
+  - World:        しゃぼん玉の空。投稿 =「ぷかり」、いいね =「しゃぼん」、リポスト =「おすそわけ」、返信 =「おへんじ」。
+                  色はピンク #F6C6E3・ラベンダー #CDBDF4・アクア #B8E6F5 + 白 + プラムのインク #3B2E5A だけ。
+  - Star:         なし、Stage mode (文字の投稿)。投稿の中の絵 (くらげ・朝の空) だけが小さな主役。
+  - Shape:        円 (しゃぼん玉・アバター・いいね) + 角丸長方形 (ガラスのパネルと投稿カード 24px)。
+                  セクションの境目はなし (ガラスのパネルが背景に浮かぶだけ)。
+  - Atmosphere:   ゆめかわ。3 色の大きな色だまりを重ねた虹色マーブルの背景に、すりガラスの UI。
+                  色の源は背景で、UI はそれを透かして見せる。
+  - Type/motion:  表示書体は Hachi Maru Pop (ロゴと見出しだけ、字間広め)、本文は M PLUS Rounded 1c 500。
+                  見出しは一文字ずつ浮かび上がり、パネルと投稿は下からふわっと浮いてくる (一度だけ)。
+                  ループは背景のしゃぼん玉がゆっくり漂うひとつだけ。
+
+  Charm point:    ナビ = ロゴのぷかちゃん / タイムライン = 動物たちのアバター (と投稿の絵) /
+                  投稿欄 = 虹色ふちの「ぷかり」ボタン / 右カラム = カードのふちに座るぷかちゃん /
+                  タイムラインの終わり = ねむるぷかちゃん。
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* three hues + white + ink. Deeper tints are the same three hues, for icon fills and active states */
+    --pink: #F6C6E3;
+    --lav: #CDBDF4;
+    --aqua: #B8E6F5;
+    --pink-d: #EE9FCD;
+    --lav-d: #A68FE6;
+    --aqua-d: #86CFE8;
+    --ink: #3B2E5A;
+    --ink-2: #5E5180;          /* muted ink, still >= 4.5:1 on the glass */
+    --lav-ink: #5F43B0;        /* hashtags */
+    --glass: rgb(255 255 255 / 0.62);
+    --glass-edge: rgb(255 255 255 / 0.75);
+    --shadow: inset 0 1px 0 rgb(255 255 255 / 0.85), 0 12px 32px rgb(140 110 200 / 0.16);
+    --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --display: "Hachi Maru Pop", "M PLUS Rounded 1c", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    font: 500 16px/1.8 "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+    letter-spacing: 0.03em;
+    word-break: auto-phrase;
+    /* ゆめかわ background: pools of the three hues with white light between them */
+    background-color: #F1E9FB;
+    background-image:
+      radial-gradient(36% 44% at 6% 10%, #F6C6E3 0%, transparent 72%),
+      radial-gradient(40% 46% at 94% 6%, #B8E6F5 0%, transparent 72%),
+      radial-gradient(46% 52% at 78% 74%, #CDBDF4 0%, transparent 72%),
+      radial-gradient(40% 44% at 14% 86%, #B8E6F5 0%, transparent 72%),
+      radial-gradient(30% 34% at 52% 38%, #FFFFFF 0%, transparent 72%),
+      radial-gradient(32% 40% at 98% 50%, #F6C6E3 0%, transparent 72%),
+      radial-gradient(30% 34% at 36% 100%, #F6C6E3 0%, transparent 72%);
+    background-attachment: fixed;
+  }
+  button, input, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+  button { cursor: pointer; }
+  a { color: inherit; text-decoration: none; }
+  svg { display: block; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- sky layer: blurred marble blobs, a few bubbles, sparse sparkles ---------- */
+  .sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .sky .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.75; }
+  .sky .blob.a { width: 520px; height: 300px; left: -120px; top: 38%; background: #F6C6E3; rotate: -24deg; }
+  .sky .blob.b { width: 460px; height: 260px; right: -80px; top: 18%; background: #CDBDF4; rotate: 18deg; }
+  .sky .blob.c { width: 420px; height: 240px; left: 40%; top: -120px; background: #B8E6F5; rotate: 8deg; }
+  .sky > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .drift { animation: drift 7s ease-in-out infinite alternate; }
+  @keyframes drift { to { transform: translateY(-14px); } }
+
+  /* ---------- glass ---------- */
+  .glass {
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--shadow);
+    border-radius: 24px;
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass { background: rgb(255 255 255 / 0.86); }
+  }
+
+  /* ---------- layout ---------- */
+  .app {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 244px minmax(0, 600px) 316px;
+    gap: 28px;
+    justify-content: center;
+    align-items: start;
+    padding: 24px 24px 72px;
+  }
+
+  /* ---------- left nav ---------- */
+  .side {
+    position: sticky; top: 24px;
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 22px 16px;
+    min-height: calc(100vh - 48px);
+    border-radius: 28px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; padding: 4px 10px 18px; }
+  .logo svg { width: 56px; height: 56px; transition: transform 300ms var(--ease-poyon); }
+  .logo:hover svg { transform: translateY(-4px) rotate(-6deg); }
+  .logo b { font: 400 34px/1 var(--display); letter-spacing: 0.08em; }
+  .nav a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 14px; border-radius: 16px;
+    font-size: 18px; font-weight: 700;
+    transition: background-color 200ms ease, transform 200ms var(--ease-poyon);
+  }
+  .nav a:hover { background: rgb(255 255 255 / 0.6); }
+  .nav a:active { transform: scale(0.97); }
+  .nav a[aria-current="page"] { background: rgb(255 255 255 / 0.78); }
+  .nav a[aria-current="page"] .ic { color: var(--ink); fill: var(--pink); }
+  .ic {
+    width: 26px; height: 26px; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .nav .dot { position: relative; }
+  .nav .dot::after {
+    content: ""; position: absolute; top: 1px; right: -1px; width: 9px; height: 9px;
+    border-radius: 50%; background: var(--pink-d); box-shadow: 0 0 0 2px #fff;
+  }
+  .side .post-btn {
+    margin: 18px 6px 0; padding: 14px 20px; border: 0; border-radius: 9999px;
+    background: var(--pink); font-size: 18px; font-weight: 800;
+    box-shadow: 0 8px 20px rgb(238 159 205 / 0.35);
+    transition: transform 220ms var(--ease-poyon);
+  }
+  .side .post-btn:hover { transform: translateY(-2px); }
+  .side .post-btn:active { transform: scale(0.96); }
+  .me {
+    margin-top: auto; display: flex; align-items: center; gap: 12px;
+    padding: 10px; border-radius: 18px;
+  }
+  .me:hover { background: rgb(255 255 255 / 0.6); }
+  .me b { font-weight: 700; }
+
+  /* ---------- timeline ---------- */
+  .main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .tl-head {
+    position: sticky; top: 0; z-index: 5;
+    margin-top: -24px;              /* hangs from the top edge so posts never scroll above it */
+    padding: 38px 24px 0;
+    border-top: 0; border-radius: 0 0 24px 24px;
+    background: rgb(255 255 255 / 0.66);
+  }
+  .tl-head .m-logo { display: none; }
+  .title { margin: 0; font: 400 28px/1.3 var(--display); letter-spacing: 0.1em; text-wrap: balance; }
+  .tabs { display: flex; gap: 8px; margin-top: 8px; }
+  .tab {
+    position: relative; flex: 1; text-align: center;
+    padding: 10px 0 16px; font-weight: 700; color: var(--ink-2);
+    border-radius: 14px 14px 0 0;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-current="true"] { color: var(--ink); }
+  .tab[aria-current="true"]::after {
+    content: ""; position: absolute; left: 50%; bottom: 6px; translate: -50% 0;
+    width: 44px; height: 6px; border-radius: 9999px; background: var(--pink-d);
+  }
+
+  .compose { display: flex; gap: 16px; padding: 22px 24px; }
+  .compose form { flex: 1; min-width: 0; }
+  .compose textarea {
+    display: block; width: 100%; min-height: 64px; resize: none;
+    padding: 12px 16px; border: 0; border-radius: 16px;
+    background: rgb(255 255 255 / 0.72); line-height: 1.7;
+    outline: 2px solid transparent; transition: outline-color 200ms ease;
+  }
+  .compose textarea::placeholder { color: var(--ink-2); opacity: 1; }
+  .compose textarea:focus { outline-color: var(--lav); }
+  .compose .row { display: flex; align-items: center; gap: 4px; margin-top: 12px; }
+  .tool {
+    display: grid; place-items: center; width: 40px; height: 40px;
+    border: 0; border-radius: 12px; background: transparent; color: var(--ink-2);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  .tool:hover { background: rgb(255 255 255 / 0.7); color: var(--ink); }
+  .tool .ic { width: 22px; height: 22px; }
+  /* the one primary button: an iridescent rim */
+  .iri {
+    margin-left: auto; padding: 10px 26px; border-radius: 9999px;
+    border: 2.5px solid transparent;
+    background:
+      linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(120deg, #F6C6E3, #CDBDF4 50%, #B8E6F5) border-box;
+    font-weight: 800; font-size: 17px;
+    box-shadow: 0 8px 20px rgb(166 143 230 / 0.28);
+    transition: transform 220ms var(--ease-poyon);
+  }
+  .iri:hover { transform: translateY(-2px); }
+  .iri:active { transform: scale(0.95); }
+
+  .av { width: 52px; height: 52px; flex: none; border-radius: 50%; }
+
+  .post { display: flex; gap: 16px; padding: 22px 24px 14px; background: rgb(255 255 255 / 0.66); }
+  .post .body { flex: 1; min-width: 0; }
+  .post .head { display: flex; align-items: baseline; gap: 10px; }
+  .post .head b { font-weight: 800; }
+  .post .head time { color: var(--ink-2); }
+  .post p { margin: 2px 0 0; }
+  .tag { color: var(--lav-ink); font-weight: 700; }
+  .pic { margin: 14px 0 0; border-radius: 18px; overflow: hidden; aspect-ratio: 7 / 4; }
+  .pic svg { width: 100%; height: 100%; }
+  .acts { display: flex; gap: 4px; margin: 8px 0 0 -10px; }
+  .act {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 6px;
+    min-width: 76px; padding: 6px 10px; border: 0; border-radius: 14px;
+    background: transparent; color: var(--ink-2);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  .act:hover { background: rgb(255 255 255 / 0.75); color: var(--ink); }
+  .act .ic { width: 22px; height: 22px; transition: transform 250ms var(--ease-poyon); }
+  .act:active .ic { transform: scale(0.85); }
+  .act.mark { min-width: 0; margin-left: auto; }
+  /* しゃぼん (like): an empty bubble that fills in */
+  .like[aria-pressed="true"] { color: var(--ink); --bub: var(--pink); }
+  .like.pop .ic { animation: pop 420ms var(--ease-poyon); }
+  @keyframes pop { 0% { transform: scale(0.7); } 60% { transform: scale(1.22); } 100% { transform: scale(1); } }
+  .fizz {
+    position: absolute; left: 20px; top: 12px; width: 9px; height: 9px; border-radius: 50%;
+    border: 2px solid var(--lav-d); background: rgb(255 255 255 / 0.7); pointer-events: none;
+    animation: fizz 700ms var(--ease-soft) forwards;
+  }
+  @keyframes fizz { to { transform: translate(var(--x), -34px) scale(1.3); opacity: 0; } }
+
+  .end { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 28px 0 8px; }
+  .end svg { width: 84px; height: 84px; }
+  .end p { margin: 0; font: 400 20px/1.5 var(--display); letter-spacing: 0.08em; }
+
+  /* ---------- right column ---------- */
+  .aside { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .search { position: relative; display: block; }
+  .search .ic { position: absolute; z-index: 1; left: 18px; top: 50%; translate: 0 -50%; width: 22px; height: 22px; color: var(--ink-2); }
+  .search input {
+    width: 100%; padding: 13px 18px 13px 52px; border-radius: 18px;
+    border: 1px solid var(--glass-edge); background: rgb(255 255 255 / 0.66);
+    -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    box-shadow: var(--shadow); outline: 2px solid transparent;
+  }
+  .search input::placeholder { color: var(--ink-2); opacity: 1; }
+  .search input:focus { outline-color: var(--lav); }
+  .card { position: relative; padding: 22px 22px 14px; }
+  .card h2 { margin: 0 0 8px; font: 400 21px/1.4 var(--display); letter-spacing: 0.08em; text-wrap: balance; }
+  .card .sit { position: absolute; right: 20px; top: -34px; width: 50px; height: 50px; }
+  .trends { list-style: none; margin: 0 -10px; padding: 0; }
+  .trends a {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 10px; border-radius: 14px; font-weight: 700;
+  }
+  .trends a:hover { background: rgb(255 255 255 / 0.7); }
+  .trends svg { width: 18px; height: 18px; flex: none; }
+  .people { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .people li { display: flex; align-items: center; gap: 12px; }
+  .people .av { width: 46px; height: 46px; }
+  .people b { flex: 1; font-weight: 800; }
+  .follow {
+    padding: 7px 18px; border: 0; border-radius: 9999px;
+    background: var(--lav); font-weight: 800;
+    transition: transform 220ms var(--ease-poyon), background-color 200ms ease;
+  }
+  .follow:hover { transform: translateY(-1px); }
+  .follow:active { transform: scale(0.95); }
+  .follow[aria-pressed="true"] { background: rgb(255 255 255 / 0.85); }
+
+  /* ---------- mobile parts ---------- */
+  .bottom-nav, .fab { display: none; }
+
+  /* ---------- title letters ---------- */
+  /* display treatment: thickened strokes with a white cut-out edge and a soft lavender shadow */
+  .logo b, .title, .card h2, .end p, .m-logo b {
+    -webkit-text-stroke: 0.7px currentColor;
+    text-shadow: 0 0 1px #fff, 0 2px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 0 6px 14px rgb(166 143 230 / 0.45);
+  }
+  .ph { white-space: nowrap; display: inline-block; }
+  .ph i { font-style: normal; display: inline-block; }
+
+  /* ---------- arrivals (start state only added by JS; final state is the plain CSS above) ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .anim .rise { animation: rise 640ms var(--ease-soft) both; animation-delay: calc(120ms + var(--d, 0) * 80ms); }
+    .anim [data-split] i { animation: letter 560ms var(--ease-poyon) both; animation-delay: calc(200ms + var(--k, 0) * 55ms); }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } }
+  @keyframes letter { from { opacity: 0; transform: translateY(12px) scale(0.9); } }
+  @media (prefers-reduced-motion: reduce) {
+    .drift, .like.pop .ic, .fizz { animation: none !important; }
+    .fizz { display: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1180px) {
+    .app { grid-template-columns: 236px minmax(0, 600px); }
+    .aside { display: none; }
+  }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 84px minmax(0, 600px); gap: 20px; }
+    .side { padding: 18px 10px; align-items: center; }
+    .logo { padding: 0 0 12px; }
+    .logo b, .nav span, .me b, .side .post-btn { display: none; }
+    .nav a { padding: 12px; }
+    .me { padding: 6px; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .app { display: block; padding: 12px 12px 112px; }
+    .side { display: none; }
+    .main { gap: 14px; }
+    .tl-head { margin-top: -12px; padding: 18px 16px 0; }
+    .tl-head .title { display: none; }
+    .tl-head .m-logo { display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .tl-head .m-logo svg { width: 42px; height: 42px; }
+    .tl-head .m-logo b { font: 400 28px/1 var(--display); letter-spacing: 0.08em; }
+    .compose { display: none; }
+    .post { gap: 12px; padding: 18px 16px 10px; }
+    .av { width: 46px; height: 46px; }
+    .act { min-width: 0; padding: 6px 10px; gap: 5px; }
+    .acts { gap: 2px; margin-left: -8px; }
+    .pic { border-radius: 14px; }
+    .bottom-nav {
+      position: fixed; z-index: 10; left: 12px; right: 12px; bottom: 12px;
+      display: flex; justify-content: space-around; padding: 8px 6px;
+      border-radius: 24px; background: rgb(255 255 255 / 0.72);
+    }
+    .bottom-nav a { display: grid; place-items: center; width: 48px; height: 44px; border-radius: 14px; }
+    .bottom-nav a[aria-current="page"] .ic { fill: var(--pink); }
+    .fab {
+      position: fixed; z-index: 11; right: 20px; bottom: 92px;
+      display: grid; place-items: center; width: 62px; height: 62px; padding: 0; margin: 0;
+    }
+    .fab .ic { width: 28px; height: 28px; stroke-width: 2.4; }
+  }
+</style>
+</head>
+<body>
+
+<!-- shared drawings: one style, three hues + white + plum ink -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="iri" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F6C6E3"/><stop offset=".5" stop-color="#CDBDF4"/><stop offset="1" stop-color="#B8E6F5"/>
+    </linearGradient>
+    <path id="spark" d="M0-7C.9-1.4 1.4-.9 7 0 1.4.9.9 1.4 0 7-.9 1.4-1.4.9-7 0-1.4-.9-.9-1.4 0-7Z"/>
+  </defs>
+
+  <!-- ぷかちゃん: the bubble mascot -->
+  <symbol id="m-puka" viewBox="0 0 64 64">
+    <circle cx="32" cy="33" r="25" fill="#EAF7FC"/>
+    <circle cx="32" cy="33" r="25" fill="none" stroke="url(#iri)" stroke-width="4"/>
+    <path d="M17 25.5a16.5 16.5 0 0 1 10.5-10" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="46" cy="21" r="2.6" fill="#fff"/>
+    <circle cx="25" cy="35.5" r="2.6" fill="#3B2E5A"/>
+    <circle cx="39" cy="35.5" r="2.6" fill="#3B2E5A"/>
+    <path d="M29.2 40.6q2.8 2.6 5.6 0" fill="none" stroke="#3B2E5A" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="19.8" cy="40.5" rx="3.4" ry="2" fill="#EE9FCD" opacity=".75"/>
+    <ellipse cx="44.2" cy="40.5" rx="3.4" ry="2" fill="#EE9FCD" opacity=".75"/>
+  </symbol>
+  <symbol id="m-puka-sleep" viewBox="0 0 64 64">
+    <circle cx="32" cy="35" r="23" fill="#EAF7FC"/>
+    <circle cx="32" cy="35" r="23" fill="none" stroke="url(#iri)" stroke-width="4"/>
+    <path d="M18.5 28a15 15 0 0 1 9.5-9" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M22 37q3 2.6 6 0M36 37q3 2.6 6 0" fill="none" stroke="#3B2E5A" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="32" cy="43.5" rx="2" ry="1.4" fill="#3B2E5A"/>
+    <ellipse cx="20" cy="42" rx="3.2" ry="1.9" fill="#EE9FCD" opacity=".75"/>
+    <ellipse cx="44" cy="42" rx="3.2" ry="1.9" fill="#EE9FCD" opacity=".75"/>
+    <circle cx="52" cy="13" r="4" fill="#fff" stroke="#A68FE6" stroke-width="1.8"/>
+    <circle cx="58" cy="5" r="2.6" fill="#fff" stroke="#A68FE6" stroke-width="1.6"/>
+  </symbol>
+
+  <!-- avatars -->
+  <symbol id="av-kurage" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#B8E6F5"/>
+    <path d="M11 25c0-8 6-13.5 13-13.5S37 17 37 25c0 1.6-1.2 2.5-2.6 2.5H13.6C12.2 27.5 11 26.6 11 25Z" fill="#CDBDF4"/>
+    <path d="M15.5 18.5c1.4-2 3.4-3.4 5.8-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+    <path d="M17 28c-1.6 3 1.6 5 0 8.5M24 28c-1.6 3 1.6 5.4 0 9.5M31 28c-1.6 3 1.6 5 0 8.5" fill="none" stroke="#A68FE6" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="20" cy="22.5" r="1.7" fill="#3B2E5A"/><circle cx="28" cy="22.5" r="1.7" fill="#3B2E5A"/>
+    <ellipse cx="16.8" cy="25" rx="2.2" ry="1.3" fill="#EE9FCD"/><ellipse cx="31.2" cy="25" rx="2.2" ry="1.3" fill="#EE9FCD"/>
+  </symbol>
+  <symbol id="av-usagi" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#F6C6E3"/>
+    <g transform="rotate(-9 19 16)"><rect x="15.5" y="5.5" width="7" height="19" rx="3.5" fill="#fff"/><rect x="17.5" y="8.5" width="3" height="12" rx="1.5" fill="#EE9FCD"/></g>
+    <g transform="rotate(9 29 16)"><rect x="25.5" y="5.5" width="7" height="19" rx="3.5" fill="#fff"/><rect x="27.5" y="8.5" width="3" height="12" rx="1.5" fill="#EE9FCD"/></g>
+    <ellipse cx="24" cy="32" rx="12.5" ry="10.5" fill="#fff"/>
+    <circle cx="19.5" cy="31" r="1.7" fill="#3B2E5A"/><circle cx="28.5" cy="31" r="1.7" fill="#3B2E5A"/>
+    <path d="M22.8 34.2q1.2 1 2.4 0" fill="none" stroke="#3B2E5A" stroke-width="1.6" stroke-linecap="round"/>
+    <ellipse cx="16.4" cy="34.5" rx="2.3" ry="1.4" fill="#F6C6E3"/><ellipse cx="31.6" cy="34.5" rx="2.3" ry="1.4" fill="#F6C6E3"/>
+  </symbol>
+  <symbol id="av-kujira" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#CDBDF4"/>
+    <path d="M8 29c0-7.5 6.5-13 15-13 7 0 12 3.4 14 8.4l3.6-3.2c.9-.8 2.3-.2 2.2 1l-.6 6.6c-.1 1-.8 1.8-1.8 2l-3.6.6C34.6 36.4 29.6 39 22.6 39 14.4 39 8 35.6 8 29Z" fill="#B8E6F5"/>
+    <path d="M10.5 32c2.6 3.4 7 5 12 5 4.2 0 7.8-1.2 10.4-3.4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M19 14c0-2.6-1.8-3.8-3-5.4M19 14c0-2.6 1.8-3.8 3-5.4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="15" cy="26.5" r="1.7" fill="#3B2E5A"/><circle cx="22.5" cy="26.5" r="1.7" fill="#3B2E5A"/>
+    <ellipse cx="12.4" cy="29.6" rx="2.2" ry="1.3" fill="#EE9FCD"/><ellipse cx="25.2" cy="29.6" rx="2.2" ry="1.3" fill="#EE9FCD"/>
+  </symbol>
+  <symbol id="av-neko" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#F6C6E3"/>
+    <path d="M12 22.5 13.2 12.6c.15-1.3 1.7-1.9 2.6-1L21 16.4h6l5.2-4.8c.9-.9 2.45-.3 2.6 1L36 22.5c1.3 2 2 4.3 2 6.6C38 35.9 31.7 40 24 40S10 35.9 10 29.1c0-2.3.7-4.6 2-6.6Z" fill="#CDBDF4"/>
+    <path d="M15.2 15.8 15.8 13l2.6 2.6ZM32.8 15.8 32.2 13l-2.6 2.6Z" fill="#F6C6E3" stroke="#F6C6E3" stroke-width="1.2" stroke-linejoin="round"/>
+    <circle cx="19" cy="27.5" r="1.7" fill="#3B2E5A"/><circle cx="29" cy="27.5" r="1.7" fill="#3B2E5A"/>
+    <path d="M22 30.8q1 1.2 2 0 1 1.2 2 0" fill="none" stroke="#3B2E5A" stroke-width="1.5" stroke-linecap="round"/>
+    <ellipse cx="15.6" cy="31" rx="2.3" ry="1.4" fill="#EE9FCD"/><ellipse cx="32.4" cy="31" rx="2.3" ry="1.4" fill="#EE9FCD"/>
+  </symbol>
+  <symbol id="av-hitsuji" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#B8E6F5"/>
+    <g fill="#fff">
+      <circle cx="16" cy="20" r="6.5"/><circle cx="24" cy="16" r="7"/><circle cx="32" cy="20" r="6.5"/>
+      <circle cx="12.5" cy="28" r="6"/><circle cx="35.5" cy="28" r="6"/><circle cx="17" cy="36" r="6"/><circle cx="31" cy="36" r="6"/><circle cx="24" cy="38" r="6"/>
+    </g>
+    <ellipse cx="9.5" cy="24" rx="4" ry="2.4" fill="#CDBDF4" transform="rotate(-20 9.5 24)"/>
+    <ellipse cx="38.5" cy="24" rx="4" ry="2.4" fill="#CDBDF4" transform="rotate(20 38.5 24)"/>
+    <ellipse cx="24" cy="29" rx="9" ry="8.5" fill="#CDBDF4"/>
+    <circle cx="20.5" cy="28.5" r="1.7" fill="#3B2E5A"/><circle cx="27.5" cy="28.5" r="1.7" fill="#3B2E5A"/>
+    <path d="M22.8 32q1.2 1 2.4 0" fill="none" stroke="#3B2E5A" stroke-width="1.5" stroke-linecap="round"/>
+    <ellipse cx="18" cy="31.5" rx="2" ry="1.2" fill="#EE9FCD"/><ellipse cx="30" cy="31.5" rx="2" ry="1.2" fill="#EE9FCD"/>
+  </symbol>
+  <symbol id="av-azarashi" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#CDBDF4"/>
+    <ellipse cx="24" cy="30" rx="14.5" ry="12.5" fill="#fff"/>
+    <circle cx="18.8" cy="27.5" r="1.8" fill="#3B2E5A"/><circle cx="29.2" cy="27.5" r="1.8" fill="#3B2E5A"/>
+    <ellipse cx="24" cy="31" rx="1.8" ry="1.2" fill="#3B2E5A"/>
+    <path d="M21.6 33.4q1.2 1.2 2.4 0 1.2 1.2 2.4 0" fill="none" stroke="#3B2E5A" stroke-width="1.4" stroke-linecap="round"/>
+    <ellipse cx="15.4" cy="31.6" rx="2.4" ry="1.4" fill="#F6C6E3"/><ellipse cx="32.6" cy="31.6" rx="2.4" ry="1.4" fill="#F6C6E3"/>
+  </symbol>
+
+  <!-- icons: 24 grid, 2px round strokes -->
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.2 12 4.8l8 6.4v8.3c0 .8-.7 1.5-1.5 1.5H15v-5.5H9V21H5.5c-.8 0-1.5-.7-1.5-1.5Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4" fill="none"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.4 1.6c.3.4 0 .9-.4.9H5c-.4 0-.7-.5-.4-.9Z"/><path d="M10 21.2a2.2 2.2 0 0 0 4 0" fill="none"/></symbol>
+  <symbol id="i-letter" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="m5 8 7 5 7-5" fill="none"/></symbol>
+  <symbol id="i-shiori" viewBox="0 0 24 24"><path d="M7.2 3.8h9.6c.7 0 1.2.5 1.2 1.2v15l-6-3.8L6 20V5c0-.7.5-1.2 1.2-1.2Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.8" r="3.8"/><path d="M5 19.6c1.3-3.4 3.9-5 7-5s5.7 1.6 7 5"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M5.5 5.5h13c1.1 0 2 .9 2 2v7c0 1.1-.9 2-2 2h-6.3l-3.7 3v-3H5.5c-1.1 0-2-.9-2-2v-7c0-1.1.9-2 2-2Z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M6.5 11.5V10a2.5 2.5 0 0 1 2.5-2.5h9M15.5 4.5l3 3-3 3M17.5 12.5V14a2.5 2.5 0 0 1-2.5 2.5H6M8.5 19.5l-3-3 3-3" fill="none"/></symbol>
+  <symbol id="i-bubble" viewBox="0 0 24 24"><circle cx="10" cy="14.5" r="6.8" style="fill: var(--bub, none)"/><circle cx="18.8" cy="8.2" r="2.8" style="fill: var(--bub, none)"/><circle cx="14.6" cy="3.6" r="1.3" style="fill: var(--bub, none)"/><path d="M6.8 13.4a3.4 3.4 0 0 1 2-2.2" fill="none"/></symbol>
+  <symbol id="i-picture" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.5-4 3.5 3 2.5-2 4.5 3.5" fill="none"/></symbol>
+  <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 14.2c1.6 1.6 4.4 1.6 6 0" fill="none"/><path d="M9.3 9.8v.4M14.7 9.8v.4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12" fill="none"/></symbol>
+  <symbol id="m-dot" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7" fill="#EAF7FC" stroke="url(#iri)" stroke-width="2.4"/><path d="M5.6 8a3.6 3.6 0 0 1 2.4-2.4" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</svg>
+
+<!-- the sky behind everything -->
+<div class="sky" aria-hidden="true">
+  <div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <g class="drift">
+      <g stroke="url(#iri)" stroke-width="3" fill="rgb(255 255 255 / 0.18)">
+        <circle cx="70" cy="690" r="58"/>
+        <circle cx="1388" cy="260" r="74"/>
+        <circle cx="1330" cy="800" r="30"/>
+        <circle cx="140" cy="200" r="22"/>
+      </g>
+      <g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9">
+        <path d="M34 662a42 42 0 0 1 22-24"/>
+        <path d="M1342 226a52 52 0 0 1 26-28"/>
+      </g>
+    </g>
+    <g fill="#fff" opacity=".95">
+      <use href="#spark" transform="translate(230 110) scale(.9)"/>
+      <use href="#spark" transform="translate(1250 120) scale(1.2)"/>
+      <use href="#spark" transform="translate(40 420) scale(.7)"/>
+      <use href="#spark" transform="translate(1410 520) scale(.8)"/>
+      <use href="#spark" transform="translate(190 840) scale(1)"/>
+      <use href="#spark" transform="translate(1180 870) scale(.7)"/>
+      <use href="#spark" transform="translate(720 20) scale(.8)"/>
+    </g>
+  </svg>
+</div>
+
+<div class="app">
+
+  <!-- left nav -->
+  <aside class="side glass rise" style="--d:0" aria-label="メニュー">
+    <a class="logo" href="#" aria-label="ぷかり ホーム">
+      <svg aria-hidden="true"><use href="#m-puka"/></svg><b>ぷかり</b>
+    </a>
+    <nav class="nav" aria-label="メイン">
+      <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg><span>ホーム</span></a>
+      <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span>さがす</span></a>
+      <a href="#" class="dot-wrap"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg></span><span>おしらせ</span></a>
+      <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-letter"/></svg><span>おてがみ</span></a>
+      <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg><span>しおり</span></a>
+      <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg><span>じぶん</span></a>
+    </nav>
+    <button class="post-btn" type="button">ぷかりする</button>
+    <a class="me" href="#"><svg class="av" aria-hidden="true"><use href="#av-azarashi"/></svg><b>しろたま</b></a>
+  </aside>
+
+  <!-- timeline -->
+  <main class="main">
+    <header class="tl-head glass rise" style="--d:1">
+      <a class="m-logo" href="#" aria-label="ぷかり ホーム"><svg aria-hidden="true"><use href="#m-puka"/></svg><b>ぷかり</b></a>
+      <h1 class="title" data-split>ホーム</h1>
+      <nav class="tabs" aria-label="タイムライン">
+        <a class="tab" href="#" aria-current="true">おすすめ</a>
+        <a class="tab" href="#">フォロー中</a>
+      </nav>
+    </header>
+
+    <section class="compose glass rise" style="--d:2" aria-label="ぷかりを書く">
+      <svg class="av" aria-hidden="true"><use href="#av-azarashi"/></svg>
+      <form onsubmit="return false">
+        <label class="sr" for="say">ぷかりを書く</label>
+        <textarea id="say" rows="2" placeholder="いま、なにが浮かんでる？"></textarea>
+        <div class="row">
+          <button class="tool" type="button" aria-label="絵をそえる"><svg class="ic" aria-hidden="true"><use href="#i-picture"/></svg></button>
+          <button class="tool" type="button" aria-label="きもちをそえる"><svg class="ic" aria-hidden="true"><use href="#i-smile"/></svg></button>
+          <button class="iri" type="submit">ぷかり</button>
+        </div>
+      </form>
+    </section>
+
+    <article class="post glass rise" style="--d:3">
+      <svg class="av" aria-hidden="true"><use href="#av-kurage"/></svg>
+      <div class="body">
+        <div class="head"><b>みずき</b><time>12分</time></div>
+        <p>水族館のくらげ、ずっと見ていたら閉館の音楽が流れてきた。来週もまた来ます。</p>
+        <figure class="pic" role="img" aria-label="水槽の中をただよう三匹のくらげ">
+          <svg viewBox="0 0 560 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="560" height="320" fill="#B8E6F5"/>
+            <g fill="#fff" opacity=".28"><path d="M70 0h80L70 320H0Z"/><path d="M270 0h56L250 320h-80Z"/><path d="M440 0h70L480 320h-90Z"/></g>
+            <g fill="none" stroke="#fff" stroke-width="3" opacity=".9"><circle cx="470" cy="70" r="9"/><circle cx="492" cy="40" r="5"/><circle cx="96" cy="250" r="7"/><circle cx="330" cy="270" r="5"/></g>
+            <g transform="translate(180 120)">
+              <path d="M-62 0c0-46 28-72 62-72S62-46 62 0c0 7-5 11-12 11H-50C-57 11-62 7-62 0Z" fill="#CDBDF4"/>
+              <path d="M-42-32c8-12 20-20 34-23" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+              <path d="M-36 14c-10 18 10 30 0 50s8 34 0 52M-12 14c-10 22 10 34 0 58s8 36 0 60M12 14c-10 22 10 34 0 58s8 36 0 60M36 14c-10 18 10 30 0 50s8 34 0 52" fill="none" stroke="#A68FE6" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(390 170) rotate(10) scale(.62)">
+              <path d="M-62 0c0-46 28-72 62-72S62-46 62 0c0 7-5 11-12 11H-50C-57 11-62 7-62 0Z" fill="#F6C6E3"/>
+              <path d="M-42-32c8-12 20-20 34-23" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+              <path d="M-30 14c-10 18 10 30 0 50s8 34 0 52M0 14c-10 22 10 34 0 58s8 36 0 60M30 14c-10 18 10 30 0 50s8 34 0 52" fill="none" stroke="#EE9FCD" stroke-width="7" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(470 250) rotate(-12) scale(.4)">
+              <path d="M-62 0c0-46 28-72 62-72S62-46 62 0c0 7-5 11-12 11H-50C-57 11-62 7-62 0Z" fill="#fff"/>
+              <path d="M-30 14c-10 18 10 30 0 50s8 34 0 52M0 14c-10 22 10 34 0 58M30 14c-10 18 10 30 0 50s8 34 0 52" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </figure>
+        <div class="acts">
+          <button class="act" type="button" aria-label="おへんじ 8"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>8</span></button>
+          <button class="act" type="button" aria-label="おすそわけ 21"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>21</span></button>
+          <button class="act like" type="button" aria-pressed="false" aria-label="しゃぼん"><svg class="ic" aria-hidden="true"><use href="#i-bubble"/></svg><span>164</span></button>
+          <button class="act mark" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post glass rise" style="--d:4">
+      <svg class="av" aria-hidden="true"><use href="#av-usagi"/></svg>
+      <div class="body">
+        <div class="head"><b>もも</b><time>38分</time></div>
+        <p>朝の空がいちごミルクの色だった。早起きしたごほうびだと思うことにする。</p>
+        <figure class="pic" role="img" aria-label="ピンク色の朝焼けの空と、雲と、海">
+          <svg viewBox="0 0 560 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="560" height="320" fill="#F6C6E3"/>
+            <circle cx="372" cy="188" r="50" fill="#fff"/>
+            <g fill="#fff" opacity=".9">
+              <path d="M70 92c0-13 11-22 24-20 5-12 22-16 32-6 13-4 26 6 24 20 0 4-3 6-7 6H78c-5 0-8-0-8 0Z"/>
+              <path d="M410 70c0-10 9-17 19-15 4-10 17-12 25-4 10-3 20 5 19 15 0 3-2 5-5 5h-52c-4 0-6-1-6-1Z"/>
+            </g>
+            <path d="M0 196c60-26 120-30 190-10 50 14 90 12 140-2 70-20 150-16 230 8v128H0Z" fill="#CDBDF4"/>
+            <path d="M0 226c80-12 170-8 260 2s180 8 300-4v96H0Z" fill="#B8E6F5"/>
+            <g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round">
+              <path d="M330 252h84"/><path d="M346 274h52"/><path d="M360 294h26"/>
+              <path d="M70 262h40"/><path d="M470 280h36"/>
+            </g>
+          </svg>
+        </figure>
+        <div class="acts">
+          <button class="act" type="button" aria-label="おへんじ 3"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>3</span></button>
+          <button class="act" type="button" aria-label="おすそわけ 12"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>12</span></button>
+          <button class="act like" type="button" aria-pressed="true" aria-label="しゃぼん"><svg class="ic" aria-hidden="true"><use href="#i-bubble"/></svg><span>98</span></button>
+          <button class="act mark" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post glass rise" style="--d:5">
+      <svg class="av" aria-hidden="true"><use href="#av-neko"/></svg>
+      <div class="body">
+        <div class="head"><b>こむぎ</b><time>1時間</time></div>
+        <p>新しいマグカップ、取っ手がねこのしっぽになってる。飲むたびについ、しっぽをにぎってしまう。</p>
+        <div class="acts">
+          <button class="act" type="button" aria-label="おへんじ 5"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>5</span></button>
+          <button class="act" type="button" aria-label="おすそわけ 2"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>2</span></button>
+          <button class="act like" type="button" aria-pressed="false" aria-label="しゃぼん"><svg class="ic" aria-hidden="true"><use href="#i-bubble"/></svg><span>47</span></button>
+          <button class="act mark" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post glass rise" style="--d:6">
+      <svg class="av" aria-hidden="true"><use href="#av-kujira"/></svg>
+      <div class="body">
+        <div class="head"><b>ソラ</b><time>2時間</time></div>
+        <p>ゆうべの夢で、雲のうえのパン屋さんに並んでた。メロンパンがふわふわすぎて、持ちあげられなかった。<a class="tag" href="#">#ゆめの話</a></p>
+        <div class="acts">
+          <button class="act" type="button" aria-label="おへんじ 14"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>14</span></button>
+          <button class="act" type="button" aria-label="おすそわけ 36"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>36</span></button>
+          <button class="act like" type="button" aria-pressed="false" aria-label="しゃぼん"><svg class="ic" aria-hidden="true"><use href="#i-bubble"/></svg><span>212</span></button>
+          <button class="act mark" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post glass rise" style="--d:7">
+      <svg class="av" aria-hidden="true"><use href="#av-hitsuji"/></svg>
+      <div class="body">
+        <div class="head"><b>めえ</b><time>3時間</time></div>
+        <p>作業のおともは、雨の音とオルゴールを重ねたもの。今日はここまで。おやすみなさい。</p>
+        <div class="acts">
+          <button class="act" type="button" aria-label="おへんじ 2"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>2</span></button>
+          <button class="act" type="button" aria-label="おすそわけ 9"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>9</span></button>
+          <button class="act like" type="button" aria-pressed="false" aria-label="しゃぼん"><svg class="ic" aria-hidden="true"><use href="#i-bubble"/></svg><span>73</span></button>
+          <button class="act mark" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post glass rise" style="--d:8">
+      <svg class="av" aria-hidden="true"><use href="#av-usagi"/></svg>
+      <div class="body">
+        <div class="head"><b>もも</b><time>5時間</time></div>
+        <p>ネイルを水色とラベンダーにした。キーボードを打つたびに目に入って、ちょっとうれしい。<a class="tag" href="#">#推しの色</a></p>
+        <div class="acts">
+          <button class="act" type="button" aria-label="おへんじ 6"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>6</span></button>
+          <button class="act" type="button" aria-label="おすそわけ 4"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>4</span></button>
+          <button class="act like" type="button" aria-pressed="false" aria-label="しゃぼん"><svg class="ic" aria-hidden="true"><use href="#i-bubble"/></svg><span>131</span></button>
+          <button class="act mark" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+        </div>
+      </div>
+    </article>
+
+    <div class="end rise" style="--d:9">
+      <svg aria-hidden="true"><use href="#m-puka-sleep"/></svg>
+      <p>きょうのぷかりは、ここまで</p>
+    </div>
+  </main>
+
+  <!-- right column -->
+  <aside class="aside" aria-label="さがす・話題">
+    <label class="search rise" style="--d:1">
+      <span class="sr">さがす</span>
+      <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <input type="search" placeholder="さがす">
+    </label>
+
+    <section class="card glass rise" style="--d:2">
+      <svg class="sit" aria-hidden="true"><use href="#m-puka"/></svg>
+      <h2 data-split><span class="ph">いま</span><span class="ph">浮かんでる</span><span class="ph">話題</span></h2>
+      <ul class="trends">
+        <li><a href="#"><svg aria-hidden="true"><use href="#m-dot"/></svg>#ゆめの話</a></li>
+        <li><a href="#"><svg aria-hidden="true"><use href="#m-dot"/></svg>#朝の空</a></li>
+        <li><a href="#"><svg aria-hidden="true"><use href="#m-dot"/></svg>くらげ</a></li>
+        <li><a href="#"><svg aria-hidden="true"><use href="#m-dot"/></svg>#推しの色</a></li>
+        <li><a href="#"><svg aria-hidden="true"><use href="#m-dot"/></svg>雨の日の作業BGM</a></li>
+      </ul>
+    </section>
+
+    <section class="card glass rise" style="--d:3">
+      <h2 data-split><span class="ph">なかよく</span><span class="ph">なれそう</span></h2>
+      <ul class="people">
+        <li><svg class="av" aria-hidden="true"><use href="#av-kujira"/></svg><b>ソラ</b><button class="follow" type="button" aria-pressed="false">フォロー</button></li>
+        <li><svg class="av" aria-hidden="true"><use href="#av-hitsuji"/></svg><b>めえ</b><button class="follow" type="button" aria-pressed="false">フォロー</button></li>
+        <li><svg class="av" aria-hidden="true"><use href="#av-neko"/></svg><b>こむぎ</b><button class="follow" type="button" aria-pressed="false">フォロー</button></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<!-- mobile -->
+<button class="fab iri" type="button" aria-label="ぷかりする"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+<nav class="bottom-nav glass" aria-label="メイン">
+  <a href="#" aria-current="page" aria-label="ホーム"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg></a>
+  <a href="#" aria-label="さがす"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg></a>
+  <a href="#" aria-label="おしらせ"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg></a>
+  <a href="#" aria-label="おてがみ"><svg class="ic" aria-hidden="true"><use href="#i-letter"/></svg></a>
+  <a href="#" aria-label="じぶん"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg></a>
+</nav>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Titles: split into letters, grouped by phrase so lines still break between phrases.
+  document.querySelectorAll('[data-split]').forEach(function (h) {
+    h.setAttribute('aria-label', h.textContent.trim());
+    var phs = h.querySelectorAll('.ph');
+    if (!phs.length) { h.innerHTML = '<span class="ph">' + h.innerHTML + '</span>'; phs = h.querySelectorAll('.ph'); }
+    var k = 0;
+    phs.forEach(function (p) {
+      p.setAttribute('aria-hidden', 'true');
+      var text = p.textContent; p.textContent = '';
+      Array.from(text).forEach(function (c) {
+        var i = document.createElement('i');
+        i.textContent = c; i.style.setProperty('--k', k++);
+        p.appendChild(i);
+      });
+    });
+  });
+
+  // Arrivals: the hidden start state exists only while .anim is on <html>.
+  // Every keyframe ends at the element's normal (fully opaque) style, and .anim is removed afterwards anyway.
+  if (!reduce) {
+    root.classList.add('anim');
+    setTimeout(function () { root.classList.remove('anim'); }, 3200);
+  }
+
+  // しゃぼん (like)
+  document.querySelectorAll('.like').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') === 'true';
+      var n = b.querySelector('span');
+      b.setAttribute('aria-pressed', String(!on));
+      n.textContent = String(Number(n.textContent) + (on ? -1 : 1));
+      if (on || reduce) return;
+      b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+      [-14, 2, 16].forEach(function (x, idx) {
+        var f = document.createElement('span');
+        f.className = 'fizz';
+        f.style.setProperty('--x', x + 'px');
+        f.style.animationDelay = idx * 70 + 'ms';
+        f.addEventListener('animationend', function () { f.remove(); });
+        b.appendChild(f);
+      });
+    });
+  });
+
+  document.querySelectorAll('.follow').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') === 'true';
+      b.setAttribute('aria-pressed', String(!on));
+      b.textContent = on ? 'フォロー' : 'フォロー中';
+    });
+  });
+})();
+</script>
+</body>
+</html>

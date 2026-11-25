@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ホーム / fuwarin（ふわりん）</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #5b4a7d;
+    --ink-soft: #8f80ad;
+    --ink-faint: #b9aed0;
+    --line: #f0e2f8;
+    --card: rgba(255, 255, 255, 0.84);
+
+    --pink: #ff86bf;
+    --pink-soft: #ffe3f1;
+    --lav: #a98bff;
+    --lav-soft: #efe8ff;
+    --sky: #6fc0f5;
+    --sky-soft: #e0f2ff;
+    --mint: #45cfa9;
+    --mint-soft: #dcf9f0;
+    --lemon: #f7c948;
+    --lemon-soft: #fff6d6;
+
+    --dream: linear-gradient(120deg, #ff9fd0 0%, #c3a4ff 50%, #8fd3ff 100%);
+    --radius-lg: 28px;
+    --radius-md: 20px;
+    --shadow: 0 10px 30px -12px rgba(170, 120, 210, 0.35), 0 2px 0 rgba(255, 255, 255, 0.9) inset;
+
+    --font: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+    --font-pop: "Mochiy Pop One", "Zen Maru Gothic", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: var(--font);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #ffd9ee 0%, transparent 60%),
+      radial-gradient(900px 600px at 100% 10%, #dcecff 0%, transparent 60%),
+      radial-gradient(900px 700px at 50% 110%, #ddfbef 0%, transparent 60%),
+      linear-gradient(170deg, #fff0f8 0%, #f3ecff 45%, #eaf6ff 80%, #effff8 100%);
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: inherit; text-decoration: none; }
+  svg { display: block; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  :focus-visible { outline: 3px solid #c3a4ff; outline-offset: 2px; border-radius: 12px; }
+
+  /* ---------- dreamy background decorations ---------- */
+  .sky {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .sky::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.95) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle, rgba(255,182,220,.7) 0 1.2px, transparent 2px),
+      radial-gradient(circle, rgba(190,170,255,.7) 0 1.2px, transparent 2px);
+    background-size: 140px 140px, 190px 190px, 230px 230px;
+    background-position: 0 0, 60px 90px, 120px 30px;
+  }
+  .deco { position: absolute; opacity: .9; animation: drift 9s ease-in-out infinite; }
+  .deco--1 { top: 12%; left: 3%; width: 120px; }
+  .deco--2 { top: 62%; left: 6%; width: 90px; animation-delay: -3s; }
+  .deco--3 { top: 6%; right: 4%; width: 46px; animation-delay: -5s; }
+  .deco--4 { bottom: 8%; right: 3%; width: 140px; animation-delay: -2s; }
+  .deco--5 { top: 40%; right: 2%; width: 30px; animation-delay: -6s; }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* ---------- layout ---------- */
+  .app {
+    position: relative; z-index: 1;
+    max-width: 1260px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 620px) 330px;
+    gap: 28px;
+    padding: 0 24px;
+    justify-content: center;
+  }
+
+  /* ---------- left nav ---------- */
+  .nav {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 22px 0 24px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 14px 18px;
+  }
+  .logo svg { width: 46px; height: 46px; filter: drop-shadow(0 4px 8px rgba(195,164,255,.45)); }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .logo-text b {
+    font-family: var(--font-pop); font-weight: 400; font-size: 25px; letter-spacing: .02em;
+    background: var(--dream); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .logo-text small { font-size: 11px; color: var(--ink-soft); letter-spacing: .12em; margin-top: 3px; }
+
+  .nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 16px; border-radius: 999px;
+    font-size: 17px; font-weight: 500;
+    transition: background .2s, transform .2s;
+    position: relative;
+  }
+  .nav-item svg { width: 26px; height: 26px; }
+  .nav-item:hover { background: rgba(255,255,255,.7); transform: translateX(2px); }
+  .nav-item[aria-current="page"] {
+    background: #fff; font-weight: 700;
+    box-shadow: 0 6px 18px -8px rgba(255,134,191,.6);
+  }
+  .nav-item[aria-current="page"] svg { color: var(--pink); }
+  .nav-badge {
+    min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+    background: var(--pink); color: #fff; font-size: 11px; font-weight: 700;
+    display: grid; place-items: center; line-height: 1;
+    position: absolute; left: 32px; top: 4px; border: 2px solid #fff6fb;
+  }
+
+  .btn-post {
+    margin-top: 18px; width: 100%;
+    border: 0; border-radius: 999px; padding: 14px 20px;
+    background: var(--dream); color: #fff;
+    font-family: var(--font-pop); font-size: 17px; letter-spacing: .06em;
+    box-shadow: 0 10px 22px -10px rgba(169,139,255,.9), inset 0 2px 0 rgba(255,255,255,.45);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform .15s, filter .2s;
+  }
+  .btn-post svg { width: 20px; height: 20px; }
+  .btn-post:hover { transform: translateY(-2px); filter: saturate(1.15); }
+  .btn-post:active { transform: translateY(0) scale(.98); }
+
+  .me {
+    margin-top: auto;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.65);
+    border: 2px solid #fff;
+  }
+  .me-name { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+  .me-name b { font-size: 14px; }
+  .me-name span { font-size: 12px; color: var(--ink-soft); }
+
+  /* ---------- avatars ---------- */
+  .ava {
+    flex: none; width: 48px; height: 48px; border-radius: 50%;
+    display: grid; place-items: center;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px -4px rgba(170,120,210,.45);
+  }
+  .ava svg { width: 82%; height: 82%; }
+  .ava--sm { width: 40px; height: 40px; border-width: 2px; }
+  .ava--pink  { background: linear-gradient(140deg, #ffd1e8, #ffb0d6); color: #fff; }
+  .ava--lemon { background: linear-gradient(140deg, #fff1b8, #ffd98a); color: #fffdf3; }
+  .ava--peach { background: linear-gradient(140deg, #ffe0cc, #ffc0a8); color: #fff7f2; }
+  .ava--lav   { background: linear-gradient(140deg, #e9ddff, #c9b2ff); color: #fff; }
+  .ava--sky   { background: linear-gradient(140deg, #d6eeff, #a7d6ff); color: #fff; }
+  .ava--mint  { background: linear-gradient(140deg, #d6fbef, #9ee9d2); color: #fff; }
+  .ava--holo  { background: conic-gradient(from 200deg, #ffc6e4, #d7c4ff, #bfe6ff, #c9f7e6, #ffc6e4); color: #fff; }
+
+  /* ---------- timeline ---------- */
+  .timeline { padding-bottom: 80px; min-width: 0; }
+  .tl-head {
+    position: sticky; top: 0; z-index: 5;
+    padding: 18px 0 0;
+    background: linear-gradient(180deg, rgba(253,242,250,.96) 70%, rgba(253,242,250,0));
+    backdrop-filter: blur(6px);
+  }
+  .tl-title {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 6px 12px;
+  }
+  .tl-title h1 {
+    margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: 22px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tl-title h1 svg { width: 22px; height: 22px; color: var(--lemon); }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 0;
+    background: rgba(255,255,255,.75); display: grid; place-items: center;
+    transition: background .2s, transform .2s;
+  }
+  .icon-btn svg { width: 22px; height: 22px; }
+  .icon-btn:hover { background: #fff; transform: rotate(-12deg); }
+
+  .tabs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: rgba(255,255,255,.7);
+    border: 2px solid #fff;
+    border-radius: 999px; padding: 5px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    border: 0; background: transparent; border-radius: 999px;
+    padding: 9px 0; font-weight: 700; font-size: 15px; color: var(--ink-soft);
+    transition: background .25s, color .25s;
+  }
+  .tab[aria-selected="true"] {
+    background: linear-gradient(120deg, #ffe0f0, #ece3ff);
+    color: var(--ink);
+    box-shadow: 0 3px 10px -4px rgba(255,134,191,.6);
+  }
+
+  .card {
+    background: var(--card);
+    border: 2px solid #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+  }
+
+  /* composer */
+  .composer { margin-top: 16px; padding: 18px 18px 14px; display: flex; gap: 14px; }
+  .composer-main { flex: 1; min-width: 0; }
+  .composer textarea {
+    width: 100%; border: 0; resize: none; background: transparent;
+    font: inherit; font-size: 18px; color: var(--ink); line-height: 1.6;
+    padding: 10px 0 6px; min-height: 56px;
+  }
+  .composer textarea::placeholder { color: var(--ink-faint); }
+  .composer textarea:focus { outline: none; }
+  .composer-audience {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; color: var(--mint);
+    background: var(--mint-soft); padding: 3px 10px; border-radius: 999px;
+  }
+  .composer-audience svg { width: 14px; height: 14px; }
+  .composer-bar {
+    display: flex; align-items: center; gap: 4px;
+    border-top: 2px dashed var(--line); margin-top: 8px; padding-top: 10px;
+  }
+  .tool {
+    width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent;
+    display: grid; place-items: center; color: var(--pink);
+    transition: background .2s;
+  }
+  .tool:hover { background: var(--pink-soft); }
+  .tool svg { width: 21px; height: 21px; }
+  .tool:nth-child(2) { color: var(--lav); }
+  .tool:nth-child(2):hover { background: var(--lav-soft); }
+  .tool:nth-child(3) { color: var(--sky); }
+  .tool:nth-child(3):hover { background: var(--sky-soft); }
+  .tool:nth-child(4) { color: var(--lemon); }
+  .tool:nth-child(4):hover { background: var(--lemon-soft); }
+  .composer-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .counter { width: 28px; height: 28px; position: relative; }
+  .counter svg { width: 28px; height: 28px; transform: rotate(-90deg); }
+  .counter-num {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-size: 10px; font-weight: 700; color: var(--ink-soft);
+  }
+  .btn-send {
+    border: 0; border-radius: 999px; padding: 8px 20px;
+    background: var(--dream); color: #fff; font-weight: 700; font-size: 15px;
+    box-shadow: 0 6px 14px -6px rgba(169,139,255,.9);
+    transition: opacity .2s, transform .15s;
+  }
+  .btn-send:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-send:not(:disabled):hover { transform: translateY(-1px); }
+
+  .new-pill {
+    display: flex; margin: 16px auto 4px; width: max-content;
+    align-items: center; gap: 6px;
+    border: 2px solid #fff; border-radius: 999px; padding: 6px 16px;
+    background: linear-gradient(120deg, #fff, #fdf1ff);
+    color: var(--lav); font-weight: 700; font-size: 13px;
+    box-shadow: 0 6px 16px -8px rgba(169,139,255,.8);
+  }
+  .new-pill svg { width: 16px; height: 16px; }
+  .new-pill .mini-avas { display: flex; }
+  .new-pill .mini-avas span {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid #fff; margin-left: -6px;
+  }
+  .new-pill .mini-avas span:first-child { margin-left: 0; }
+
+  /* posts */
+  .feed { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .post { display: flex; gap: 14px; padding: 18px 18px 10px; transition: transform .2s; }
+  .post:hover { transform: translateY(-2px); }
+  .post.is-new { animation: popIn .5s cubic-bezier(.2,1.4,.4,1); }
+  @keyframes popIn { from { opacity: 0; transform: translateY(-10px) scale(.97); } }
+  .post-body { flex: 1; min-width: 0; }
+  .post-context {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; color: var(--ink-soft); margin: -4px 0 4px;
+  }
+  .post-context svg { width: 14px; height: 14px; color: var(--lav); }
+  .post-head { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; min-width: 0; }
+  .post-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .verified { width: 17px; height: 17px; flex: none; }
+  .post-handle, .post-time { color: var(--ink-soft); font-size: 14px; white-space: nowrap; }
+  .post-handle { overflow: hidden; text-overflow: ellipsis; }
+  .post-more {
+    margin-left: auto; flex: none; width: 32px; height: 32px; border: 0; border-radius: 50%;
+    background: transparent; color: var(--ink-faint); display: grid; place-items: center;
+  }
+  .post-more:hover { background: var(--lav-soft); color: var(--lav); }
+  .post-more svg { width: 18px; height: 18px; }
+  .post-reply-to { font-size: 13px; color: var(--ink-soft); margin-top: -2px; }
+  .post-reply-to a { color: var(--sky); font-weight: 500; }
+  .post-text { margin: 4px 0 0; white-space: pre-wrap; word-break: break-word; }
+  .tag { color: #e46aa8; font-weight: 500; }
+  .tag:hover { text-decoration: underline wavy #ffb6d9; }
+
+  .media {
+    margin: 12px 0 0; border-radius: var(--radius-md); overflow: hidden;
+    border: 3px solid #fff; box-shadow: 0 8px 20px -12px rgba(170,120,210,.6);
+    aspect-ratio: 2 / 1; background: var(--lav-soft);
+  }
+  .media svg { width: 100%; height: 100%; }
+
+  .poll { margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
+  .poll-opt {
+    position: relative; overflow: hidden;
+    border-radius: 14px; background: #faf6ff; border: 2px solid #fff;
+    padding: 8px 14px; display: flex; justify-content: space-between; font-weight: 500;
+  }
+  .poll-opt::before {
+    content: ""; position: absolute; inset: 0; width: var(--w);
+    background: var(--c, #f1e8ff); border-radius: 12px; z-index: 0;
+  }
+  .poll-opt > * { position: relative; z-index: 1; }
+  .poll-opt.is-top { font-weight: 700; }
+  .poll-meta { font-size: 13px; color: var(--ink-soft); }
+
+  .quote {
+    margin: 12px 0 0; padding: 12px 14px; border-radius: var(--radius-md);
+    background: linear-gradient(130deg, #fff7fc, #f5f0ff); border: 2px dashed #ecdcff;
+  }
+  .quote-head { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .quote-head .ava { width: 22px; height: 22px; border-width: 1.5px; box-shadow: none; }
+  .quote-head b { font-weight: 700; }
+  .quote-head span { color: var(--ink-soft); }
+  .quote p { margin: 4px 0 0; font-size: 14px; }
+
+  .actions {
+    display: flex; justify-content: space-between; max-width: 440px;
+    margin: 8px 0 0 -8px;
+  }
+  .act {
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 0; background: transparent; color: var(--ink-soft);
+    padding: 4px 10px 4px 6px; border-radius: 999px; font-size: 13px; font-weight: 500;
+    position: relative;
+    transition: color .2s, background .2s;
+  }
+  .act svg { width: 20px; height: 20px; transition: transform .25s cubic-bezier(.2,1.6,.4,1); }
+  .act--reply:hover { color: var(--sky); background: var(--sky-soft); }
+  .act--loop:hover, .act--loop[aria-pressed="true"] { color: var(--mint); }
+  .act--loop:hover { background: var(--mint-soft); }
+  .act--like:hover { color: var(--pink); background: var(--pink-soft); }
+  .act--like[aria-pressed="true"] { color: var(--pink); }
+  .act--like[aria-pressed="true"] svg { fill: currentColor; transform: scale(1.18); }
+  .act--save:hover { color: #e3a91d; background: var(--lemon-soft); }
+  .act--save[aria-pressed="true"] { color: #e3a91d; }
+  .act--save[aria-pressed="true"] svg { fill: var(--lemon); }
+  .act--share:hover { color: var(--lav); background: var(--lav-soft); }
+
+  .burst {
+    position: absolute; left: 16px; top: 14px; width: 6px; height: 6px; border-radius: 50%;
+    pointer-events: none; animation: burst .6s ease-out forwards;
+  }
+  @keyframes burst {
+    from { transform: translate(0, 0) scale(1); opacity: 1; }
+    to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; }
+  }
+
+  .feed-end {
+    text-align: center; color: var(--ink-soft); font-size: 13px; margin: 26px 0 0;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .feed-end svg { width: 18px; height: 18px; color: var(--lav); }
+
+  /* ---------- right column ---------- */
+  .side { padding: 18px 0 40px; display: flex; flex-direction: column; gap: 16px; }
+  .side-sticky { display: flex; flex-direction: column; gap: 16px; }
+  .search {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 18px; border-radius: 999px;
+    background: rgba(255,255,255,.85); border: 2px solid #fff; box-shadow: var(--shadow);
+  }
+  .search svg { width: 20px; height: 20px; color: var(--lav); flex: none; }
+  .search input {
+    border: 0; background: transparent; font: inherit; color: var(--ink); width: 100%;
+  }
+  .search input::placeholder { color: var(--ink-faint); }
+  .search input:focus { outline: none; }
+  .search:focus-within { border-color: #e2d3ff; }
+
+  .panel { padding: 16px 0 8px; }
+  .panel h2 {
+    margin: 0 20px 6px; font-family: var(--font-pop); font-weight: 400; font-size: 17px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel h2 svg { width: 18px; height: 18px; color: var(--pink); }
+  .trend {
+    display: block; padding: 9px 20px; transition: background .2s;
+  }
+  .trend:hover { background: rgba(255, 227, 241, .55); }
+  .trend small { display: block; font-size: 12px; color: var(--ink-soft); }
+  .trend b { display: block; font-size: 15px; }
+  .trend .rank {
+    display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--pink-soft); color: var(--pink); font-size: 10px; font-weight: 700; margin-right: 4px;
+  }
+  .panel-more { display: block; padding: 10px 20px 8px; color: var(--lav); font-weight: 700; font-size: 14px; }
+
+  .who { display: flex; align-items: center; gap: 10px; padding: 9px 20px; }
+  .who-name { flex: 1; min-width: 0; line-height: 1.35; }
+  .who-name b { display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .who-name span { font-size: 12px; color: var(--ink-soft); }
+  .btn-follow {
+    border: 2px solid #ffc4e1; border-radius: 999px; background: #fff; color: #e46aa8;
+    padding: 4px 14px; font-weight: 700; font-size: 13px; transition: all .2s; white-space: nowrap;
+  }
+  .btn-follow:hover { background: var(--pink-soft); }
+  .btn-follow[aria-pressed="true"] { background: var(--dream); color: #fff; border-color: transparent; }
+
+  .side-foot { font-size: 12px; color: var(--ink-faint); padding: 0 8px; line-height: 1.9; }
+  .side-foot a:hover { color: var(--ink-soft); }
+
+  /* ---------- mobile ---------- */
+  .bottom-nav, .fab, .m-logo { display: none; }
+
+  @media (max-width: 1180px) {
+    .app { grid-template-columns: 88px minmax(0, 620px) 300px; gap: 20px; }
+    .logo-text, .nav-item span, .btn-post span, .me-name, .me .me-more { display: none; }
+    .logo { padding: 6px 0 18px; justify-content: center; }
+    .nav-item { justify-content: center; padding: 12px; }
+    .btn-post { width: 56px; height: 56px; padding: 0; margin: 18px auto 0; }
+    .btn-post svg { width: 24px; height: 24px; }
+    .me { justify-content: center; padding: 6px; background: transparent; border: 0; }
+    .nav-badge { left: 40px; }
+  }
+  @media (max-width: 980px) {
+    .app { grid-template-columns: 88px minmax(0, 620px); }
+    .side { display: none; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 14.5px; }
+    .app { grid-template-columns: minmax(0, 1fr); padding: 0 12px; }
+    .nav { display: none; }
+    .m-logo { display: flex; align-items: center; gap: 8px; }
+    .m-logo svg { width: 34px; height: 34px; }
+    .tl-title h1 { font-size: 19px; }
+    .tl-title .tl-h1-desktop { display: none; }
+    .post { padding: 14px 14px 8px; gap: 10px; }
+    .ava { width: 42px; height: 42px; }
+    .composer { padding: 14px; }
+    .composer textarea { font-size: 16px; }
+    .composer-bar .tool:nth-child(4) { display: none; }
+    .deco--1, .deco--4 { width: 80px; }
+    .timeline { padding-bottom: 110px; }
+    .bottom-nav {
+      display: flex; justify-content: space-around;
+      position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 20;
+      padding: 8px; border-radius: 999px;
+      background: rgba(255,255,255,.92); border: 2px solid #fff; box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .bottom-nav a { width: 48px; height: 44px; display: grid; place-items: center; border-radius: 999px; position: relative; }
+    .bottom-nav a svg { width: 25px; height: 25px; }
+    .bottom-nav a[aria-current="page"] { background: var(--pink-soft); color: var(--pink); }
+    .bottom-nav .nav-badge { left: 28px; top: 0; }
+    .fab {
+      display: grid; place-items: center;
+      position: fixed; right: 20px; bottom: 88px; z-index: 21;
+      width: 58px; height: 58px; border-radius: 50%; border: 3px solid #fff;
+      background: var(--dream); color: #fff;
+      box-shadow: 0 12px 24px -10px rgba(169,139,255,.9);
+    }
+    .fab svg { width: 26px; height: 26px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SVG sprites (icons & original characters) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-dream" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9fd0"/>
+      <stop offset=".5" stop-color="#c3a4ff"/>
+      <stop offset="1" stop-color="#8fd3ff"/>
+    </linearGradient>
+
+    <!-- icons: 24x24 stroke -->
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.2 12 4.8l8 6.4v7.6a1.8 1.8 0 0 1-1.8 1.8H15v-5.2h-6v5.2H5.8A1.8 1.8 0 0 1 4 18.8z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.8" width="17" height="12.8" rx="3.5"/><path d="m5 8 7 5 7-5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 4.2l2.3 4.8 5.2.7-3.8 3.6.9 5.2L12 16l-4.6 2.5.9-5.2-3.8-3.6 5.2-.7z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="9" r="3.8"/><path d="M5 20a7 7 0 0 1 14 0"/></symbol>
+    <symbol id="i-reply" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 5c4.7 0 8 2.9 8 6.4s-3.3 6.4-8 6.4c-.9 0-1.8-.1-2.6-.3L5.5 19.5l1-3.3C4.9 15 4 13.3 4 11.4 4 7.9 7.3 5 12 5z"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11v-.5a3.5 3.5 0 0 1 3.5-3.5h10"/><path d="m15 4 3 3-3 3"/><path d="M19.5 13v.5a3.5 3.5 0 0 1-3.5 3.5H6"/><path d="m9 20-3-3 3-3"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 19.5s-7.5-4.4-7.5-9.8A4 4 0 0 1 12 7.4a4 4 0 0 1 7.5 2.3c0 5.4-7.5 9.8-7.5 9.8z"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 4.2l2.3 4.8 5.2.7-3.8 3.6.9 5.2L12 16l-4.6 2.5.9-5.2-3.8-3.6 5.2-.7z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14.5V4.5"/><path d="m8.2 8 3.8-3.5L15.8 8"/><path d="M5 12.5v5A2 2 0 0 0 7 19.5h10a2 2 0 0 0 2-2v-5"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.5-4 3 2.5 3.5-3.5 4 4"/></symbol>
+    <symbol id="i-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M9 14.2a3.6 3.6 0 0 0 6 0"/><path d="M9.5 10v.1M14.5 10v.1"/></symbol>
+    <symbol id="i-poll" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 19v-6M12 19V6M18 19v-9"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8c.7 4.6 2.2 6.8 6.6 7.6-4.4.8-5.9 3-6.6 7.6-.7-4.6-2.2-6.8-6.6-7.6 4.4-.8 5.9-3 6.6-7.6z"/><path d="M18.5 15.5c.3 1.9.9 2.8 2.7 3.1-1.8.3-2.4 1.2-2.7 3.1-.3-1.9-.9-2.8-2.7-3.1 1.8-.3 2.4-1.2 2.7-3.1z" opacity=".7"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3.5h6l-1 5 3 3.5v1.5h-4.2V20L12 21.5 11.2 20v-6.5H7V12l3-3.5z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.5 2.6 2.5 13.4 0 16M12 4c-2.5 2.6-2.5 13.4 0 16"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M6 18l1.6-1.6M16.4 7.6 18 6"/></symbol>
+    <symbol id="i-badge" viewBox="0 0 24 24"><path fill="url(#g-dream)" d="M12 2.5l2.2 2 3-.3.9 2.9 2.6 1.5-.9 2.9.9 2.9-2.6 1.5-.9 2.9-3-.3-2.2 2-2.2-2-3 .3-.9-2.9-2.6-1.5.9-2.9-.9-2.9 2.6-1.5.9-2.9 3 .3z"/><path d="m8.6 12.2 2.3 2.3 4.6-4.8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+
+    <!-- original characters (48x48) : body uses currentColor -->
+    <symbol id="ch-bunny" viewBox="0 0 48 48">
+      <ellipse cx="17" cy="12" rx="4.6" ry="10.5" fill="currentColor"/>
+      <ellipse cx="31" cy="12" rx="4.6" ry="10.5" fill="currentColor"/>
+      <ellipse cx="17" cy="12.5" rx="2" ry="7" fill="#ff9ec9" opacity=".7"/>
+      <ellipse cx="31" cy="12.5" rx="2" ry="7" fill="#ff9ec9" opacity=".7"/>
+      <circle cx="24" cy="30" r="14" fill="currentColor"/>
+      <circle cx="18.5" cy="29" r="2" fill="#5b4a7d"/><circle cx="29.5" cy="29" r="2" fill="#5b4a7d"/>
+      <circle cx="19.2" cy="28.3" r=".7" fill="#fff"/><circle cx="30.2" cy="28.3" r=".7" fill="#fff"/>
+      <ellipse cx="14.5" cy="33" rx="3" ry="1.8" fill="#ff9ec9" opacity=".85"/><ellipse cx="33.5" cy="33" rx="3" ry="1.8" fill="#ff9ec9" opacity=".85"/>
+      <path d="M22 32.5q1 1.4 2 0q1 1.4 2 0" fill="none" stroke="#5b4a7d" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ch-cat" viewBox="0 0 48 48">
+      <path d="M9.5 21 11.5 6.5 22 14Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M38.5 21 36.5 6.5 26 14Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M13 17 13.8 10.5 18 14Z" fill="#ff9ec9" opacity=".6"/><path d="M35 17 34.2 10.5 30 14Z" fill="#ff9ec9" opacity=".6"/>
+      <circle cx="24" cy="28" r="15" fill="currentColor"/>
+      <path d="M16.5 27q2-2 4 0M27.5 27q2-2 4 0" fill="none" stroke="#5b4a7d" stroke-width="1.8" stroke-linecap="round"/>
+      <ellipse cx="14" cy="31.5" rx="3" ry="1.8" fill="#ff9ec9" opacity=".85"/><ellipse cx="34" cy="31.5" rx="3" ry="1.8" fill="#ff9ec9" opacity=".85"/>
+      <path d="M21 31q1.5 2 3 0q1.5 2 3 0" fill="none" stroke="#5b4a7d" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ch-bear" viewBox="0 0 48 48">
+      <circle cx="12" cy="15" r="6.5" fill="currentColor"/><circle cx="36" cy="15" r="6.5" fill="currentColor"/>
+      <circle cx="12" cy="15" r="3" fill="#ffb3a0" opacity=".7"/><circle cx="36" cy="15" r="3" fill="#ffb3a0" opacity=".7"/>
+      <circle cx="24" cy="28" r="15.5" fill="currentColor"/>
+      <ellipse cx="24" cy="32.5" rx="6" ry="4.5" fill="#ffe9de"/>
+      <circle cx="18" cy="26" r="2" fill="#5b4a7d"/><circle cx="30" cy="26" r="2" fill="#5b4a7d"/>
+      <ellipse cx="24" cy="31" rx="1.8" ry="1.2" fill="#5b4a7d"/>
+      <path d="M24 32v1.6M22 34q2 1.4 4 0" fill="none" stroke="#5b4a7d" stroke-width="1.2" stroke-linecap="round"/>
+      <ellipse cx="13.5" cy="31" rx="2.8" ry="1.7" fill="#ff9ec9" opacity=".85"/><ellipse cx="34.5" cy="31" rx="2.8" ry="1.7" fill="#ff9ec9" opacity=".85"/>
+    </symbol>
+    <symbol id="ch-ghost" viewBox="0 0 48 48">
+      <path d="M10 41V22a14 14 0 0 1 28 0v19l-4.7-3.6-4.6 3.6-4.7-3.6-4.7 3.6-4.6-3.6z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <ellipse cx="19" cy="23" rx="2" ry="2.6" fill="#5b4a7d"/><ellipse cx="29" cy="23" rx="2" ry="2.6" fill="#5b4a7d"/>
+      <circle cx="19.7" cy="22.2" r=".8" fill="#fff"/><circle cx="29.7" cy="22.2" r=".8" fill="#fff"/>
+      <ellipse cx="15" cy="28" rx="2.8" ry="1.7" fill="#ff9ec9" opacity=".85"/><ellipse cx="33" cy="28" rx="2.8" ry="1.7" fill="#ff9ec9" opacity=".85"/>
+      <ellipse cx="24" cy="28.5" rx="1.8" ry="2.2" fill="#5b4a7d"/>
+    </symbol>
+    <symbol id="ch-star" viewBox="0 0 48 48">
+      <path d="M24 5 29.3 17.7 43 18.8 32.6 27.8 35.8 41.2 24 34 12.2 41.2 15.4 27.8 5 18.8 18.7 17.7Z" fill="currentColor" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <circle cx="20" cy="25" r="1.8" fill="#5b4a7d"/><circle cx="28" cy="25" r="1.8" fill="#5b4a7d"/>
+      <ellipse cx="17" cy="29" rx="2.4" ry="1.5" fill="#ff9ec9" opacity=".85"/><ellipse cx="31" cy="29" rx="2.4" ry="1.5" fill="#ff9ec9" opacity=".85"/>
+      <path d="M22 28.5q2 2.2 4 0" fill="none" stroke="#5b4a7d" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ch-cloud" viewBox="0 0 48 48">
+      <g fill="currentColor">
+        <circle cx="16" cy="28" r="9"/><circle cx="26" cy="21" r="11"/><circle cx="35" cy="29" r="8"/>
+        <rect x="9" y="27" width="31" height="11" rx="5.5"/>
+      </g>
+      <circle cx="21" cy="28" r="1.8" fill="#5b4a7d"/><circle cx="30" cy="28" r="1.8" fill="#5b4a7d"/>
+      <ellipse cx="17.5" cy="32" rx="2.4" ry="1.5" fill="#ff9ec9" opacity=".85"/><ellipse cx="33.5" cy="32" rx="2.4" ry="1.5" fill="#ff9ec9" opacity=".85"/>
+      <path d="M24 31q1.5 1.8 3 0" fill="none" stroke="#5b4a7d" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ch-unicorn" viewBox="0 0 48 48">
+      <path d="M24 1.5 27 14h-6z" fill="#ffe38a" stroke="#ffd25e" stroke-width="1" stroke-linejoin="round"/>
+      <path d="M12 19 13 8 20 14Z" fill="currentColor"/><path d="M36 19 35 8 28 14Z" fill="currentColor"/>
+      <circle cx="24" cy="28" r="15" fill="currentColor"/>
+      <path d="M12 22c3-7 10-9 15-7-4 0-6 2-7 4 3-2 8-2 11 0-5 0-8 1-10 4" fill="#ffb3dc"/>
+      <path d="M17 29.5q2 2 4 0M27 29.5q2 2 4 0" fill="none" stroke="#5b4a7d" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="14.5" cy="33" rx="2.8" ry="1.7" fill="#ff9ec9" opacity=".85"/><ellipse cx="33.5" cy="33" rx="2.8" ry="1.7" fill="#ff9ec9" opacity=".85"/>
+      <path d="M22.5 34q1.5 1.4 3 0" fill="none" stroke="#5b4a7d" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ===== dreamy sky decorations ===== -->
+<div class="sky" aria-hidden="true">
+  <svg class="deco deco--1" viewBox="0 0 120 60"><g fill="#fff"><circle cx="35" cy="35" r="18"/><circle cx="60" cy="25" r="22"/><circle cx="86" cy="36" r="16"/><rect x="18" y="34" width="86" height="20" rx="10"/></g></svg>
+  <svg class="deco deco--2" viewBox="0 0 24 24"><use href="#i-sparkle" style="color:#ffc2e0"/></svg>
+  <svg class="deco deco--3" viewBox="0 0 24 24"><use href="#i-sparkle" style="color:#cbb6ff"/></svg>
+  <svg class="deco deco--4" viewBox="0 0 120 60"><g fill="#fff" opacity=".9"><circle cx="35" cy="35" r="18"/><circle cx="60" cy="25" r="22"/><circle cx="86" cy="36" r="16"/><rect x="18" y="34" width="86" height="20" rx="10"/></g></svg>
+  <svg class="deco deco--5" viewBox="0 0 24 24"><use href="#i-sparkle" style="color:#9fdcff"/></svg>
+</div>
+
+<div class="app">
+
+  <!-- ===== left nav ===== -->
+  <header class="nav">
+    <a class="logo" href="#" aria-label="fuwarin ホーム">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <g fill="url(#g-dream)"><circle cx="16" cy="28" r="9"/><circle cx="26" cy="21" r="11"/><circle cx="35" cy="29" r="8"/><rect x="9" y="27" width="31" height="11" rx="5.5"/></g>
+        <path d="M26 13.5c.5 3.2 1.6 4.7 4.6 5.3-3 .6-4.1 2.1-4.6 5.3-.5-3.2-1.6-4.7-4.6-5.3 3-.6 4.1-2.1 4.6-5.3z" fill="#fff"/>
+        <circle cx="17" cy="31" r="1.6" fill="#fff" opacity=".9"/><circle cx="34" cy="32" r="1.2" fill="#fff" opacity=".8"/>
+      </svg>
+      <span class="logo-text"><b>fuwarin</b><small>ふわりん</small></span>
+    </a>
+    <nav aria-label="メインメニュー">
+      <ul class="nav-list">
+        <li><a class="nav-item" href="#" aria-current="page"><svg><use href="#i-home"/></svg><span>ホーム</span></a></li>
+        <li><a class="nav-item" href="#"><svg><use href="#i-search"/></svg><span>さがす</span></a></li>
+        <li><a class="nav-item" href="#"><svg><use href="#i-bell"/></svg><span>おしらせ</span><i class="nav-badge">7</i></a></li>
+        <li><a class="nav-item" href="#"><svg><use href="#i-mail"/></svg><span>おてがみ</span></a></li>
+        <li><a class="nav-item" href="#"><svg><use href="#i-star"/></svg><span>きらりBOX</span></a></li>
+        <li><a class="nav-item" href="#"><svg><use href="#i-user"/></svg><span>マイページ</span></a></li>
+        <li><a class="nav-item" href="#"><svg><use href="#i-settings"/></svg><span>せってい</span></a></li>
+      </ul>
+    </nav>
+    <button class="btn-post" type="button" data-focus-composer><svg><use href="#i-sparkle"/></svg><span>ふわりする</span></button>
+
+    <div class="me">
+      <div class="ava ava--sm ava--holo"><svg><use href="#ch-unicorn"/></svg></div>
+      <div class="me-name"><b>ゆにこ</b><span>@unico_dreamy</span></div>
+      <svg class="me-more" style="width:18px;height:18px;margin-left:auto;color:var(--ink-soft)"><use href="#i-more"/></svg>
+    </div>
+  </header>
+
+  <!-- ===== timeline ===== -->
+  <main class="timeline">
+    <div class="tl-head">
+      <div class="tl-title">
+        <a class="m-logo" href="#" aria-label="fuwarin ホーム">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="url(#g-dream)"><circle cx="16" cy="28" r="9"/><circle cx="26" cy="21" r="11"/><circle cx="35" cy="29" r="8"/><rect x="9" y="27" width="31" height="11" rx="5.5"/></g><path d="M26 13.5c.5 3.2 1.6 4.7 4.6 5.3-3 .6-4.1 2.1-4.6 5.3-.5-3.2-1.6-4.7-4.6-5.3 3-.6 4.1-2.1 4.6-5.3z" fill="#fff"/></svg>
+        </a>
+        <h1><svg><use href="#i-sparkle"/></svg>ホーム</h1>
+        <button class="icon-btn" type="button" aria-label="よるモード（ダミー）"><svg><use href="#i-moon"/></svg></button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="タイムラインの種類">
+        <button class="tab" role="tab" aria-selected="true" data-tab="all">おすすめ</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="follow">フォロー中</button>
+      </div>
+    </div>
+
+    <!-- composer -->
+    <form class="card composer" id="composer" autocomplete="off">
+      <div class="ava ava--holo"><svg><use href="#ch-unicorn"/></svg></div>
+      <div class="composer-main">
+        <span class="composer-audience"><svg><use href="#i-globe"/></svg>みんなに見える</span>
+        <label class="vh" for="compose-text">ふわりを書く</label>
+        <textarea id="compose-text" rows="2" maxlength="160" placeholder="いま、どんなゆめみてる？"></textarea>
+        <div class="composer-bar">
+          <button class="tool" type="button" aria-label="画像"><svg><use href="#i-image"/></svg></button>
+          <button class="tool" type="button" aria-label="きもちスタンプ"><svg><use href="#i-smile"/></svg></button>
+          <button class="tool" type="button" aria-label="アンケート"><svg><use href="#i-poll"/></svg></button>
+          <button class="tool" type="button" aria-label="キラキラ演出"><svg><use href="#i-sparkle"/></svg></button>
+          <div class="composer-right">
+            <div class="counter" aria-hidden="true">
+              <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="none" stroke="#f1e6fb" stroke-width="3"/><circle id="ring" cx="14" cy="14" r="11" fill="none" stroke="url(#g-dream)" stroke-width="3" stroke-linecap="round" stroke-dasharray="69.1" stroke-dashoffset="69.1"/></svg>
+              <span class="counter-num" id="counter-num"></span>
+            </div>
+            <button class="btn-send" type="submit" disabled>ふわりする</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <button class="new-pill" type="button" id="new-pill">
+      <span class="mini-avas"><span style="background:#ffb0d6"></span><span style="background:#c9b2ff"></span><span style="background:#a7d6ff"></span></span>
+      あたらしいふわり 3けん
+    </button>
+
+    <ol class="feed" id="feed">
+
+      <!-- post 1 -->
+      <li class="card post" data-follow="1">
+        <div class="ava ava--pink"><svg><use href="#ch-bunny"/></svg></div>
+        <div class="post-body">
+          <div class="post-head">
+            <span class="post-name">ゆめみ</span><svg class="verified" aria-label="公式きらりバッジ"><use href="#i-badge"/></svg>
+            <span class="post-handle">@yumemi_zzz</span><span class="post-time">・2分</span>
+            <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+          </div>
+          <p class="post-text">きょうの空、ぜんぶゆめいろだった…
+夕方5時のマジックアワー、だれか一緒に見てた？ ♡
+<a class="tag" href="#">#パステル空部</a></p>
+          <figure class="media" aria-label="ラベンダーとピンクの夕焼け空に、三日月と雲が浮かぶ写真">
+            <svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#a996ff"/><stop offset=".42" stop-color="#e9a8f0"/><stop offset=".72" stop-color="#ffbfd8"/><stop offset="1" stop-color="#ffe3c8"/>
+                </linearGradient>
+                <radialGradient id="glow1" cx=".5" cy="1" r=".6"><stop offset="0" stop-color="#fff6d8" stop-opacity=".95"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></radialGradient>
+                <linearGradient id="sea1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc9e0"/><stop offset="1" stop-color="#c7b5ff"/></linearGradient>
+                <mask id="moon1"><rect width="600" height="300" fill="#fff"/><circle cx="492" cy="62" r="22" fill="#000"/></mask>
+              </defs>
+              <rect width="600" height="300" fill="url(#sky1)"/>
+              <rect width="600" height="300" fill="url(#glow1)"/>
+              <g fill="#fff">
+                <circle cx="60" cy="40" r="1.8"/><circle cx="130" cy="78" r="1.2"/><circle cx="210" cy="30" r="2"/><circle cx="300" cy="62" r="1.3"/>
+                <circle cx="380" cy="24" r="1.6"/><circle cx="560" cy="110" r="1.4"/><circle cx="420" cy="96" r="1"/><circle cx="250" cy="100" r="1"/>
+                <path d="M160 46c.5 3.5 1.5 5 5 5.6-3.5.6-4.5 2.1-5 5.6-.5-3.5-1.5-5-5-5.6 3.5-.6 4.5-2.1 5-5.6z"/>
+                <path d="M540 30c.4 2.8 1.2 4 4 4.5-2.8.5-3.6 1.7-4 4.5-.4-2.8-1.2-4-4-4.5 2.8-.5 3.6-1.7 4-4.5z"/>
+              </g>
+              <circle cx="480" cy="70" r="24" fill="#fffbe9" mask="url(#moon1)"/>
+              <circle cx="300" cy="250" r="56" fill="#fff4d8" opacity=".9"/>
+              <g fill="#fff" opacity=".75">
+                <ellipse cx="110" cy="150" rx="70" ry="16"/><ellipse cx="150" cy="138" rx="40" ry="18"/><ellipse cx="85" cy="142" rx="28" ry="13"/>
+              </g>
+              <g fill="#fff" opacity=".6">
+                <ellipse cx="470" cy="180" rx="80" ry="15"/><ellipse cx="500" cy="168" rx="38" ry="16"/><ellipse cx="440" cy="172" rx="26" ry="12"/>
+              </g>
+              <rect y="245" width="600" height="55" fill="url(#sea1)"/>
+              <g stroke="#fff" stroke-linecap="round" stroke-width="3" opacity=".75">
+                <path d="M255 260h90M270 272h60M285 284h30"/>
+                <path d="M60 268h40M480 276h50M150 288h30" opacity=".6"/>
+              </g>
+              <g fill="#fff">
+                <ellipse cx="40" cy="250" rx="70" ry="22"/><ellipse cx="110" cy="252" rx="50" ry="16"/>
+                <ellipse cx="560" cy="252" rx="70" ry="22"/><ellipse cx="490" cy="254" rx="44" ry="14"/>
+              </g>
+            </svg>
+          </figure>
+          <footer class="actions">
+            <button class="act act--reply" type="button" aria-label="へんじ 12"><svg><use href="#i-reply"/></svg><span>12</span></button>
+            <button class="act act--loop" type="button" aria-pressed="false" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">86</span></button>
+            <button class="act act--like" type="button" aria-pressed="false" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">1,248</span></button>
+            <button class="act act--save" type="button" aria-pressed="false" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+            <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+          </footer>
+        </div>
+      </li>
+
+      <!-- post 2 -->
+      <li class="card post" data-follow="1">
+        <div class="ava ava--lemon"><svg><use href="#ch-star"/></svg></div>
+        <div class="post-body">
+          <div class="post-head">
+            <span class="post-name">ほしのこ</span>
+            <span class="post-handle">@hoshinoko_nail</span><span class="post-time">・18分</span>
+            <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+          </div>
+          <p class="post-text">新しいネイル、ラベンダーにオーロラフィルムのせてもらった ✧
+指先がずっとキラキラしてて、なにも手につかない日になりそう
+<a class="tag" href="#">#ゆめかわネイル</a> <a class="tag" href="#">#オーロラ</a></p>
+          <footer class="actions">
+            <button class="act act--reply" type="button" aria-label="へんじ 4"><svg><use href="#i-reply"/></svg><span>4</span></button>
+            <button class="act act--loop" type="button" aria-pressed="false" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">21</span></button>
+            <button class="act act--like" type="button" aria-pressed="true" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">342</span></button>
+            <button class="act act--save" type="button" aria-pressed="false" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+            <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+          </footer>
+        </div>
+      </li>
+
+      <!-- post 3 -->
+      <li class="card post" data-follow="0">
+        <div class="ava ava--peach"><svg><use href="#ch-bear"/></svg></div>
+        <div class="post-body">
+          <div class="post-context"><svg><use href="#i-loop"/></svg>ゆめみ さんがおすそわけ</div>
+          <div class="post-head">
+            <span class="post-name">もちくま喫茶</span><svg class="verified" aria-label="公式きらりバッジ"><use href="#i-badge"/></svg>
+            <span class="post-handle">@mochikuma_cafe</span><span class="post-time">・1時間</span>
+            <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+          </div>
+          <p class="post-text">期間限定「ゆめいろクリームソーダ」はじめました ♡
+ミントソーダの上に、いちごミルクのアイスとさくらんぼ。
+しゅわしゅわの泡が、ちいさな星みたいにのぼっていきます。
+<a class="tag" href="#">#クリームソーダ記念日</a></p>
+          <figure class="media" aria-label="水玉模様の背景に、ミント色のクリームソーダとピンクのアイスのイラスト">
+            <svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <pattern id="dots2" width="36" height="36" patternUnits="userSpaceOnUse">
+                  <rect width="36" height="36" fill="#fff1f7"/><circle cx="9" cy="9" r="4" fill="#ffd6ea"/><circle cx="27" cy="27" r="4" fill="#e6dcff"/>
+                </pattern>
+                <linearGradient id="soda2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ff0d8"/><stop offset="1" stop-color="#8ccfff"/></linearGradient>
+                <clipPath id="glass2"><path d="M252 120h96l-10 150h-76z"/></clipPath>
+              </defs>
+              <rect width="600" height="300" fill="url(#dots2)"/>
+              <ellipse cx="300" cy="278" rx="120" ry="12" fill="#f3d7ef"/>
+              <!-- straw -->
+              <g transform="rotate(14 330 90)">
+                <rect x="324" y="30" width="12" height="150" rx="6" fill="#fff"/>
+                <g fill="#ff9fcf"><rect x="324" y="40" width="12" height="10"/><rect x="324" y="64" width="12" height="10"/><rect x="324" y="88" width="12" height="10"/><rect x="324" y="112" width="12" height="10"/></g>
+              </g>
+              <!-- soda -->
+              <g clip-path="url(#glass2)">
+                <rect x="240" y="135" width="120" height="140" fill="url(#soda2)"/>
+                <g fill="#fff" opacity=".85"><circle cx="275" cy="240" r="4"/><circle cx="290" cy="210" r="3"/><circle cx="318" cy="230" r="5"/><circle cx="305" cy="180" r="3"/><circle cx="325" cy="196" r="2.5"/><circle cx="282" cy="170" r="2.5"/><circle cx="300" cy="256" r="3"/></g>
+                <rect x="262" y="150" width="22" height="22" rx="5" fill="#fff" opacity=".55" transform="rotate(12 273 161)"/>
+                <rect x="306" y="160" width="20" height="20" rx="5" fill="#fff" opacity=".5" transform="rotate(-10 316 170)"/>
+              </g>
+              <!-- glass outline -->
+              <path d="M252 120h96l-10 150h-76z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M262 135l6 120" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+              <!-- ice cream -->
+              <circle cx="300" cy="118" r="34" fill="#ffc2de"/>
+              <path d="M266 122q8 10 17 2 8 10 17 2 9 10 17 2 9 10 17 0" fill="#ffc2de" stroke="#ffc2de" stroke-width="6" stroke-linejoin="round"/>
+              <circle cx="288" cy="104" r="6" fill="#fff" opacity=".6"/>
+              <!-- cherry -->
+              <path d="M306 86q8-20 24-24" fill="none" stroke="#7fcf9c" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="304" cy="88" r="11" fill="#ff6fae"/><circle cx="300" cy="84" r="3" fill="#fff" opacity=".8"/>
+              <!-- doodles -->
+              <g fill="#ffb3d6"><path d="M150 90c-6-8-18-2-12 8l12 10 12-10c6-10-6-16-12-8z"/></g>
+              <g fill="#c9b2ff"><path d="M460 70c.8 5.5 2.4 7.8 7.8 8.8-5.4 1-7 3.3-7.8 8.8-.8-5.5-2.4-7.8-7.8-8.8 5.4-1 7-3.3 7.8-8.8z"/></g>
+              <g fill="#9fd9ff"><path d="M470 200c.6 4 1.8 5.8 5.8 6.5-4 .7-5.2 2.5-5.8 6.5-.6-4-1.8-5.8-5.8-6.5 4-.7 5.2-2.5 5.8-6.5z"/></g>
+              <g fill="#ffd77a"><circle cx="130" cy="210" r="5"/><circle cx="160" cy="230" r="3"/></g>
+            </svg>
+          </figure>
+          <footer class="actions">
+            <button class="act act--reply" type="button" aria-label="へんじ 38"><svg><use href="#i-reply"/></svg><span>38</span></button>
+            <button class="act act--loop" type="button" aria-pressed="true" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">512</span></button>
+            <button class="act act--like" type="button" aria-pressed="false" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">4,096</span></button>
+            <button class="act act--save" type="button" aria-pressed="true" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+            <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+          </footer>
+        </div>
+      </li>
+
+      <!-- post 4 : poll -->
+      <li class="card post" data-follow="1">
+        <div class="ava ava--lav"><svg><use href="#ch-ghost"/></svg></div>
+        <div class="post-body">
+          <div class="post-head">
+            <span class="post-name">おばけのぽぽ</span>
+            <span class="post-handle">@popo_obake</span><span class="post-time">・3時間</span>
+            <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+          </div>
+          <p class="post-text">夜ふかしのおともアンケート ☾
+みんなは眠れない夜、なにしてる？ <a class="tag" href="#">#夜ふかしの会</a></p>
+          <div class="poll">
+            <div class="poll-opt is-top" style="--w:46%;--c:#ffd9ec"><span>ホットいちごミルク</span><span>46%</span></div>
+            <div class="poll-opt" style="--w:31%;--c:#e6dcff"><span>ゆめかわプレイリスト</span><span>31%</span></div>
+            <div class="poll-opt" style="--w:23%;--c:#d8efff"><span>星座の図鑑をながめる</span><span>23%</span></div>
+          </div>
+          <p class="poll-meta">1,204票・のこり6時間</p>
+          <footer class="actions">
+            <button class="act act--reply" type="button" aria-label="へんじ 57"><svg><use href="#i-reply"/></svg><span>57</span></button>
+            <button class="act act--loop" type="button" aria-pressed="false" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">33</span></button>
+            <button class="act act--like" type="button" aria-pressed="false" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">689</span></button>
+            <button class="act act--save" type="button" aria-pressed="false" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+            <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+          </footer>
+        </div>
+      </li>
+
+      <!-- post 5 : reply with quote -->
+      <li class="card post" data-follow="0">
+        <div class="ava ava--sky"><svg><use href="#ch-cat"/></svg></div>
+        <div class="post-body">
+          <div class="post-head">
+            <span class="post-name">くもねこ</span>
+            <span class="post-handle">@kumoneko_sora</span><span class="post-time">・5時間</span>
+            <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+          </div>
+          <p class="post-text">通知が鳴らない日は、雲をかぞえる日。
+きょうは12こ。ひとつはうさぎのかたちだった。</p>
+          <div class="quote">
+            <div class="quote-head">
+              <span class="ava ava--mint"><svg><use href="#ch-cloud"/></svg></span>
+              <b>わたあめ研究所</b><span>@wataame_lab・きのう</span>
+            </div>
+            <p>雲の観察日記、だれでも参加OKです。見つけた雲に名前をつけて、ふわりしてね ♡</p>
+          </div>
+          <footer class="actions">
+            <button class="act act--reply" type="button" aria-label="へんじ 3"><svg><use href="#i-reply"/></svg><span>3</span></button>
+            <button class="act act--loop" type="button" aria-pressed="false" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">9</span></button>
+            <button class="act act--like" type="button" aria-pressed="false" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">156</span></button>
+            <button class="act act--save" type="button" aria-pressed="false" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+            <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+          </footer>
+        </div>
+      </li>
+
+      <!-- post 6 -->
+      <li class="card post" data-follow="1">
+        <div class="ava ava--mint"><svg><use href="#ch-cloud"/></svg></div>
+        <div class="post-body">
+          <div class="post-head">
+            <span class="post-name">わたあめ研究所</span>
+            <span class="post-handle">@wataame_lab</span><span class="post-time">・きのう</span>
+            <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+          </div>
+          <div class="post-reply-to">返信先: <a href="#">@hoshinoko_nail</a></div>
+          <p class="post-text">オーロラフィルム、わたあめに巻いたらどうなるか実験してみます（たぶん食べられない）
+結果はあしたの夕方に ✧</p>
+          <footer class="actions">
+            <button class="act act--reply" type="button" aria-label="へんじ 8"><svg><use href="#i-reply"/></svg><span>8</span></button>
+            <button class="act act--loop" type="button" aria-pressed="false" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">14</span></button>
+            <button class="act act--like" type="button" aria-pressed="false" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">227</span></button>
+            <button class="act act--save" type="button" aria-pressed="false" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+            <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+          </footer>
+        </div>
+      </li>
+    </ol>
+
+    <p class="feed-end"><svg><use href="#i-moon"/></svg>ここまで読んだよ。おやすみまえに、お水のんでね</p>
+  </main>
+
+  <!-- ===== right column ===== -->
+  <aside class="side" aria-label="サイドメニュー">
+    <div class="side-sticky">
+      <label class="search">
+        <svg><use href="#i-search"/></svg>
+        <span class="vh">さがす</span>
+        <input type="search" placeholder="ゆめのかけらをさがす">
+      </label>
+
+      <section class="card panel">
+        <h2><svg><use href="#i-sparkle"/></svg>いまキラキラしてること</h2>
+        <a class="trend" href="#"><small><span class="rank">1</span>ゆめかわ・トレンド</small><b>#ゆめかわネイル</b><small>2,481 ふわり</small></a>
+        <a class="trend" href="#"><small><span class="rank">2</span>おそら</small><b>#パステル空部</b><small>1,930 ふわり</small></a>
+        <a class="trend" href="#"><small><span class="rank">3</span>カフェ</small><b>#クリームソーダ記念日</b><small>1,122 ふわり</small></a>
+        <a class="trend" href="#"><small><span class="rank">4</span>よる</small><b>#夜ふかしの会</b><small>864 ふわり</small></a>
+        <a class="trend" href="#"><small><span class="rank">5</span>おでかけ</small><b>星くずマーケット</b><small>502 ふわり</small></a>
+        <a class="panel-more" href="#">もっと見る</a>
+      </section>
+
+      <section class="card panel">
+        <h2><svg><use href="#i-heart" fill="currentColor"/></svg>なかよしになろう</h2>
+        <div class="who">
+          <div class="ava ava--sm ava--mint"><svg><use href="#ch-cloud"/></svg></div>
+          <div class="who-name"><b>わたあめ研究所</b><span>@wataame_lab</span></div>
+          <button class="btn-follow" type="button" aria-pressed="false">フォロー</button>
+        </div>
+        <div class="who">
+          <div class="ava ava--sm ava--sky"><svg><use href="#ch-cat"/></svg></div>
+          <div class="who-name"><b>くもねこ</b><span>@kumoneko_sora</span></div>
+          <button class="btn-follow" type="button" aria-pressed="false">フォロー</button>
+        </div>
+        <div class="who">
+          <div class="ava ava--sm ava--peach"><svg><use href="#ch-bear"/></svg></div>
+          <div class="who-name"><b>もちくま喫茶</b><span>@mochikuma_cafe</span></div>
+          <button class="btn-follow" type="button" aria-pressed="false">フォロー</button>
+        </div>
+        <a class="panel-more" href="#">もっと見る</a>
+      </section>
+
+      <p class="side-foot">
+        <a href="#">りようきやく</a> ・ <a href="#">プライバシー</a> ・ <a href="#">ヘルプ</a> ・ <a href="#">fuwarin について</a><br>
+        © 2026 fuwarin（架空のサービスです）
+      </p>
+    </div>
+  </aside>
+</div>
+
+<!-- mobile -->
+<nav class="bottom-nav" aria-label="メインメニュー（モバイル）">
+  <a href="#" aria-current="page" aria-label="ホーム"><svg><use href="#i-home"/></svg></a>
+  <a href="#" aria-label="さがす"><svg><use href="#i-search"/></svg></a>
+  <a href="#" aria-label="おしらせ"><svg><use href="#i-bell"/></svg><i class="nav-badge">7</i></a>
+  <a href="#" aria-label="おてがみ"><svg><use href="#i-mail"/></svg></a>
+  <a href="#" aria-label="マイページ"><svg><use href="#i-user"/></svg></a>
+</nav>
+<button class="fab" type="button" aria-label="ふわりする" data-focus-composer><svg><use href="#i-sparkle"/></svg></button>
+
+<script>
+(() => {
+  const feed = document.getElementById('feed');
+  const fmt = n => n.toLocaleString('ja-JP');
+  const parse = s => Number(String(s).replace(/,/g, '')) || 0;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // sparkle burst
+  function burst(btn) {
+    if (reduceMotion) return;
+    const colors = ['#ff86bf', '#c3a4ff', '#8fd3ff', '#ffd77a', '#7fe0c6'];
+    for (let i = 0; i < 8; i++) {
+      const s = document.createElement('span');
+      const a = (Math.PI * 2 * i) / 8;
+      s.className = 'burst';
+      s.style.background = colors[i % colors.length];
+      s.style.setProperty('--dx', Math.cos(a) * 22 + 'px');
+      s.style.setProperty('--dy', Math.sin(a) * 22 + 'px');
+      btn.appendChild(s);
+      s.addEventListener('animationend', () => s.remove());
+    }
+  }
+
+  // like / repost / save toggles
+  feed.addEventListener('click', e => {
+    const btn = e.target.closest('.act--like, .act--loop, .act--save');
+    if (!btn) return;
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', String(on));
+    const c = btn.querySelector('.count');
+    if (c) c.textContent = fmt(parse(c.textContent) + (on ? 1 : -1));
+    if (on && btn.classList.contains('act--like')) burst(btn);
+  });
+
+  // follow buttons
+  document.querySelectorAll('.btn-follow').forEach(b => b.addEventListener('click', () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', String(on));
+    b.textContent = on ? 'なかよし ♡' : 'フォロー';
+  }));
+
+  // tabs (filter by followed accounts)
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
+    const followOnly = t.dataset.tab === 'follow';
+    feed.querySelectorAll('.post').forEach(p => {
+      p.hidden = followOnly && p.dataset.follow !== '1';
+    });
+  }));
+
+  // composer
+  const form = document.getElementById('composer');
+  const ta = document.getElementById('compose-text');
+  const send = form.querySelector('.btn-send');
+  const ring = document.getElementById('ring');
+  const num = document.getElementById('counter-num');
+  const MAX = 160, CIRC = 69.1;
+
+  function update() {
+    const len = ta.value.length;
+    send.disabled = ta.value.trim().length === 0;
+    ring.style.strokeDashoffset = String(CIRC * (1 - Math.min(len, MAX) / MAX));
+    num.textContent = MAX - len <= 20 ? String(MAX - len) : '';
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  }
+  ta.addEventListener('input', update);
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const text = ta.value.trim();
+    if (!text) return;
+    const li = document.createElement('li');
+    li.className = 'card post is-new';
+    li.dataset.follow = '1';
+    li.innerHTML = `
+      <div class="ava ava--holo"><svg><use href="#ch-unicorn"/></svg></div>
+      <div class="post-body">
+        <div class="post-head">
+          <span class="post-name">ゆにこ</span>
+          <span class="post-handle">@unico_dreamy</span><span class="post-time">・いま</span>
+          <button class="post-more" type="button" aria-label="その他"><svg><use href="#i-more"/></svg></button>
+        </div>
+        <p class="post-text"></p>
+        <footer class="actions">
+          <button class="act act--reply" type="button" aria-label="へんじ"><svg><use href="#i-reply"/></svg><span>0</span></button>
+          <button class="act act--loop" type="button" aria-pressed="false" aria-label="おすそわけ"><svg><use href="#i-loop"/></svg><span class="count">0</span></button>
+          <button class="act act--like" type="button" aria-pressed="false" aria-label="すき"><svg fill="none"><use href="#i-heart"/></svg><span class="count">0</span></button>
+          <button class="act act--save" type="button" aria-pressed="false" aria-label="きらり保存"><svg fill="none"><use href="#i-save"/></svg></button>
+          <button class="act act--share" type="button" aria-label="シェア"><svg><use href="#i-share"/></svg></button>
+        </footer>
+      </div>`;
+    li.querySelector('.post-text').textContent = text;
+    feed.prepend(li);
+    ta.value = '';
+    update();
+  });
+
+  document.querySelectorAll('[data-focus-composer]').forEach(b => b.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    ta.focus({ preventScroll: true });
+  }));
+
+  document.getElementById('new-pill').addEventListener('click', e => {
+    e.currentTarget.remove();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>

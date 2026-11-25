@@ -1,5 +1,9 @@
 # Anti-patterns
 
+## How to read this list
+
+Most of these rules protect a star. With strong visual content (Star mode), apply them strictly. In Stage mode, where the UI has to be cute on its own, the rules against eating the star and against too much decoration relax, and the danger flips: a screen that is tasteful but not cute. Too little cuteness is a failure too.
+
 ## The most important one
 
 **Do not make every element equally cute. If everything is loud, nothing feels special.**
@@ -23,13 +27,26 @@ Every other item on this list is mostly a specific case of this one.
 - ✨ 💖 🎀 🌸 used in labels, headings, buttons or as icons.
 - `border-radius: 9999px` on everything, including large cards and modals.
 - Hover bounce on every element, or floating and pulsing loops. Animating arrivals and responses is good. Looping UI is not.
-- Visible color blends anywhere except the one page-wide 透明感 background. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or text. Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
+- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on text. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or text. Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
 - Boxing the star: putting a character inside a colored arch or panel just to separate it from the background. Fix the image's edge and shadow instead.
 - A page in one flat color from top to bottom when the direction asked for something airy. One-tone is a choice, not a default.
 - Glowing buttons, neon shadows.
 - Copy stuffed with "Yay!!", 「〜だよっ☆」, stacked exclamation marks and emoji, unless that is the established brand voice.
 - Handwritten or comic fonts for body text.
 - Hearts and stars sprinkled to fill space.
+
+## Wallpaper patterns
+
+- Polka dots, gingham or leaf prints covering the whole background by default. Use a pattern as an accent in one or two meaningful places, or use a rich background (like the ゆめかわ gradient) instead.
+
+## Scattered palettes
+
+- Each element in a different color: a pink nav, a green background, a yellow button, a purple tag. Pick three hues plus white and ink, and take every color on the page from that set.
+
+## Too tasteful to be cute
+
+- An earthy or muted palette (moss, sage, beige, gray-heavy) on a screen with no star, even when it comes from the world. It reads as calm or natural, not cute.
+- A muted, gray-heavy palette, flat buttons, initials for avatars and no illustrations, on a screen with no star. It looks calm and "designed", but nobody would call it kawaii. In Stage mode, compare it with a generic cute result. If the generic one is cuter, yours failed.
 
 ## The kawaii-design house style
 
@@ -78,7 +95,9 @@ End the page quietly instead. Use a wave edge into a calm footer that holds only
 
 ## Fake cuteness
 
-- Generating random generic clip-art creatures to "add cuteness" when the product has no character. Ask for assets instead, or leave a marked slot.
+- Adding a creature in a style that doesn't match the rest of the page, or a second mascot next to the product's existing character.
+- Mixing illustration styles: a flat icon set next to hand-drawn characters next to emoji.
+- Replacing every picture with initials in circles because drawing felt risky. In Stage mode, that is the opposite of kawaii.
 - Adding a face to every icon and button. Faces are for empty, loading, error and success moments.
 - Using kawaii only as a coat of paint on the hero while forms, tables, toggles and errors stay default. Kawaii lives in the foundation.
 

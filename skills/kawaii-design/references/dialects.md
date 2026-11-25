@@ -17,16 +17,17 @@ Palettes are starting points. Always tune them to the star's colors in Star mode
 
 ## ゆめかわ (yume-kawa): dreamy
 
-- **Feel**: floaty, soft-focus, dreamlike, a little unreal.
-- **Good for**: music, VTuber and idol fan pages, fashion, events, seasonal campaigns.
-- **Palette**: lavender `#D9CCF2`, mint `#C8EDE0`, baby pink `#F7D4E3`, with deep plum ink `#3E2F4F`.
-- **Shape**: organic. Layered wave edges for section transitions, white translucent cards without borders, round buttons.
-- **Background**: the page-wide 透明感 pastel gradient (pale pink, aqua, lavender, mint, white), with a faint thin-line pattern (circles, squares, waves) on top. See [backgrounds-and-images.md](backgrounds-and-images.md).
-- **Layout**: full-bleed illustration first. Giant faint ghost titles behind sections. Works hung on clips.
-- **Type**: rounded geometric display for the logo and titles, wide letter spacing, a clean gothic for body.
-- **Motif**: clouds, stars or bubbles. Choose one.
+- **Feel**: floaty, iridescent, dreamlike, a little unreal. Like a soap bubble or holographic marble.
+- **Good for**: SNS and community apps, music, VTuber and idol fan pages, fashion, cosmetics, events, anything asked for as 「ゆめかわいい」.
+- **Palette**: three pastel hues plus white, used everywhere and nothing else: pink `#F6C6E3`, lavender `#CDBDF4` and aqua `#B8E6F5`, with white `#FFFFFF` for highlights and deep plum ink `#3B2E5A` for text. Every surface, accent, icon and illustration takes its color from this set. Don't add a fourth "fun" color.
+- **Background**: never flat and never a plain wallpaper pattern. Use a complex, multi-point pastel gradient that looks like holographic marble or a sky of bubbles: several large, soft color pools of the three hues blending into each other, with white light between them. See "ゆめかわ background" in [backgrounds-and-images.md](backgrounds-and-images.md). Tiny white sparkle specks can sit on top, sparsely.
+- **Surfaces: glass.** Panels, cards, the nav and inputs are frosted glass: translucent white, blurred background behind, a thin bright edge and a soft colored shadow. The background's colors glow through the UI, which is what makes it feel dreamy. See "Glass UI" in [backgrounds-and-images.md](backgrounds-and-images.md).
+- **Shape**: large radius on glass panels, pill buttons, circles for avatars and bubbles. Organic wave edges if sections change.
+- **Accents**: iridescent bubbles (a circle with a pink-to-aqua rim and a white highlight), small stars or sparkles. Use them as accents in a few places, not as wallpaper.
+- **Type**: rounded geometric display for the logo and titles, wide letter spacing, a clean rounded gothic for body. Text stays solid deep plum, never gradient.
+- **Motion**: slow drifting bubbles or a slowly shifting background are fine as the one ambient loop. Arrivals float up softly.
 - **Reference**: an illustrator site, see [refs.md](refs.md).
-- **Pitfall**: this dialect is closest to cute slop. Use only the one page-wide gradient, kept very pale. No glows, no gradient buttons or text, and check contrast twice.
+- **Pitfall**: readability. Glass over a busy gradient can wash text out. Give text panels enough white (55 to 75% opacity) and keep the ink deep. Check contrast on the most colorful part of the background.
 
 ## ワントーン (one-tone): the character's color, everywhere
 

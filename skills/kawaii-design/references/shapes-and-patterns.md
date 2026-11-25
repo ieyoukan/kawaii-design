@@ -144,13 +144,13 @@ Rules:
 
 ## Patterns
 
-Patterns carry a lot of kawaii with very little effort, but only as a faint background texture.
+Patterns carry a lot of kawaii with very little effort, but use them as **accents**, not as wallpaper. A whole page covered in polka dots or gingham looks like a default, not a decision. Put a pattern in one or two places where it means something: inside a shape, on a card header, in a band behind a title, on a button's pressed state, in the hero's mat. Cover the whole background with a pattern only when the world itself is fabric or paper.
 
 - Keep them to around 4 to 10% contrast against the surface. You should almost miss them.
 - Take the colors from the star or the dialect.
 - Never place them directly behind body text, behind the star's face, or behind a gallery of works. With a full-body character in a patterned hero, put a mat behind the upper body so the face sits on a plain surface, and keep the pattern outside the mat.
 - Use one pattern per page, or two at most if they are clearly in separate sections.
-- When a pattern covers only part of the page, contain it inside a shape: a circle, an arch or an organic blob. A patterned rectangle shows straight edges, which become new boundaries. Never fade a pattern's edge out with a gradient mask.
+- When a pattern covers only part of the page, contain it inside a shape: a circle, an arch or an organic blob. A patterned rectangle shows straight edges, which become new boundaries. Never fade a pattern's edge out with a gradient mask. If a line pattern makes the shape's edge look ragged, give the shape a faint solid fill as well, so the edge reads as a clean curve.
 - Good places: the hero background, empty margins, behind a section title, inside a big organic shape, and the background of a footer.
 
 ### Gingham (ギンガムチェック)
@@ -182,13 +182,12 @@ Patterns carry a lot of kawaii with very little effort, but only as a faint back
 
 ### Dashed grid (方眼・破線チェック)
 
+Draw one cell as an SVG tile, so the lines stay thin and dashed:
+
 ```css
 .grid-dashed {
-  --c: rgb(120 130 160 / 0.16);
-  background-image:
-    repeating-linear-gradient(90deg, var(--c) 0 6px, transparent 6px 12px),
-    repeating-linear-gradient(0deg, var(--c) 0 6px, transparent 6px 12px);
-  background-size: 96px 2px, 2px 96px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cpath d='M0 .5H96M.5 0V96' fill='none' stroke='%23788aa6' stroke-opacity='.22' stroke-dasharray='6 6'/%3E%3C/svg%3E");
+  background-size: 96px 96px;
 }
 ```
 

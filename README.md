@@ -4,6 +4,20 @@ UIそのものに可愛さを持たせるが、キャラクターや作品など
 
 kawaii-design は Claude Code、Codex などで使える Skill です。英語の「cute」ではなく、日本語の「かわいい」(親しみ・愛着・守ってあげたい気持ち) を UI に落とし込みます。パステルのグラデーションと ✨ で埋めた「それっぽい可愛さ」ではなく、主役のキャラクターやイラスト、商品から方向性を決めて、画面を組み立てます。
 
+### キャラクターがいるとき
+
+![Skill なしと kawaii-design ありの比較。同じ立ち絵とプロフィールで作った、ようかんの紹介ページ](docs/compare-character.webp)
+
+同じ立ち絵とプロフィールを渡して「かわいい紹介ページを作って」と頼んだもの。Skill なしだと、立ち絵が小さく枠の中に収まり、月や鈴などの飾りが周りを囲みます。kawaii-design では、立ち絵を画面の高さいっぱいに置いて枠の外に出し、影と縁で背景から浮かせます。主役のキャラクターが一番目立つ作りです。
+
+### ゆめかわいい SNS
+
+![Skill なしと kawaii-design ありの比較。同じ「ゆめかわいい Twitter みたいな SNS」という依頼で作った画面](docs/compare-sns.webp)
+
+同じ依頼文「ゆめかわいい、Twitter みたいな SNS のタイムライン画面を作って」で作ったもの。kawaii-design では、色をピンク・ラベンダー・水色の 3 色と白にそろえ、マーブル状のパステルの背景にすりガラスの UI を重ね、アバターや投稿の絵も同じ画風で描きます。
+
+どちらも、左は Skill なし、右は kawaii-design あり。違いは `SKILL.md` を渡したかどうかだけです。元のコードは [examples/compare/](examples/compare/) にあります。
+
 ## インストール
 
 ### Claude Code (おすすめ)
@@ -106,6 +120,7 @@ Claude Code では `/kawaii-design` に続けてやりたいことを書きま�
 | サンプル | 内容 |
 | --- | --- |
 | [examples/youkan/](examples/youkan/) | 主役がいる例 (Star モード)。VRChat のアバターを主役にした紹介ページ。ワントーン、波の縁、文字ごとの登場アニメーション |
+| [examples/compare/](examples/compare/) | 上の比較画像の元。`character/` (ようかんの紹介ページ) と `sns/` (ゆめかわいい SNS) それぞれに、Skill なし (`without/`) とあり (`with/`) |
 | [examples/kotonoha/](examples/kotonoha/) | 素材がない例 (Stage モード)。架空の交換日記アプリのログイン画面と、日記がまだない状態のホーム画面 |
 
 `file://` ではフォントや一部の動きが読み込まれないことがあるので、ローカルサーバーで開いてください。
@@ -130,4 +145,4 @@ cd examples && python3 -m http.server
 
 ## ライセンス
 
-[MIT](LICENSE)。自由に使って、改変して、配ってかまいません。ただし `examples/youkan/` の画像 (アバター、写真、商品画像) はそれぞれの権利者のもので、MIT の対象外です。
+[MIT](LICENSE)。自由に使って、改変して、配ってかまいません。ただし `examples/youkan/` と `examples/compare/character/assets/` の画像 (アバター、写真、商品画像)、`docs/compare-character.webp` に写っているアバターはそれぞれの権利者のもので、MIT の対象外です。

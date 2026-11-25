@@ -1,0 +1,481 @@
+<!doctype html>
+<!--
+  Direction (kawaii-design)
+  前提: おまかせ指定のため確認なし。情報はいただいたプロフィールと素材 3 枚のみ。
+        自己紹介文は本人の言葉としてそのまま使用。創作したキャラクターやコピーはなし。
+
+  Product       : VRChat のイベント「ぷぷりえ」の店員さん・ようかんを、フレンドや遊びに来る人に知ってもらう 1 枚の紹介ページ。
+  Dialect       : ワントーン。キャラクター 1 人のページで、銀髪・水色のリボンとワンピース・白いエプロンという本人の色がはっきりしているため。
+                  外から「かわいい」用のピンクは持ち込まない。
+  Feel          : ふんわり、のんびり、ちょっと眠たげ。
+  World         : 水色のお昼寝部屋。ヘアピンの三日月(寝るのが好き)と、エプロンのフリルがモチーフ。
+  Star          : ヒーロー = 立ち絵(ホバー/タップでばんざい)。すきなもの = ウインク写真(小さな主役)。フッター = なし(Stage)。
+  Shape language: 円(上半身の後ろのマット、破線グリッドの円、写真の後ろ) + 角丸長方形(吹き出し・タグ)。
+                  セクションの境目はなし、フッターへだけエプロンのフリル(スカラップ)を 2 枚重ねで。
+  Atmosphere    : シンプル。本人のワンピースの水色をうすくした一色 #EAF2FA。キャラ自体が白いので、影とエッジで分離する。
+  Type & motion : 名前とタイトルは Mochiy Pop One、白いフチ + 紺のやわらかい影のステッカー文字、文字ごとに少し傾ける。
+                  ようかんは下からぽよんと着地、名前は 1 文字ずつ。待機はゆっくり 1° のゆれだけ。
+                  セクションはスクロールでふわっと上がる。prefers-reduced-motion では全部止めて最終状態。
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ようかん</title>
+<meta name="description" content="VRChat「ぷぷりえ」の店員さん、ようかんの紹介ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="../assets/youkan-banzai.webp">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root {
+    --page: #EAF2FA;        /* ワンピースの水色をうすく */
+    --mat: #F9FBFE;         /* エプロンの白 */
+    --foot: #D9E7F6;
+    --ink: #2B3856;         /* ワンピースの紺のライン */
+    --sky: #6FAEDD;         /* リボンの水色 */
+    --lemon: #F2D85A;       /* 三日月のヘアピン */
+    --star-dark: 46 74 120; /* 影はすべてこの紺で */
+    --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --dash-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Cpath d='M0 .75H36M.75 0V36' stroke='%236FAEDD' stroke-opacity='.45' stroke-width='1.5' stroke-dasharray='4 5'/%3E%3C/svg%3E");
+    --display: "Mochiy Pop One", "Zen Kaku Gothic New", sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+    word-break: auto-phrase;
+  }
+  main, .foot { overflow-x: clip; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+
+  /* ---------- 文字ごとの表示(見出し共通) ---------- */
+  .ph { white-space: nowrap; display: inline-block; }
+  .ph i { font-style: normal; display: inline-block; }
+
+  .sticker {
+    font-family: var(--display);
+    font-weight: 400;
+    color: var(--ink);
+    paint-order: stroke fill;
+    -webkit-text-stroke: 0.16em #fff;
+    filter: drop-shadow(0 6px 10px rgb(var(--star-dark) / 0.14));
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  /* ---------- ヒーロー ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.45fr);
+    align-items: end;
+    padding: 0 clamp(24px, 6vw, 96px) 3svh;
+  }
+  .intro {
+    position: relative;
+    z-index: 2;
+    align-self: center;
+    justify-self: end;
+    padding: 30svh clamp(16px, 3vw, 48px) 0 0;
+  }
+  .name {
+    font-size: clamp(56px, 7.4vw, 112px);
+    letter-spacing: 0.02em;
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .name i:nth-child(1) { rotate: -5deg; }
+  .name i:nth-child(2) { rotate: 3deg;  translate: 0 0.06em; }
+  .name i:nth-child(3) { rotate: -2deg; translate: 0 -0.03em; }
+  .name i:nth-child(4) { rotate: 6deg;  translate: 0 0.05em; }
+  .name .moon {
+    position: absolute;
+    width: 0.3em; height: 0.3em;
+    right: -0.04em; top: 0.02em;
+    rotate: 18deg;
+  }
+  .role { margin: 18px 0 0 0.3em; font-size: 18px; }
+
+  .stage-wrap {
+    position: relative;
+    z-index: 1;
+    height: min(91svh, 1100px);
+    min-height: 560px;
+  }
+  .stage {
+    position: relative;
+    height: 100%;
+    aspect-ratio: 706 / 1215;
+  }
+  /* 背景の円は「入れもの」ではなく構図の一部 */
+  .grid-circle {
+    position: absolute;
+    width: 172%; aspect-ratio: 1;
+    left: -4%; top: 16%;
+    border-radius: 50%;
+    background-color: #E2ECF8;
+    background-image: var(--dash-grid);
+    background-size: 36px 36px;
+    pointer-events: none;
+  }
+  .mat {
+    position: absolute;
+    width: 108%; aspect-ratio: 1;
+    left: -3%; top: -1%;
+    border-radius: 50%;
+    background: var(--mat);
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute; inset: 0;
+    padding: 0; border: 0; background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 24px;
+  }
+  .star:focus-visible { outline: 3px solid var(--sky); outline-offset: 6px; }
+  .star .arrive { position: absolute; inset: 0; }
+  .star .sway { position: absolute; inset: 0; transform-origin: 52% 100%; }
+  .star .hopper { position: absolute; inset: 0; }
+  .star::after { /* 足元の接地影 */
+    content: "";
+    position: absolute; left: 53%; bottom: 0.2%;
+    width: 36%; height: 3.2%;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: rgb(var(--star-dark) / 0.24);
+    filter: blur(7px);
+    z-index: -1;
+  }
+  .star img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain; object-position: bottom center;
+    filter:
+      drop-shadow(0 1px 2px rgb(var(--star-dark) / 0.22))
+      drop-shadow(-12px 16px 22px rgb(var(--star-dark) / 0.16));
+    transition: opacity 160ms ease-out;
+    user-select: none; -webkit-user-drag: none;
+  }
+  .star .pose-banzai { opacity: 0; }
+  .is-banzai .star .pose-banzai { opacity: 1; }
+  .is-banzai .star .pose-stand { opacity: 0; }
+
+  /* 吹き出し: しっぽは顔に向ける */
+  .bubble {
+    position: absolute;
+    z-index: 3;
+    right: 84%;
+    top: 9%;
+    width: min(330px, 26vw);
+    margin: 0;
+    padding: 20px 24px;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 10px 28px rgb(var(--star-dark) / 0.10);
+    transition: opacity 220ms var(--ease-soft), translate 220ms var(--ease-soft);
+  }
+  .bubble .tail {
+    position: absolute;
+    right: -17px; top: 42%;
+    width: 22px; height: 26px;
+    color: #fff;
+  }
+  .bubble .tail-down { display: none; }
+  .is-banzai .bubble { opacity: 0; translate: -10px 0; pointer-events: none; }
+
+  /* ---------- すきなもの ---------- */
+  .likes {
+    position: relative;
+    max-width: 1040px;
+    margin: clamp(88px, 12vw, 160px) auto 0;
+    padding: 0 clamp(24px, 6vw, 64px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(48px, 7vw, 96px);
+    align-items: center;
+  }
+  .print-wrap { position: relative; justify-self: end; width: min(100%, 420px); }
+  .print-wrap::before { /* ヒーローの破線グリッドの円をもう一度 */
+    content: "";
+    position: absolute;
+    width: 115%; aspect-ratio: 1;
+    left: -38%; top: -22%;
+    border-radius: 50%;
+    background-color: #E2ECF8;
+    background-image: var(--dash-grid);
+    background-size: 36px 36px;
+    z-index: -1;
+  }
+  .print {
+    position: relative;
+    margin: 0;
+    padding: 14px 14px 52px;
+    background: #fff;
+    border-radius: 6px;
+    rotate: -2.5deg;
+    box-shadow:
+      0 2px 3px rgb(var(--star-dark) / 0.08),
+      -8px 16px 30px rgb(var(--star-dark) / 0.14);
+  }
+  .print img { width: 100%; height: auto; aspect-ratio: 680 / 565; object-fit: cover; border-radius: 3px; }
+  .print::before { /* マスキングテープ */
+    content: "";
+    position: absolute;
+    left: 50%; top: -14px;
+    width: 104px; height: 30px;
+    translate: -50% 0; rotate: 4deg;
+    background: rgb(111 174 221 / 0.42);
+    border-radius: 3px;
+  }
+
+  .likes h2 { font-size: clamp(36px, 4.4vw, 54px); margin-bottom: 28px; }
+  .tags { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; justify-items: start; }
+  .tags li {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 22px 12px 18px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgb(var(--star-dark) / 0.07);
+  }
+  .tags li:nth-child(2) { margin-left: 28px; }
+  .tags li:nth-child(3) { margin-left: 8px; }
+  .tags svg { width: 22px; height: 22px; flex: none; }
+
+  /* ---------- フッター: エプロンのフリルで切り替え ---------- */
+  .foot {
+    position: relative;
+    margin-top: clamp(96px, 10vw, 136px);
+    background: var(--foot);
+    padding: 64px 24px 72px;
+  }
+  .frill {
+    position: absolute; left: 0; right: 0; top: 1px;
+    height: 15px;
+    translate: 0 -100%;
+    background: radial-gradient(circle at 50% 100%, var(--foot) 15px, transparent 15.5px) 0 0 / 28px 15px repeat-x;
+    animation: frill-drift 40s linear infinite;
+    pointer-events: none;
+  }
+  .frill.back {
+    height: 22px;
+    opacity: 0.4;
+    background: radial-gradient(circle at 50% 100%, var(--foot) 21px, transparent 21.5px) 14px 0 / 40px 22px repeat-x;
+    animation-duration: 60s;
+    animation-direction: reverse;
+  }
+  @keyframes frill-drift { to { background-position-x: 280px; } }
+  .frill.back { animation-name: frill-drift-back; }
+  @keyframes frill-drift-back { from { background-position-x: 14px; } to { background-position-x: 294px; } }
+
+  .links {
+    list-style: none; margin: 0 auto; padding: 0;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 16px;
+    max-width: 760px;
+  }
+  .links a, .links span.tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px;
+    border-radius: 9999px;
+    background: #fff;
+    font-family: var(--display);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    line-height: 1.5;
+  }
+  .links a { transition: translate 220ms var(--ease-poyon), box-shadow 220ms var(--ease-soft); }
+  .links a:hover { translate: 0 -3px; box-shadow: 0 8px 18px rgb(var(--star-dark) / 0.12); }
+  .links a:active { translate: 0 1px; transition-duration: 120ms; }
+  .links a:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
+  .links svg { width: 20px; height: 20px; flex: none; }
+
+  /* ---------- モーション ---------- */
+  @keyframes star-in { from { opacity: 0; translate: 0 32px; } }
+  @keyframes letter-in { from { opacity: 0; translate: 0 12px; } }
+  @keyframes sway { from { rotate: -0.6deg; } to { rotate: 0.8deg; } }
+  @keyframes hop { 0% { translate: 0 0; } 40% { translate: 0 -16px; } 100% { translate: 0 0; } }
+
+  .star .arrive { animation: star-in 760ms var(--ease-poyon) 120ms backwards; }
+  .star .sway { animation: sway 4.6s ease-in-out 1.2s infinite alternate; }
+  .star .hopper.hop { animation: hop 420ms var(--ease-poyon); }
+  .name i { animation: letter-in 620ms var(--ease-poyon) backwards; animation-delay: calc(420ms + var(--i) * 70ms); }
+  .name .moon { animation: letter-in 620ms var(--ease-poyon) 760ms backwards; }
+  .role { animation: letter-in 600ms var(--ease-soft) 820ms backwards; }
+  .bubble { animation: letter-in 600ms var(--ease-poyon) 980ms backwards; }
+
+  /* スクロールで出てくるもの。JS がないときは最初から見えている */
+  .rise { transition: opacity 600ms var(--ease-soft), translate 600ms var(--ease-soft); transition-delay: var(--d, 0ms); }
+  .js .rise.wait { opacity: 0; translate: 0 20px; }
+  .print-wrap.rise .print { transition: rotate 700ms var(--ease-poyon) 120ms; }
+  .js .print-wrap.wait .print { rotate: 4deg; }
+  .likes h2 i { transition: opacity 500ms var(--ease-soft), translate 520ms var(--ease-poyon); transition-delay: calc(var(--i) * 55ms); }
+  .js .likes h2.wait i { opacity: 0; translate: 0 12px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .rise.wait, .js .likes h2.wait i { opacity: 1; translate: none; }
+    .js .print-wrap.wait .print { rotate: -2.5deg; }
+  }
+
+  /* ---------- スマホ ---------- */
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    .hero {
+      grid-template-columns: 1fr;
+      align-items: start;
+      padding: 0 16px;
+      min-height: auto;
+    }
+    .intro { justify-self: center; text-align: center; padding: 28px 0 0; }
+    .name { font-size: clamp(56px, 17vw, 76px); }
+    .role { margin: 4px 0 0; font-size: 16px; }
+    .stage-wrap {
+      justify-self: center;
+      height: auto; min-height: 0;
+      display: flex; flex-direction: column; align-items: center;
+      margin-top: 10px;
+    }
+    .bubble {
+      position: relative;
+      right: auto; top: auto;
+      width: min(100%, 340px);
+      padding: 14px 20px;
+      margin-bottom: 6px;
+    }
+    .bubble .tail { display: none; }
+    .bubble .tail-down {
+      display: block;
+      position: absolute;
+      left: 54%; bottom: -17px;
+      width: 26px; height: 22px;
+      color: #fff;
+    }
+    .is-banzai .bubble { opacity: 1; translate: none; pointer-events: auto; }
+    .stage { height: max(420px, calc(100svh - 290px)); }
+    .likes { grid-template-columns: 1fr; gap: 40px; }
+    .print-wrap { justify-self: center; width: min(88%, 380px); }
+    .likes .text { justify-self: center; }
+    .foot { padding: 52px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="moon" viewBox="0 0 24 24">
+      <path d="M15.2 3.4a8.6 8.6 0 1 0 5.4 13.9 7.1 7.1 0 0 1-5.4-13.9Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main id="top">
+  <section class="hero" aria-label="ようかん">
+    <div class="intro">
+      <h1 class="name sticker" aria-label="ようかん"><span class="ph" aria-hidden="true"><i style="--i:0">よ</i><i style="--i:1">う</i><i style="--i:2">か</i><i style="--i:3">ん</i></span><svg class="moon" style="color:var(--lemon)" aria-hidden="true"><use href="#moon"/></svg></h1>
+      <p class="role">VRChat「ぷぷりえ」の店員さん</p>
+    </div>
+
+    <div class="stage-wrap">
+      <p class="bubble"><span class="ph">ようかんって</span><span class="ph">いいます～</span><span class="ph">よろしくね～。</span><span class="ph">えっと</span><span class="ph">水色の</span><span class="ph">可愛いのとも</span><span class="ph">好きかも！</span><span class="ph">ぷぷりえの</span><span class="ph">友達と</span><span class="ph">遊ぶのが</span><span class="ph">大好き！</span><svg class="tail" viewBox="0 0 22 26" aria-hidden="true"><path d="M0 2 C 8 6, 15 10, 20.5 12.2 Q 22 13 20.5 13.8 C 15 16, 8 20, 0 24 Z" fill="currentColor"/></svg><svg class="tail-down" viewBox="0 0 26 22" aria-hidden="true"><path d="M2 0 C 6 8, 10 15, 12.2 20.5 Q 13 22 13.8 20.5 C 16 15, 20 8, 24 0 Z" fill="currentColor"/></svg></p>
+      <div class="stage">
+        <div class="grid-circle" aria-hidden="true"></div>
+        <div class="mat" aria-hidden="true"></div>
+        <button class="star" type="button" aria-label="ようかん" aria-pressed="false">
+          <span class="arrive"><span class="sway"><span class="hopper">
+            <img class="pose-stand" src="../assets/youkan-stand.webp" width="706" height="1215" alt="水色のメイド服に白いエプロンの、ねこみみのようかん" draggable="false">
+            <img class="pose-banzai" src="../assets/youkan-banzai.webp" width="706" height="1215" alt="" draggable="false">
+          </span></span></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="likes" aria-labelledby="likes-title">
+    <div class="print-wrap rise">
+      <figure class="print">
+        <img src="../assets/youkan-wink.webp" width="680" height="565" alt="ウインクするようかん" loading="lazy">
+      </figure>
+    </div>
+    <div class="text">
+      <h2 id="likes-title" class="sticker rise" aria-label="すきなもの"><span class="ph" aria-hidden="true"><i style="--i:0">す</i><i style="--i:1">き</i><i style="--i:2">な</i><i style="--i:3">も</i><i style="--i:4">の</i></span></h2>
+      <ul class="tags">
+        <li class="rise" style="--d:120ms"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>水色の、かわいいもの</li>
+        <li class="rise" style="--d:200ms"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>ぷぷりえの友達と遊ぶこと</li>
+        <li class="rise" style="--d:280ms"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>おうちで寝ること</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="frill back" aria-hidden="true"></div>
+  <div class="frill" aria-hidden="true"></div>
+  <ul class="links">
+    <li><a href="https://x.com/youkan0124" rel="noopener" target="_blank" aria-label="X youkan0124">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3Zm-1.08 16.2h1.7L7.4 4.73H5.58L16.67 19.2Z"/></svg>youkan0124</a></li>
+    <li><a href="https://youkan.uk/" rel="noopener" target="_blank">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5"/><path d="M6 9v9.5a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M10 20v-5h4v5"/></svg>ホームページ</a></li>
+    <li><span class="tag"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>VRChat ID ようかんYokan</span></li>
+  </ul>
+</footer>
+
+<script>
+(() => {
+  const hero = document.querySelector('.hero');
+  const star = hero.querySelector('.star');
+  const hopper = star.querySelector('.hopper');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const setPose = (banzai) => {
+    if (hero.classList.contains('is-banzai') === banzai) return;
+    hero.classList.toggle('is-banzai', banzai);
+    star.setAttribute('aria-pressed', String(banzai));
+    if (!reduce) {
+      hopper.classList.remove('hop');
+      void hopper.offsetWidth;
+      hopper.classList.add('hop');
+    }
+  };
+  star.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') setPose(true); });
+  star.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') setPose(false); });
+  star.addEventListener('pointerup', (e) => {
+    if (e.pointerType !== 'mouse') setPose(!hero.classList.contains('is-banzai'));
+  });
+  star.addEventListener('click', (e) => { if (e.detail === 0) setPose(!hero.classList.contains('is-banzai')); });
+  hopper.addEventListener('animationend', () => hopper.classList.remove('hop'));
+
+  // スクロールで出てくるもの。最初の画面に見えているもの・IO がない環境では隠さない
+  if (reduce || !('IntersectionObserver' in window)) return;
+  const items = [...document.querySelectorAll('.rise')]
+    .filter((el) => el.getBoundingClientRect().top > innerHeight * 0.92);
+  items.forEach((el) => el.classList.add('wait'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      en.target.classList.remove('wait');
+      io.unobserve(en.target);
+    });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  items.forEach((el) => io.observe(el));
+  // 念のため: 何かで発火しなくても最後は必ず見える
+  setTimeout(() => items.forEach((el) => { if (el.classList.contains('wait') && el.getBoundingClientRect().top < innerHeight) el.classList.remove('wait'); }), 3000);
+})();
+</script>
+</body>
+</html>

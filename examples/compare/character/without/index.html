@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ようかん | ぷぷりえの店員さん</title>
+<meta name="description" content="VRChat で活動している、ぷぷりえの店員さん「ようかん」の紹介ページです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fffaf2;
+    --sky: #bfe4f8;
+    --sky-deep: #8ccbec;
+    --ribbon: #3a9fd6;
+    --navy: #2e4766;
+    --navy-soft: #5d7491;
+    --bell: #f2cf63;
+    --bell-deep: #d9a93a;
+    --blush: #f9c6d3;
+    --radius: 28px;
+    --font-pop: "Mochiy Pop One", "Zen Maru Gothic", sans-serif;
+    --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: var(--navy);
+    background: var(--cream);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+
+  .wrap { width: min(1080px, 100% - 40px); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  .top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-block: 20px;
+  }
+  .logo {
+    font-family: var(--font-pop);
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .logo svg { width: 22px; height: 22px; }
+  .top nav { display: flex; gap: 6px; }
+  .top nav a {
+    text-decoration: none; font-weight: 700; font-size: .9rem;
+    padding: 6px 14px; border-radius: 999px;
+  }
+  .top nav a:hover { background: var(--sky); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    align-items: center;
+    gap: 40px;
+    padding-block: 24px 72px;
+  }
+  .hello {
+    display: inline-block;
+    font-weight: 700;
+    background: #fff;
+    border: 2px solid var(--navy);
+    border-radius: 999px;
+    padding: 4px 16px;
+    font-size: .95rem;
+  }
+  .name {
+    font-family: var(--font-pop);
+    font-size: clamp(3.6rem, 10vw, 6.4rem);
+    line-height: 1.1;
+    margin: 18px 0 6px;
+    letter-spacing: .02em;
+    color: var(--navy);
+  }
+  .name span { color: var(--ribbon); }
+  .role {
+    font-size: 1.15rem; font-weight: 700; margin: 0 0 28px;
+    word-break: auto-phrase; text-wrap: balance;
+  }
+  .role mark {
+    background: linear-gradient(transparent 58%, var(--bell) 58%);
+    color: inherit; padding: 0 2px;
+  }
+
+  /* name tag (like the one on her apron) */
+  .nametag {
+    position: relative;
+    display: inline-flex; flex-direction: column; gap: 2px;
+    background: #fff;
+    border: 2px solid var(--navy);
+    border-radius: 14px;
+    padding: 14px 20px 14px 22px;
+    box-shadow: 5px 5px 0 var(--sky-deep);
+    transform: rotate(-2deg);
+  }
+  .nametag::before {
+    content: ""; position: absolute; left: 50%; top: -9px; translate: -50% 0;
+    width: 44px; height: 12px; border-radius: 6px;
+    background: var(--bell); border: 2px solid var(--navy);
+  }
+  .nametag small { font-size: .78rem; color: var(--navy-soft); font-weight: 700; }
+  .nametag .row { display: flex; align-items: center; gap: 12px; }
+  .nametag strong { font-family: var(--font-pop); font-weight: 400; font-size: 1.35rem; }
+  .copy {
+    font: 700 .8rem var(--font-body);
+    color: var(--navy);
+    background: var(--sky);
+    border: 0; border-radius: 999px;
+    padding: 5px 12px; cursor: pointer;
+  }
+  .copy:hover { background: var(--sky-deep); }
+  .copy:focus-visible, .btn:focus-visible, .top nav a:focus-visible {
+    outline: 3px solid var(--ribbon); outline-offset: 3px;
+  }
+
+  .stage { position: relative; justify-self: center; width: min(420px, 100%); }
+  .arch {
+    position: absolute; inset: 9% 0 0 0;
+    border-radius: 999px 999px var(--radius) var(--radius);
+    background-color: var(--sky);
+    background-image: radial-gradient(#fff 2.2px, transparent 2.6px);
+    background-size: 22px 22px;
+    border: 3px solid var(--navy);
+  }
+  .stage img {
+    position: relative;
+    width: 82%; margin-inline: auto;
+    filter: drop-shadow(0 6px 0 rgba(46, 71, 102, .12));
+  }
+  .moon, .bell-deco { position: absolute; }
+  .moon { width: 64px; top: 4%; left: -4%; transform: rotate(-18deg); }
+  .bell-deco { width: 54px; right: -2%; top: 30%; transform-origin: 50% 0; }
+  .sparkle { position: absolute; width: 22px; color: var(--bell-deep); }
+  .sparkle.s1 { right: 8%; top: 6%; }
+  .sparkle.s2 { left: 2%; bottom: 22%; width: 16px; color: var(--ribbon); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bell-deco { animation: swing 2.6s ease-in-out infinite; }
+    .moon { animation: bob 4s ease-in-out infinite; }
+  }
+  @keyframes swing { 0%,100% { rotate: -10deg; } 50% { rotate: 10deg; } }
+  @keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+
+  /* ---------- scallop divider ---------- */
+  .scallop {
+    position: relative; margin-bottom: -1px;
+    height: 18px;
+    background: radial-gradient(circle at 50% 100%, var(--sky) 17.5px, transparent 18px) 0 0 / 32px 18px repeat-x;
+  }
+  .scallop.bottom {
+    margin-bottom: 0; margin-top: -1px;
+    background: radial-gradient(circle at 50% 0, var(--sky) 17.5px, transparent 18px) 0 0 / 32px 18px repeat-x;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding-block: 80px; }
+  .band { background: var(--sky); }
+  .label {
+    font-family: var(--font-pop);
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    margin: 0 0 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .label svg { width: 30px; height: 30px; flex: none; }
+
+  /* about */
+  .about {
+    display: grid; grid-template-columns: 340px 1fr; gap: 56px; align-items: center;
+  }
+  .polaroid {
+    background: #fff; padding: 14px 14px 52px;
+    border-radius: 10px;
+    box-shadow: 0 10px 0 rgba(46, 71, 102, .14);
+    transform: rotate(-3deg);
+    position: relative;
+  }
+  .polaroid img { border-radius: 4px; aspect-ratio: 680 / 565; object-fit: cover; }
+  .polaroid figcaption {
+    position: absolute; left: 0; right: 0; bottom: 14px; text-align: center;
+    font-family: var(--font-pop); font-size: 1rem; color: var(--navy-soft);
+  }
+  .tape {
+    position: absolute; top: -12px; left: 50%; translate: -50% 0; rotate: 4deg;
+    width: 96px; height: 26px; background: rgba(242, 207, 99, .75);
+  }
+  .bubble {
+    position: relative;
+    background: #fff;
+    border: 3px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    font-weight: 700;
+    line-height: 2;
+    word-break: auto-phrase;
+  }
+  .bubble::before {
+    content: ""; position: absolute; left: -17px; top: 46px;
+    width: 28px; height: 28px; background: #fff;
+    border-left: 3px solid var(--navy); border-bottom: 3px solid var(--navy);
+    transform: rotate(45deg);
+  }
+  .bubble p { margin: 0; }
+  .bubble .ph { display: inline-block; }
+  .bubble .sign {
+    margin-top: 14px; font-size: .9rem; color: var(--navy-soft); text-align: right;
+  }
+
+  /* likes */
+  .likes-grid {
+    display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center;
+  }
+  .likes { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .like {
+    display: grid; grid-template-columns: 72px 1fr; gap: 20px; align-items: center;
+    background: #fff;
+    border: 3px solid var(--navy);
+    border-radius: 24px;
+    padding: 18px 24px 18px 18px;
+    box-shadow: 6px 6px 0 var(--navy);
+  }
+  .like:nth-child(2) { margin-left: 28px; }
+  .like .icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .like .icon svg { width: 40px; height: 40px; }
+  .like:nth-child(1) .icon { background: var(--sky); }
+  .like:nth-child(2) .icon { background: var(--blush); }
+  .like:nth-child(3) .icon { background: #fbe9b0; }
+  .like h3 { margin: 0; font-family: var(--font-pop); font-weight: 400; font-size: 1.2rem; line-height: 1.5; }
+  .like p { margin: 2px 0 0; font-size: .95rem; color: var(--navy-soft); }
+  .banzai { position: relative; }
+  .banzai img { width: 100%; filter: drop-shadow(0 6px 0 rgba(46, 71, 102, .14)); }
+  .banzai .yay {
+    position: absolute; z-index: 1; top: 34%; left: -10%;
+    font-family: var(--font-pop); font-size: 1.1rem;
+    background: var(--bell); border: 2px solid var(--navy);
+    padding: 4px 14px; border-radius: 999px; rotate: -8deg;
+  }
+
+  /* links */
+  .links { text-align: center; }
+  .links .label { justify-content: center; }
+  .links-lead { margin: -12px 0 32px; }
+  .btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    min-width: 260px;
+    text-decoration: none;
+    background: #fff;
+    border: 3px solid var(--navy);
+    border-radius: 999px;
+    padding: 14px 28px 14px 14px;
+    box-shadow: 0 6px 0 var(--navy);
+    transition: translate .15s, box-shadow .15s;
+  }
+  .btn:hover { translate: 0 3px; box-shadow: 0 3px 0 var(--navy); }
+  .btn:active { translate: 0 6px; box-shadow: 0 0 0 var(--navy); }
+  .btn .ico {
+    width: 46px; height: 46px; border-radius: 50%; flex: none;
+    display: grid; place-items: center; color: #fff;
+  }
+  .btn .ico svg { width: 22px; height: 22px; }
+  .btn.x .ico { background: var(--navy); }
+  .btn.home .ico { background: var(--ribbon); }
+  .btn span { text-align: left; line-height: 1.4; }
+  .btn b { display: block; font-family: var(--font-pop); font-weight: 400; font-size: 1.1rem; }
+  .btn small { font-size: .85rem; color: var(--navy-soft); }
+
+  footer {
+    text-align: center; padding: 36px 20px 48px; font-size: .85rem; color: var(--navy-soft);
+  }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; translate: -50% 20px;
+    background: var(--navy); color: #fff; font-weight: 700;
+    padding: 10px 22px; border-radius: 999px;
+    opacity: 0; pointer-events: none; transition: opacity .2s, translate .2s;
+  }
+  .toast.show { opacity: 1; translate: -50% 0; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; text-align: center; gap: 28px; padding-top: 8px; }
+    .hero-text { order: 2; }
+    .stage { width: min(340px, 88%); }
+    .about { grid-template-columns: 1fr; gap: 44px; }
+    .polaroid { width: min(320px, 90%); margin-inline: auto; }
+    .bubble::before { left: 50%; top: -17px; transform: translateX(-50%) rotate(135deg); }
+    .likes-grid { grid-template-columns: 1fr; }
+    .banzai { width: min(240px, 70%); margin-inline: auto; order: -1; }
+    .like:nth-child(2) { margin-left: 0; }
+  }
+  @media (max-width: 520px) {
+    .top nav { display: none; }
+    section { padding-block: 60px; }
+    .bubble { padding: 26px 24px; font-size: 1.05rem; }
+    .like { grid-template-columns: 56px 1fr; gap: 14px; padding: 14px 16px 14px 14px; }
+    .like .icon { width: 56px; height: 56px; }
+    .like .icon svg { width: 30px; height: 30px; }
+    .btn { min-width: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- reusable icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bell" viewBox="0 0 48 52">
+    <path d="M24 4c-11 0-20 9-20 21 0 9 5 16 12 19h16c7-3 12-10 12-19C44 13 35 4 24 4z" fill="#f2cf63" stroke="#2e4766" stroke-width="3"/>
+    <path d="M6 30h36" stroke="#2e4766" stroke-width="3" fill="none"/>
+    <circle cx="24" cy="38" r="4" fill="#2e4766"/>
+    <path d="M24 42v6" stroke="#2e4766" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="16" cy="16" rx="3" ry="5" fill="#fff" opacity=".8" transform="rotate(30 16 16)"/>
+  </symbol>
+  <symbol id="i-moon" viewBox="0 0 48 48">
+    <path d="M30 4a20 20 0 1 0 14 30A17 17 0 0 1 30 4z" fill="#f2cf63" stroke="#2e4766" stroke-width="3" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24">
+    <path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-paw" viewBox="0 0 32 32">
+    <ellipse cx="16" cy="21" rx="8" ry="7" fill="currentColor"/>
+    <circle cx="7" cy="12" r="3.5" fill="currentColor"/>
+    <circle cx="13" cy="7" r="3.5" fill="currentColor"/>
+    <circle cx="19" cy="7" r="3.5" fill="currentColor"/>
+    <circle cx="25" cy="12" r="3.5" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<header class="wrap top">
+  <a class="logo" href="#">
+    <svg aria-hidden="true"><use href="#i-bell"/></svg>
+    ようかん
+  </a>
+  <nav aria-label="ページ内リンク">
+    <a href="#about">じこしょうかい</a>
+    <a href="#likes">すきなもの</a>
+    <a href="#links">リンク</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="hero-text">
+      <span class="hello">VRChat で活動中</span>
+      <h1 class="name">よう<span>かん</span></h1>
+      <p class="role">VRChat のイベント「<mark>ぷぷりえ</mark>」の店員さん</p>
+      <div class="nametag">
+        <small>VRChat ID</small>
+        <div class="row">
+          <strong id="vrc-id">ようかんYokan</strong>
+          <button class="copy" type="button" data-copy="ようかんYokan">コピー</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="arch" aria-hidden="true"></div>
+      <svg class="moon" aria-hidden="true" viewBox="0 0 48 48"><use href="#i-moon"/></svg>
+      <svg class="bell-deco" aria-hidden="true" viewBox="0 0 48 52"><use href="#i-bell"/></svg>
+      <svg class="sparkle s1" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-sparkle"/></svg>
+      <svg class="sparkle s2" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-sparkle"/></svg>
+      <img src="../assets/youkan-stand.webp" width="706" height="1215"
+           alt="水色のメイド服に白いエプロン、猫耳と金色の鈴をつけた、白銀の髪のようかんの立ち絵">
+    </div>
+  </div>
+
+  <div class="scallop" aria-hidden="true"></div>
+  <section id="about" class="band">
+    <div class="wrap">
+      <h2 class="label">
+        <svg aria-hidden="true" viewBox="0 0 32 32" style="color:var(--ribbon)"><use href="#i-paw"/></svg>
+        じこしょうかい
+      </h2>
+      <div class="about">
+        <figure class="polaroid" style="margin:0">
+          <span class="tape" aria-hidden="true"></span>
+          <img src="../assets/youkan-wink.webp" width="680" height="565" loading="lazy"
+               alt="こちらに向かってウインクしている、ようかんの顔のアップ">
+          <figcaption>ぱちっ</figcaption>
+        </figure>
+        <blockquote class="bubble" style="margin:0">
+          <p><span class="ph">ようかんっていいます～</span><span class="ph">よろしくね～。</span><br><span class="ph">えっと</span><span class="ph">水色の可愛いのとも好きかも！</span><br><span class="ph">ぷぷりえの友達と</span><span class="ph">遊ぶのが大好き！</span></p>
+          <p class="sign">ようかん</p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+  <div class="scallop bottom" aria-hidden="true"></div>
+
+  <section id="likes">
+    <div class="wrap">
+      <h2 class="label">
+        <svg aria-hidden="true" viewBox="0 0 24 24" style="color:var(--bell-deep)"><use href="#i-sparkle"/></svg>
+        すきなもの
+      </h2>
+      <div class="likes-grid">
+        <ul class="likes">
+          <li class="like">
+            <div class="icon" aria-hidden="true">
+              <!-- ribbon -->
+              <svg viewBox="0 0 48 48"><path d="M24 22 8 12c-3-2-6 0-6 3v14c0 3 3 5 6 3l16-10 16 10c3 2 6 0 6-3V15c0-3-3-5-6-3L24 22z" fill="#4fb0e3" stroke="#2e4766" stroke-width="3" stroke-linejoin="round"/><path d="M20 26l-6 16 6-3 4 5 2-14" fill="#4fb0e3" stroke="#2e4766" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="22" r="5" fill="#f2cf63" stroke="#2e4766" stroke-width="3"/></svg>
+            </div>
+            <div>
+              <h3>水色のかわいいもの</h3>
+              <p>ふんわり水色のものに、つい目がいっちゃう。</p>
+            </div>
+          </li>
+          <li class="like">
+            <div class="icon" aria-hidden="true">
+              <!-- two hearts -->
+              <svg viewBox="0 0 48 48"><path d="M17 38S4 30 4 20a7 7 0 0 1 13-4 7 7 0 0 1 13 4c0 10-13 18-13 18z" fill="#fff" stroke="#2e4766" stroke-width="3" stroke-linejoin="round"/><path d="M33 34s-9-6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 12-9 12z" fill="#f08aa6" stroke="#2e4766" stroke-width="3" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <h3>ぷぷりえの友達と遊ぶこと</h3>
+              <p>みんなといっしょの時間が大好き！</p>
+            </div>
+          </li>
+          <li class="like">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><use href="#i-moon"/></svg>
+            </div>
+            <div>
+              <h3>おうちで寝ること</h3>
+              <p>おふとんでぬくぬく、すやすや。</p>
+            </div>
+          </li>
+        </ul>
+        <div class="banzai">
+          <span class="yay" aria-hidden="true">わーい！</span>
+          <img src="../assets/youkan-banzai.webp" width="706" height="1215" loading="lazy"
+               alt="目をぎゅっとつむって、両手をあげてばんざいしているようかん">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="scallop" aria-hidden="true"></div>
+  <section id="links" class="band links">
+    <div class="wrap">
+      <h2 class="label">
+        <svg aria-hidden="true" viewBox="0 0 48 52"><use href="#i-bell"/></svg>
+        リンク
+      </h2>
+      <p class="links-lead">ようかんに会いにきてね～</p>
+      <div class="btns">
+        <a class="btn x" href="https://x.com/youkan0124" target="_blank" rel="noopener">
+          <span class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M18.2 2.3h3.4l-7.4 8.4L23 21.7h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2.3h7l4.8 6.4 5.4-6.4zm-1.2 17.4h1.9L7.1 4.2H5.1l11.9 15.5z"/></svg>
+          </span>
+          <span><b>X</b><small>@youkan0124</small></span>
+        </a>
+        <a class="btn home" href="https://youkan.uk/" target="_blank" rel="noopener">
+          <span class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5 1.5 11.2l1.3 1.5L4 11.8V21h6v-6h4v6h6v-9.2l1.2.9 1.3-1.5L12 2.5z"/></svg>
+          </span>
+          <span><b>ホームページ</b><small>youkan.uk</small></span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <div class="scallop bottom" aria-hidden="true"></div>
+</main>
+
+<footer>ようかん ・ ぷぷりえの店員さん</footer>
+
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>
+  const toast = document.querySelector('.toast');
+  let timer;
+  document.querySelectorAll('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy);
+        toast.textContent = 'VRChat ID をコピーしたよ';
+      } catch {
+        toast.textContent = 'コピーできなかったみたい…';
+      }
+      toast.classList.add('show');
+      clearTimeout(timer);
+      timer = setTimeout(() => toast.classList.remove('show'), 1800);
+    });
+  });
+</script>
+</body>
+</html>
