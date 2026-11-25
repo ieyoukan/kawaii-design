@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ことのは</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700&family=Yusei+Magic&display=swap" rel="stylesheet">
+<!--
+  Direction (kawaii-design)
+  前提: 架空のアプリ・素材なし・おまかせ。グループ名「いつもの4人」、メンバー名、
+        ノートのイラスト(SVG)、ロゴの葉はすべてこのサンプル用の創作。
+  Product : 友だち3〜5人でノートを順番にまわす、交換日記の Web アプリ。10代後半〜20代の友だちグループ向け。
+  Dialect : ゆるかわ。日記・少人数コミュニティ向けで、「がんばらずに書ける」空気が要る。
+  Feel    : のんびり、筆箱の中みたい、ちょっと照れ屋
+  World   : 友だちのあいだをまわる一冊のノートと、そこに挟まった一枚の葉っぱ(言の葉)。
+            モチーフは葉っぱ一つ。素材は紙とペン。パレットは若葉の色。
+  Star    : なし(両画面とも Stage モード)。将来は友だちの書いた日記が主役。
+  Shape   : 構造は角丸長方形(フォーム・カード・ダイアログ)、人は円(アバター・アイコンボタン)、
+            葉っぱだけが有機形。画面の境目はつくらず、同じ平らな地色と余白で区切る。
+  Atmos.  : シンプル。若葉をうすく溶かした平らな地色 #F2F5EE に白いパネル。
+            紙のノートの世界だがクリームではなく、モチーフの葉から色を取る。
+  Type/Mo : 見出しとロゴは Yusei Magic(フェルトペンの手書き感)、本文は M PLUS Rounded 1c 500。
+            ロゴと見出しは文節ごとに一文字ずつ登場、ノートはぽよんと着地。
+            ループはロゴの葉のゆれ(ログイン)とノートのまばたき(ホーム)の各画面1つだけ。
+-->
+<style>
+:root {
+  --page: #F2F5EE;
+  --panel: #FFFFFF;
+  --field: #EBF0E6;
+  --ink: #2D382C;
+  --ink-muted: #586554;
+  --leaf: #4B7A4C;
+  --leaf-deep: #3E6740;
+  --leaf-pale: #DCE8D5;
+  --apricot-pale: #F6DCC8;
+  --sky-pale: #D5E3EE;
+  --error: #9A4A3E;
+  --ink-rgb: 45 56 44;
+
+  --r-input: 12px;
+  --r-button: 14px;
+  --r-card: 24px;
+  --r-sheet: 28px;
+
+  --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --body: 16px;
+  --display: clamp(26px, 2.4vw + 14px, 32px);
+  --display-xl: clamp(52px, 6vw + 20px, 88px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 500;
+  font-size: var(--body);
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+  word-break: auto-phrase;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: "Yusei Magic", "M PLUS Rounded 1c", sans-serif;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-wrap: balance;
+}
+p { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* phrase / letter spans for titles */
+.ph { display: inline-block; white-space: nowrap; }
+.ph i { display: inline-block; font-style: normal; }
+
+/* ---------- leaf motif ---------- */
+.leaf { display: block; overflow: visible; }
+.leaf { fill: var(--leaf); stroke: var(--leaf); color: var(--leaf-pale); }
+
+/* ---------- icons ---------- */
+.icon {
+  width: 22px; height: 22px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ---------- buttons ---------- */
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 26px;
+  border: 0; border-radius: var(--r-button);
+  background: var(--leaf); color: #fff;
+  font-weight: 700; cursor: pointer;
+  box-shadow: 0 6px 18px rgb(var(--ink-rgb) / 0.12);
+  transition: background-color 160ms ease-out, transform 200ms var(--ease-poyon);
+}
+.button:hover { background: var(--leaf-deep); }
+.button:active { transform: scale(0.96); }
+.button:focus-visible,
+.text-link:focus-visible,
+.icon-button:focus-visible,
+.eye:focus-visible { outline: 3px solid var(--leaf); outline-offset: 3px; }
+
+.text-link {
+  border: 0; background: none; padding: 4px 2px; cursor: pointer;
+  color: var(--leaf); font-weight: 700; text-decoration: none;
+  box-shadow: inset 0 -6px 0 var(--leaf-pale);
+  border-radius: 2px;
+}
+.text-link:hover { color: var(--leaf-deep); }
+
+.icon-button {
+  display: grid; place-items: center;
+  width: 48px; height: 48px; border: 0; border-radius: 50%;
+  background: var(--panel); color: var(--ink); cursor: pointer;
+  transition: transform 200ms var(--ease-poyon), background-color 160ms;
+}
+.icon-button:hover { background: var(--leaf-pale); }
+.icon-button:active { transform: scale(0.92); }
+
+/* ---------- screen 1: login ---------- */
+.screen { min-height: 100vh; min-height: 100svh; }
+
+#login { display: grid; align-content: center; }
+.login {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  gap: 48px;
+  max-width: 1040px; margin: 0 auto;
+  padding: 72px 24px 96px;
+}
+@media (min-width: 860px) {
+  .login { grid-template-columns: 1fr 420px; gap: 72px; padding-top: 96px; }
+}
+
+.brand { display: grid; gap: 20px; justify-items: start; }
+.logo {
+  position: relative;
+  font-size: var(--display-xl);
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+}
+.logo .sprout { position: relative; }
+.logo .sprout .leaf {
+  position: absolute;
+  width: 0.5em; height: 0.5em;
+  left: 46%; top: -0.4em;
+  transform-origin: 10% 95%;
+  rotate: -8deg;
+}
+.brand p { color: var(--ink-muted); }
+
+.card {
+  background: var(--panel);
+  border-radius: var(--r-card);
+  padding: 36px 28px 28px;
+  box-shadow: 0 10px 32px rgb(var(--ink-rgb) / 0.07);
+}
+@media (min-width: 860px) { .card { padding: 40px 36px 32px; } }
+.card h2 { font-size: var(--display); margin-bottom: 24px; }
+
+.field { display: grid; gap: 6px; margin-bottom: 20px; }
+.field label { font-weight: 700; }
+.input-wrap { position: relative; }
+.field input {
+  width: 100%; min-height: 52px;
+  padding: 12px 16px;
+  border: 0; border-radius: var(--r-input);
+  background: var(--field);
+  outline: 2px solid transparent;
+  transition: outline-color 160ms, background-color 160ms;
+}
+.field input:hover { background: #E4EBDE; }
+.field input:focus { outline-color: var(--leaf); background: var(--panel); }
+.field.has-error input { outline-color: var(--error); background: #FBF1EE; }
+.field .input-wrap input { padding-right: 56px; }
+.eye {
+  position: absolute; right: 6px; top: 50%; translate: 0 -50%;
+  display: grid; place-items: center;
+  width: 42px; height: 42px; border: 0; border-radius: 50%;
+  background: none; color: var(--ink-muted); cursor: pointer;
+}
+.eye:hover { background: var(--leaf-pale); color: var(--ink); }
+.eye .off { display: none; }
+.eye[aria-pressed="true"] .on { display: none; }
+.eye[aria-pressed="true"] .off { display: block; }
+
+.error {
+  display: none; align-items: center; gap: 6px;
+  color: var(--error);
+}
+.error .icon { width: 18px; height: 18px; }
+.field.has-error .error { display: flex; }
+
+.login .button { width: 100%; margin-top: 8px; }
+.signup { margin-top: 24px; text-align: center; color: var(--ink-muted); }
+
+/* ---------- screen 2: home ---------- */
+.home {
+  max-width: 1040px; margin: 0 auto;
+  padding: 24px 24px 96px;
+  display: flex; flex-direction: column;
+}
+
+.app-bar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 0;
+}
+.app-bar .mark {
+  display: flex; align-items: flex-start; gap: 2px;
+  font-family: "Yusei Magic", sans-serif;
+  font-size: var(--display); line-height: 1.2; letter-spacing: 0.06em;
+  margin: 0;
+}
+.app-bar .mark .leaf { width: 0.5em; height: 0.5em; margin-top: -0.1em; rotate: -8deg; }
+.group {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 12px;
+  padding: 6px 18px 6px 6px;
+  background: var(--panel);
+  border-radius: 9999px;
+}
+.group > span { white-space: nowrap; }
+@media (max-width: 520px) {
+  .app-bar { flex-wrap: wrap; row-gap: 12px; }
+  .app-bar .icon-button { margin-left: auto; }
+  .group { order: 3; margin-left: 0; }
+}
+.avatars { display: flex; }
+.avatar {
+  display: grid; place-items: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  font-weight: 700; line-height: 1;
+  box-shadow: 0 0 0 3px var(--panel);
+}
+.avatars .avatar + .avatar { margin-left: -8px; }
+.avatar.sage { background: var(--leaf-pale); }
+.avatar.apricot { background: var(--apricot-pale); }
+.avatar.sky { background: var(--sky-pale); }
+.avatar.me { background: var(--leaf); color: #fff; }
+
+.empty {
+  flex: 1;
+  display: grid; justify-items: center; align-content: center;
+  text-align: center;
+  padding: 64px 0 32px;
+  gap: 0;
+}
+.notebook {
+  width: clamp(180px, 22vw, 232px);
+  height: auto;
+  margin-bottom: 32px;
+  overflow: visible;
+}
+.notebook .eyes { transform-box: fill-box; transform-origin: center; }
+.empty h2 { font-size: var(--display); margin-bottom: 12px; }
+.empty p { color: var(--ink-muted); max-width: 34em; margin-bottom: 36px; }
+
+/* written entry (after the first page) */
+.entry {
+  width: min(100%, 560px);
+  margin: 48px auto 0;
+  background: var(--panel);
+  border-radius: var(--r-card);
+  padding: 28px;
+  text-align: left;
+  box-shadow: 0 10px 32px rgb(var(--ink-rgb) / 0.07);
+}
+.entry h2 { font-size: var(--display); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.entry h2 .leaf { width: 0.6em; height: 0.6em; rotate: -8deg; }
+.entry .body { white-space: pre-wrap; margin-bottom: 20px; }
+.entry .next { display: flex; align-items: center; gap: 10px; color: var(--ink-muted); }
+.entry .next .avatar { box-shadow: none; }
+
+/* ---------- write sheet ---------- */
+dialog.sheet {
+  width: min(560px, calc(100% - 32px));
+  border: 0; padding: 32px 28px 28px;
+  border-radius: var(--r-sheet);
+  background: var(--panel); color: var(--ink);
+  box-shadow: 0 24px 60px rgb(var(--ink-rgb) / 0.18);
+}
+dialog.sheet::backdrop { background: rgb(var(--ink-rgb) / 0.28); }
+dialog.sheet[open] { animation: sheet-in 420ms var(--ease-poyon) both; }
+@keyframes sheet-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+.sheet h2 { font-size: var(--display); margin-bottom: 20px; }
+.sheet label { display: block; font-weight: 700; margin-bottom: 6px; }
+.sheet textarea {
+  width: 100%; min-height: 200px; resize: vertical;
+  padding: 14px 16px; border: 0; border-radius: var(--r-input);
+  background: var(--field); line-height: 2;
+  /* ruled notebook lines, faint */
+  background-image: repeating-linear-gradient(transparent 0 calc(2em - 1px), rgb(var(--ink-rgb) / 0.07) calc(2em - 1px) 2em);
+  background-position: 0 14px;
+  background-attachment: local;
+  outline: 2px solid transparent;
+}
+.sheet textarea:focus { outline-color: var(--leaf); }
+.sheet .actions { display: flex; justify-content: flex-end; align-items: center; gap: 20px; margin-top: 24px; }
+
+/* ---------- motion (only when JS sets .motion) ---------- */
+@keyframes letter-in { from { opacity: 0; transform: translateY(10px); } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(20px); } }
+@keyframes settle-in { from { opacity: 0; transform: translateY(28px) scale(0.94); } }
+@keyframes leaf-sway { 0%, 100% { rotate: -8deg; } 50% { rotate: -1deg; } }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+
+.motion [data-split] .ph i { opacity: 0; }
+.motion [data-split].is-in .ph i {
+  animation: letter-in 560ms var(--ease-poyon) both;
+  animation-delay: calc(var(--i) * 50ms);
+  opacity: 1;
+}
+.motion .rise { opacity: 0; }
+.motion .rise.is-in { animation: rise-in 560ms var(--ease-soft) both; animation-delay: var(--d, 0ms); opacity: 1; }
+.motion .notebook.rise.is-in { animation: settle-in 760ms var(--ease-poyon) both; }
+
+.motion .logo .sprout .leaf { animation: leaf-sway 4.5s ease-in-out 1.2s infinite; }
+.motion .notebook .eyes { animation: blink 4.8s ease-in-out 1.6s infinite; }
+
+@media (hover: hover) {
+  .logo:hover .ph i { animation: letter-in 420ms var(--ease-poyon) both; animation-delay: calc(var(--i) * 40ms); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="leaf" viewBox="0 0 24 24">
+      <path d="M4 20 C 4 11, 10 4.5, 20 4 C 19.6 13.5, 13 20, 4 20 Z" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M6.5 17.5 C 10 13.5, 13 10.5, 16.5 7.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ===================== 1. ログイン ===================== -->
+<main>
+<section class="screen" id="login" aria-label="ログイン">
+  <div class="login">
+    <div class="brand">
+      <h1 class="logo" data-split aria-label="ことのは">
+        <span class="ph" aria-hidden="true"><i>こ</i><i>と</i><i class="sprout">の<svg class="leaf"><use href="#leaf"/></svg></i><i>は</i></span>
+      </h1>
+      <p class="rise" style="--d: 420ms">3〜5人でまわす、ちいさな交換日記</p>
+    </div>
+
+    <div class="card rise" style="--d: 200ms">
+      <h2 data-split aria-label="おかえりなさい"><span class="ph" aria-hidden="true"><i>お</i><i>か</i><i>え</i><i>り</i><i>な</i><i>さ</i><i>い</i></span></h2>
+
+      <form id="login-form" novalidate>
+        <div class="field" id="f-email">
+          <label for="email">メールアドレス</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="email-error">
+          <p class="error" id="email-error" aria-live="polite">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.5h.01"/></svg>
+            <span>メールアドレスを入れてください</span>
+          </p>
+        </div>
+
+        <div class="field" id="f-password">
+          <label for="password">パスワード</label>
+          <div class="input-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password" aria-describedby="password-error">
+            <button class="eye" type="button" aria-pressed="false" aria-label="パスワードを表示">
+              <svg class="icon on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="icon off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.6A9.8 9.8 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-3 3.8"/><path d="M6.6 6.7C3.9 8.4 2.5 12 2.5 12s3.5 6.5 9.5 6.5a9.6 9.6 0 0 0 4.7-1.2"/><path d="M9.9 10a3 3 0 0 0 4.1 4.1"/></svg>
+            </button>
+          </div>
+          <p class="error" id="password-error" aria-live="polite">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.5h.01"/></svg>
+            <span>パスワードを入れてください</span>
+          </p>
+        </div>
+
+        <button class="button" type="submit">ログイン</button>
+      </form>
+
+      <p class="signup">はじめてなら <a class="text-link" href="#signup">アカウントをつくる</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 2. ホーム(空の状態) ===================== -->
+<section class="screen home" id="home" aria-label="ホーム">
+  <header class="app-bar">
+    <p class="mark" aria-label="ことのは"><span aria-hidden="true">ことのは</span><svg class="leaf" aria-hidden="true"><use href="#leaf"/></svg></p>
+    <div class="group">
+      <div class="avatars" aria-hidden="true">
+        <span class="avatar me">ゆ</span>
+        <span class="avatar sage">み</span>
+        <span class="avatar apricot">さ</span>
+        <span class="avatar sky">は</span>
+      </div>
+      <span>いつもの4人</span>
+    </div>
+    <button class="icon-button" type="button" aria-label="メニュー">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14"/><path d="M5 12h14"/><path d="M5 16h14"/></svg>
+    </button>
+  </header>
+
+  <div class="empty" id="empty">
+    <svg class="notebook rise" viewBox="0 0 200 200" role="img" aria-label="まだ何も書かれていないノート">
+      <!-- contact shadow -->
+      <ellipse cx="102" cy="186" rx="62" ry="7" fill="rgb(45 56 44 / 0.12)"/>
+      <!-- leaf bookmark peeking out -->
+      <g transform="translate(118 6) rotate(14)">
+        <path d="M2 40 L2 22" stroke="#2D382C" stroke-width="2" stroke-linecap="round"/>
+        <path d="M2 24 C -10 16, -10 4, 2 -4 C 14 4, 14 16, 2 24 Z" fill="#4B7A4C" stroke="#2D382C" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M2 20 C 2 12, 2 6, 2 2" stroke="#DCE8D5" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      </g>
+      <!-- page edges -->
+      <rect x="44" y="36" width="122" height="142" rx="14" fill="#FFFFFF" stroke="#2D382C" stroke-width="2"/>
+      <!-- cover -->
+      <rect x="38" y="32" width="122" height="144" rx="14" fill="#DCE8D5" stroke="#2D382C" stroke-width="2"/>
+      <!-- spine band -->
+      <path d="M52 32.9 V175.1" stroke="#2D382C" stroke-width="2" stroke-linecap="round"/>
+      <path d="M39 46 C 39 38, 44 33, 52 33 V175 C 44 175, 39 170, 39 162 Z" fill="#C3D6B9"/>
+      <!-- title label -->
+      <rect x="74" y="56" width="62" height="24" rx="7" fill="#FFFFFF" stroke="#2D382C" stroke-width="1.6"/>
+      <path d="M84 68 H 112" stroke="#DCE8D5" stroke-width="3" stroke-linecap="round"/>
+      <!-- face -->
+      <ellipse cx="82" cy="128" rx="7" ry="4.5" fill="#F6DCC8"/>
+      <ellipse cx="128" cy="128" rx="7" ry="4.5" fill="#F6DCC8"/>
+      <g class="eyes">
+        <circle cx="91" cy="117" r="3.6" fill="#2D382C"/>
+        <circle cx="119" cy="117" r="3.6" fill="#2D382C"/>
+      </g>
+      <path d="M101 125 C 103 128, 107 128, 109 125" fill="none" stroke="#2D382C" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+
+    <h2 data-split aria-label="まだ、まっさらです">
+      <span class="ph" aria-hidden="true"><i>ま</i><i>だ</i><i>、</i></span><span class="ph" aria-hidden="true"><i>ま</i><i>っ</i><i>さ</i><i>ら</i><i>で</i><i>す</i></span>
+    </h2>
+    <p class="rise" style="--d: 380ms">最初の1ページを書くと、<wbr>ノートが4人のあいだを<wbr>順番にまわります。</p>
+    <button class="button rise" style="--d: 500ms" type="button" id="write">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 0l.5.5a2.1 2.1 0 0 1 0 3L8.5 19 4 20z"/><path d="M13.5 7l3.5 3.5"/></svg>
+      最初のページを書く
+    </button>
+  </div>
+</section>
+</main>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+  <form method="dialog" id="write-form">
+    <h2 id="sheet-title">11月25日</h2>
+    <label for="today">きょうのこと</label>
+    <textarea id="today" name="today" required></textarea>
+    <div class="actions">
+      <button class="text-link" type="button" id="later">あとで</button>
+      <button class="button" type="submit">ノートをまわす</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* letter index for staggered titles */
+  document.querySelectorAll('[data-split]').forEach(el => {
+    el.querySelectorAll('.ph i').forEach((i, n) => i.style.setProperty('--i', n));
+  });
+
+  /* arrivals: hidden start state is added only from JS */
+  if (!reduce && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('motion');
+    const targets = document.querySelectorAll('[data-split], .rise');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    targets.forEach(t => io.observe(t));
+    /* never leave anything hidden */
+    setTimeout(() => targets.forEach(t => t.classList.add('is-in')), 4000);
+  }
+
+  /* login */
+  const form = document.getElementById('login-form');
+  const check = (id, fieldId) => {
+    const ok = document.getElementById(id).value.trim() !== '';
+    const f = document.getElementById(fieldId);
+    f.classList.toggle('has-error', !ok);
+    document.getElementById(id).setAttribute('aria-invalid', String(!ok));
+    return ok;
+  };
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const a = check('email', 'f-email');
+    const b = check('password', 'f-password');
+    if (a && b) document.getElementById('home').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    else document.querySelector('.has-error input').focus();
+  });
+  ['email', 'password'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      document.getElementById('f-' + id).classList.remove('has-error');
+    });
+  });
+
+  const eye = document.querySelector('.eye');
+  eye.addEventListener('click', () => {
+    const pw = document.getElementById('password');
+    const show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    eye.setAttribute('aria-pressed', String(show));
+    eye.setAttribute('aria-label', show ? 'パスワードを隠す' : 'パスワードを表示');
+  });
+
+  /* write the first page */
+  const sheet = document.getElementById('sheet');
+  const title = document.getElementById('sheet-title');
+  const now = new Date();
+  title.textContent = `${now.getMonth() + 1}月${now.getDate()}日`;
+
+  document.getElementById('write').addEventListener('click', () => {
+    sheet.showModal();
+    document.getElementById('today').focus();
+  });
+  document.getElementById('later').addEventListener('click', () => sheet.close());
+
+  document.getElementById('write-form').addEventListener('submit', e => {
+    const text = document.getElementById('today').value.trim();
+    if (!text) { e.preventDefault(); return; }
+    const empty = document.getElementById('empty');
+    const entry = document.createElement('article');
+    entry.className = 'entry rise';
+    entry.innerHTML = `
+      <h2><span></span><svg class="leaf" aria-hidden="true"><use href="#leaf"/></svg></h2>
+      <p class="body"></p>
+      <p class="next"><span class="avatar sage" aria-hidden="true">み</span>つぎは みおさん</p>`;
+    entry.querySelector('h2 span').textContent = title.textContent;
+    entry.querySelector('.body').textContent = text;
+    empty.replaceWith(entry);
+    requestAnimationFrame(() => entry.classList.add('is-in'));
+  });
+})();
+</script>
+</body>
+</html>
