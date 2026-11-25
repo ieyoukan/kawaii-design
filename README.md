@@ -127,3 +127,7 @@ cd examples && python3 -m http.server
 | [shapes-and-patterns.md](skills/kawaii-design/references/shapes-and-patterns.md) | 丸・角丸・有機的な曲線の選び方、イラストの見せ方、セクションの区切り、柄 |
 | [backgrounds-and-images.md](skills/kawaii-design/references/backgrounds-and-images.md) | 背景の空気感 (シンプル / 透明感)、主役の画像と影の仕上げ |
 | [refs.md](skills/kawaii-design/references/refs.md) | 参考サイトの分析 (a monotone portfolio site / an illustrator site / pastel campaign) |
+
+## ライセンス
+
+[MIT](LICENSE)。自由に使って、改変して、配ってかまいません。ただし `examples/youkan/` の画像 (アバター、写真、商品画像) はそれぞれの権利者のもので、MIT の対象外です。
