@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kawaii Design"
+  short_description: "Design UI that feels kawaii without cute slop"
+  default_prompt: "Use $kawaii-design to make this screen feel kawaii, keeping the main content as the star."

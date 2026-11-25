@@ -1,0 +1,12 @@
+{
+  "name": "ieyoukan",
+  "description": "Claude skills by ieyoukan",
+  "owner": { "name": "ieyoukan" },
+  "plugins": [
+    {
+      "name": "kawaii-design",
+      "source": "./",
+      "description": "Designs UI that feels kawaii in the Japanese sense, without pastel-and-sparkle cute slop"
+    }
+  ]
+}
