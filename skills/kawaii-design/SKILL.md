@@ -39,7 +39,7 @@ How to turn the word "kawaii" into concrete design decisions is covered in [refe
 
 ## The user's style comes first
 
-When the user asks for a specific style (柄をたくさん, Liquid Glass, シンプル, 虹色, 大人っぽく, a reference site), that style wins over this skill's defaults and restraint rules. Use the rest of the skill to make that style well: read the character, keep one palette, keep text readable, keep the star the star. Don't water the request down to match the defaults.
+When the user asks for a specific style (Liquid Glass, シンプル, 虹色, 大人っぽく, a reference site), that style wins over this skill's defaults and restraint rules. Use the rest of the skill to make that style well: read the character, keep one palette, keep text readable, keep the star the star. Don't water the request down to match the defaults.
 
 ## Read the character first
 
@@ -125,7 +125,7 @@ If you can't name the charm point of a region, it has either none or too many.
    - **World**: the small world the UI belongs to, such as a stationery shop, a bakery, a picture book or a sticker sheet. It sets the motif, the material and the palette.
    - **Star**: what the star is on each screen, or "none, Stage mode".
    - **Shape language**: where the layout stays open, which detail from each featured section can shape its frame or edge, and where a change of background needs a curved edge. See [references/shapes-and-patterns.md](references/shapes-and-patterns.md).
-   - **Atmosphere**: simple, 透明感, ゆめかわ, 柄もり (pattern-rich) or Liquid Glass. If the user named a style, use it. Decide which background image or faint pattern fits the direction and where the background needs to stay quiet. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
+   - **Atmosphere**: simple, 透明感, ゆめかわ or Liquid Glass. If the user named a style, use it. Decide which background image or faint pattern fits the direction and where the background needs to stay quiet. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
    - **Type and motion**: the scale and layering of the section headings, the one element that moves and when it starts, and which in-page links scroll smoothly.
 4. **Confirm.** Show the direction and wait for the user's answer before editing. Skip this only when the user has already said to just do it.
 5. **Apply the passes in order**, each across the whole screen before the next: shape → spacing → color → type → copy → icons → motif and detail → motion. Shape and spacing come first because they decide most of the warmth. Motif and motion come last because they should only add to a screen that already works. Values are in [references/tokens.md](references/tokens.md).

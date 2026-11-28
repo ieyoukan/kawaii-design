@@ -27,7 +27,7 @@ Every other item on this list is mostly a specific case of this one.
 - ✨ 💖 🎀 🌸 used in labels, headings, buttons or as icons.
 - `border-radius: 9999px` on everything, including large cards and modals.
 - A heading entrance, staggered cards, and a moving wave all on the same page. Give the motion to one target and preserve functional feedback.
-- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on body text. Iridescent foil on the logo or one big display title is allowed when it has a white sticker edge and stays readable. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or body text. Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
+- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on body text. Iridescent foil on the logo or one big display title is allowed when it has a white sticker edge and stays readable. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or body text. (Exception: in the Liquid Glass style, the soft pastel tint inside glass cards, headers, footers and buttons is part of the material.) Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
 - Boxing the star: putting a character inside a colored arch or panel just to separate it from the background. Fix the image's edge and shadow instead.
 - A page in one flat color from top to bottom when the direction asked for something airy. One-tone is a choice, not a default.
 - Glowing buttons, neon shadows.
@@ -42,7 +42,6 @@ Every other item on this list is mostly a specific case of this one.
 
 ## Wallpaper patterns
 
-(Doesn't apply when the direction is 柄もり, where many patterns are the point. Then the failure is patterns in different color systems, or text placed directly on a pattern.)
 
 - A loud all-over print, or a flat background left bare when the composition needs texture. Try faint dots or checks in open space and keep the foreground readable.
 

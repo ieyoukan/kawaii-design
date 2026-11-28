@@ -121,7 +121,6 @@ Claude Code では `/kawaii-design` に続けてやりたいことを書きま�
 | --- | --- |
 | [examples/youkan/](examples/youkan/) | 主役がいる例 (Star モード)。VRChat のアバターを主役にした紹介ページ。ワントーン、波の縁、文字ごとの登場アニメーション |
 | [examples/compare/](examples/compare/) | 上の比較画像の元。`character/` (ようかんの紹介ページ) と `sns/` (ゆめかわいい SNS) それぞれに、Skill なし (`without/`) とあり (`with/`) |
-| [examples/kotonoha/](examples/kotonoha/) | 素材がない例 (Stage モード)。架空の交換日記アプリで、デモログインから最初の一枚を書き、次の人に回すところまで試せます。 |
 
 `file://` ではフォントや一部の動きが読み込まれないことがあるので、ローカルサーバーで開いてください。
 
