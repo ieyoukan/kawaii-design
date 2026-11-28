@@ -67,7 +67,7 @@ Grown-up cuteness looks very different from the other ages. It is cute held back
 - **Copy**: polite and short.
 - **Motion**: slow fades and small rises. Nothing bounces.
 - **Pitfall**: too quiet becomes generic minimal. If nobody would call it cute, warm up the background color or bring back the sweet point.
-- **Reference**: a fashion campaign site, see [refs.md](refs.md).
+- **Reference**: "A 大人かわいい fashion campaign" in [refs.md](refs.md).
 
 ## Checklist
 

@@ -42,6 +42,8 @@ Every other item on this list is mostly a specific case of this one.
 
 ## Wallpaper patterns
 
+(Doesn't apply when the direction is 柄もり, where many patterns are the point. Then the failure is patterns in different color systems, or text placed directly on a pattern.)
+
 - A loud all-over print, or a flat background left bare when the composition needs texture. Try faint dots or checks in open space and keep the foreground readable.
 
 ## Scattered palettes

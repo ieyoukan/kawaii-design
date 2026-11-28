@@ -1,14 +1,16 @@
 # Backgrounds and the star's image
 
-## Atmosphere: simple or 透明感
+## Atmosphere
 
-Decide this in the direction. It depends on what the page should feel like, not on a rule. There are three options.
+Decide this in the direction. It depends on what the page should feel like, not on a rule. If the user names a style ("柄をたくさん", "Liquid Glass っぽく", "シンプルに"), use that one. There are five options.
 
 | Atmosphere | Feels | Background | Good for |
 | --- | --- | --- | --- |
 | **Simple** | clear, focused, graphic | White, or one flat pale tint taken from the star | A single strong character, chunky or chibi art, ポップ, ワントーン |
 | **透明感** | airy, light, a little grown-up | One page-wide pastel gradient, very gentle | Dreamy illustration, 大人かわいい, beauty and fashion, pages with several colors in the art |
 | **ゆめかわ** | dreamy, iridescent, rich | A complex multi-point pastel gradient (marble or bubbles) with glass UI on top | ゆめかわ, SNS and community apps, fan pages, music, anything asked for as 「ゆめかわいい」 |
+| **柄もり (pattern-rich)** | flat, graphic, stationery-like, busy in a fun way | Flat colors, with many patterns as the main decoration | Fancy goods and stationery worlds, ポップ, レトロ, kids, anything asked for as 「柄をたくさん」 |
+| **Liquid Glass** | smooth, glossy, iridescent, fluid | The iridescent background behind refractive, glossy glass shapes | Modern apps and SNS, music, fan pages, anything asked for as 「Liquid Glass」「つるっと」「ぬるぬる動く」 |
 
 A page in one flat color from top to bottom can feel dull. When the star has several colors (pink hair and a blue dress, for example), 透明感 often fits better than one-tone.
 
@@ -88,7 +90,7 @@ body { background: #EEF8FC; }
 - Display lettering (the logo, a big title) may use the same iridescent foil, with a white sticker edge so it stays readable. Body text stays solid.
 - Die-cut sticker labels (white edge, soft shadow) suit this world for small buttons and badges.
 - This replaces the page-wide 透明感 gradient. Don't stack both.
-- Reference: an iridescent anniversary site, see [refs.md](refs.md).
+- Reference: "An iridescent, aqua-led anniversary site" in [refs.md](refs.md).
 
 ### Glass UI
 
@@ -109,6 +111,59 @@ body { background: #EEF8FC; }
 - Raise the white to 65 to 75% behind long text. Lower it to 35 to 45% for small floating elements.
 - Buttons: a more opaque glass pill, or a solid pastel pill from the palette with white text only if the contrast passes. An iridescent rim (a thin pink-to-aqua gradient border) is a nice accent for the one primary button.
 - Provide a fallback for browsers without `backdrop-filter`: a more opaque white.
+
+### 柄もり (pattern-rich)
+
+Here the patterns are the decoration, not a faint texture. The background stays flat and simple; the richness comes from many patterns placed with care.
+
+- **Use several patterns on purpose**: gingham, polka dots, stripes, small checks, tiny stars or hearts, scallops, a fancy-goods print. Three to five kinds on a page is normal for this style.
+- **One color system for all patterns.** Every pattern uses the page palette (two or three hues plus white). That is what makes many patterns look designed instead of noisy.
+- **Pattern by role.** Give each kind of surface its own pattern and keep it consistent: for example gingham for section bands, dots for cards, stripes for buttons and tabs, a small print for the footer. Vary the scale (big gingham, small dots) so neighbors don't vibrate.
+- **Patterns at full strength are fine** here (20 to 40% contrast), unlike the faint texture elsewhere.
+- **Keep reading areas plain.** Text always sits on a solid panel (white or a flat pastel) placed on top of the pattern, with a clear edge such as a scallop, a sticker cut or a stitched dashed line. Faces and fine artwork also sit on plain areas.
+- **Stationery details** fit this style: washi tape, stitched lines, labels, stamps, ribbon tabs.
+- The star still stays the star. Put a plain mat or a big plain shape behind the character, and let the patterns live around it.
+
+### Liquid Glass
+
+Smooth, glossy glass that bends the light behind it, over the iridescent background. It is different from the frosted glass above: the glass refracts and has specular highlights, and the shapes are soft and fluid.
+
+```html
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="lg-refract" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="3" result="noise"/>
+    <feGaussianBlur in="noise" stdDeviation="2" result="soft"/>
+    <feDisplacementMap in="SourceGraphic" in2="soft" scale="40" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+```
+
+```css
+.liquid {
+  position: relative;
+  border-radius: 999px;                                  /* capsules and very round shapes */
+  background: rgb(255 255 255 / 0.18);
+  backdrop-filter: url(#lg-refract) blur(4px) saturate(1.6);   /* refraction where supported */
+  -webkit-backdrop-filter: blur(10px) saturate(1.6);           /* fallback */
+  box-shadow:
+    inset 1.5px 1.5px 0 rgb(255 255 255 / 0.9),         /* bright top-left rim */
+    inset -1px -1px 0 rgb(255 255 255 / 0.35),          /* softer bottom-right rim */
+    inset 0 0 18px rgb(255 255 255 / 0.35),             /* inner glow of the glass body */
+    0 10px 30px rgb(var(--star-dark) / 0.18);           /* soft tinted shadow */
+}
+.liquid::before {                                       /* specular highlight */
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(60% 40% at 30% 10%, rgb(255 255 255 / 0.75), transparent 70%);
+  mix-blend-mode: screen;
+}
+```
+
+- **Make the refraction visible.** Refraction only shows when something with shape sits behind the glass. Place at least one large glass piece (a panel, a big capsule or a lens over the star's edge) over a busy part of the background, a bubble or the character, so the bending is obvious. Glass over a smooth, empty gradient just looks frosted.
+- **Refraction**: `backdrop-filter: url(#filter)` with a displacement map bends what is behind the glass. It works in Chromium. Always keep a plain blur fallback so other browsers still look good.
+- **Specular light**: a bright rim on the top-left edge, a softer one on the bottom-right, and a soft white highlight inside near the top. Move the highlight with the pointer (update a CSS variable for its position) for the "liquid" feel.
+- **Shapes**: capsules, circles and very round panels. Use few, larger glass pieces rather than glass on everything. Content panels for long text get more white (55 to 70%) so they stay readable; small controls can be clearer.
+- **Fluid motion**: glass elements can stretch slightly when pressed, and neighboring pills can merge like drops with an SVG goo filter (`feGaussianBlur` then `feColorMatrix` alpha contrast). Keep motion smooth with long ease-out curves. Respect `prefers-reduced-motion`.
+- Iridescent tints are allowed on the glass rims and highlights. Text on glass stays solid and deep.
 
 ## Make the star's image good
 

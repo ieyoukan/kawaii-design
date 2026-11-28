@@ -37,6 +37,10 @@ How to turn the word "kawaii" into concrete design decisions is covered in [refe
 - **Do not make every element equally cute. If everything is loud, nothing feels special.**
 - If the design lacks warmth or personality, request assets instead of faking cuteness with excessive decoration.
 
+## The user's style comes first
+
+When the user asks for a specific style (柄をたくさん, Liquid Glass, シンプル, 虹色, 大人っぽく, a reference site), that style wins over this skill's defaults and restraint rules. Use the rest of the skill to make that style well: read the character, keep one palette, keep text readable, keep the star the star. Don't water the request down to match the defaults.
+
 ## Read the character first
 
 Understanding the character is the core of this skill. Before choosing colors or shapes, read who the character is: apparent age (幼い, 少女, 大人), temperament (元気, おっとり, 眠たげ, クール, ダウナー, 照れ屋, 上品), voice (how they write, how much ひらがな), main color and signature details (accessories, colors, motifs). Then let that decide the type, shapes, color, copy and motion.
@@ -100,7 +104,7 @@ Images that come from the star's own official sources need no credit line on the
 
 - **Shapes and seams.** Start with an open layout, shared backgrounds, and generous gaps. When a frame or edge adds something, borrow its shape from what it holds or does: a heart for a personal gift, a paper fold for notes, or a speech-bubble edge for a reply. Use a tinted fill, a partial outline, or a curved edge to carry that silhouette. Let background color changes meet at a curve big enough to read at a glance, and always enter the footer with one. See [content-shaped frames and edges](references/shapes-and-patterns.md#content-shaped-frames-and-edges).
 - **Background texture.** If a plain draft feels sparse, try a low-contrast pattern in the open parts of the background: tiny polka dots, gingham, or a dashed check. Look for usable background art first. If a specific illustration or texture would shape the design, invite the user to share it and keep working with a CSS pattern as a fallback. See [backgrounds-and-images.md](references/backgrounds-and-images.md).
-- **Section titles.** Give each major section one visible `h2`. When the user asks for background lettering, text layered behind artwork, or section titles like an illustrator site, make that `h2` oversized with a thin, soft outline. Layer the artwork over part of it so the artwork draws the eye first. For regular headings, vary the display scale or use hiragana when it suits the wording. See [title treatments](references/shapes-and-patterns.md#title-treatments) and the [HTML example](references/organic-sections.html#paper).
+- **Section titles.** Give each major section one visible `h2`. When the user asks for background lettering, text layered behind artwork, or giant outlined section titles behind the artwork, make that `h2` oversized with a thin, soft outline. Layer the artwork over part of it so the artwork draws the eye first. For regular headings, vary the display scale or use hiragana when it suits the wording. See [title treatments](references/shapes-and-patterns.md#title-treatments) and the [HTML example](references/organic-sections.html#paper).
 - **Motion and scrolling.** Include one decorative animation per page or app view by default, such as a single entrance on the hero heading or the star. Use native smooth scrolling for in-page navigation. Preserve functional feedback and honor `prefers-reduced-motion` for both the animation and scrolling. See [tokens.md](references/tokens.md#motion).
 
 ## Cuteness budget
@@ -121,7 +125,7 @@ If you can't name the charm point of a region, it has either none or too many.
    - **World**: the small world the UI belongs to, such as a stationery shop, a bakery, a picture book or a sticker sheet. It sets the motif, the material and the palette.
    - **Star**: what the star is on each screen, or "none, Stage mode".
    - **Shape language**: where the layout stays open, which detail from each featured section can shape its frame or edge, and where a change of background needs a curved edge. See [references/shapes-and-patterns.md](references/shapes-and-patterns.md).
-   - **Atmosphere**: simple, 透明感, or ゆめかわ. Decide which background image or faint pattern fits the direction and where the background needs to stay quiet. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
+   - **Atmosphere**: simple, 透明感, ゆめかわ, 柄もり (pattern-rich) or Liquid Glass. If the user named a style, use it. Decide which background image or faint pattern fits the direction and where the background needs to stay quiet. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
    - **Type and motion**: the scale and layering of the section headings, the one element that moves and when it starts, and which in-page links scroll smoothly.
 4. **Confirm.** Show the direction and wait for the user's answer before editing. Skip this only when the user has already said to just do it.
 5. **Apply the passes in order**, each across the whole screen before the next: shape → spacing → color → type → copy → icons → motif and detail → motion. Shape and spacing come first because they decide most of the warmth. Motif and motion come last because they should only add to a screen that already works. Values are in [references/tokens.md](references/tokens.md).

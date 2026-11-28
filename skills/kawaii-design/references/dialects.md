@@ -26,7 +26,7 @@ Palettes are starting points. Always tune them to the star's colors in Star mode
 - **Accents**: iridescent bubbles (a circle with a pink-to-aqua rim and a white highlight), small stars or sparkles. Use them as accents in a few places, not as wallpaper.
 - **Type**: rounded geometric display for the logo and titles, wide letter spacing, a clean rounded gothic for body. Text stays solid deep plum, never gradient.
 - **Motion**: choose a single soft entrance or one ambient movement, such as a drifting bubble. See [Motion](tokens.md#motion).
-- **Reference**: an illustrator site, see [refs.md](refs.md).
+- **Reference**: "A dreamy, illustration-led illustrator site" in [refs.md](refs.md).
 - **Pitfall**: readability. Glass over a busy gradient can wash text out. Give text panels enough white (55 to 75% opacity) and keep the ink deep. Check contrast on the most colorful part of the background.
 
 ## ワントーン (one-tone): the character's color, everywhere
@@ -37,7 +37,7 @@ Palettes are starting points. Always tune them to the star's colors in Star mode
 - **Shape**: circles (a mat behind the character, round icons) and large rounded panels. No borders. Separate surfaces by value.
 - **Layout**: the character is large and breaks out of its panel. Faint dashed grid or check in the hero.
 - **Type**: a chunky, rounded, geometric display face for the name and titles. Plain gothic for body.
-- **Reference**: a monotone portfolio site, see [refs.md](refs.md).
+- **Reference**: "A character-colored monotone portfolio" in [refs.md](refs.md).
 - **Pitfall**: with too little contrast between page, panel and ink it turns gray and sleepy. Keep the ink deep and the character's accent color visible.
 
 ## ポップかわいい (pop): candy and stickers
