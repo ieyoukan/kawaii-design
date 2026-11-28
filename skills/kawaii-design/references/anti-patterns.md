@@ -35,6 +35,11 @@ Every other item on this list is mostly a specific case of this one.
 - Handwritten or comic fonts for body text.
 - Hearts and stars sprinkled to fill space.
 
+## Curves too small to see
+
+- A row of tiny scallops, lace or bumps (under about 24px) as the only boundary between colors. At a glance it reads as a straight band, and the page feels boxed in. Use a few big rises instead, at least 56px tall on desktop.
+- A footer that starts with a straight edge.
+
 ## Wallpaper patterns
 
 - A loud all-over print, or a flat background left bare when the composition needs texture. Try faint dots or checks in open space and keep the foreground readable.

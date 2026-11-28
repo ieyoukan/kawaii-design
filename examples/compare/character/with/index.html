@@ -1,481 +1,570 @@
 <!doctype html>
 <!--
   Direction (kawaii-design)
-  前提: おまかせ指定のため確認なし。情報はいただいたプロフィールと素材 3 枚のみ。
-        自己紹介文は本人の言葉としてそのまま使用。創作したキャラクターやコピーはなし。
-
-  Product       : VRChat のイベント「ぷぷりえ」の店員さん・ようかんを、フレンドや遊びに来る人に知ってもらう 1 枚の紹介ページ。
-  Dialect       : ワントーン。キャラクター 1 人のページで、銀髪・水色のリボンとワンピース・白いエプロンという本人の色がはっきりしているため。
-                  外から「かわいい」用のピンクは持ち込まない。
-  Feel          : ふんわり、のんびり、ちょっと眠たげ。
-  World         : 水色のお昼寝部屋。ヘアピンの三日月(寝るのが好き)と、エプロンのフリルがモチーフ。
-  Star          : ヒーロー = 立ち絵(ホバー/タップでばんざい)。すきなもの = ウインク写真(小さな主役)。フッター = なし(Stage)。
-  Shape language: 円(上半身の後ろのマット、破線グリッドの円、写真の後ろ) + 角丸長方形(吹き出し・タグ)。
-                  セクションの境目はなし、フッターへだけエプロンのフリル(スカラップ)を 2 枚重ねで。
-  Atmosphere    : シンプル。本人のワンピースの水色をうすくした一色 #EAF2FA。キャラ自体が白いので、影とエッジで分離する。
-  Type & motion : 名前とタイトルは Mochiy Pop One、白いフチ + 紺のやわらかい影のステッカー文字、文字ごとに少し傾ける。
-                  ようかんは下からぽよんと着地、名前は 1 文字ずつ。待機はゆっくり 1° のゆれだけ。
-                  セクションはスクロールでふわっと上がる。prefers-reduced-motion では全部止めて最終状態。
+  Assumptions: おまかせ指示のため確認は省略。キャラ像は立ち絵・ウインク写真・本人の自己紹介文だけから読んだ。
+               本文はプロフィールの事実と本人の言葉だけ。創作したキャラやキャッチコピーはなし。
+  Character : 少女・おっとり（寝るのが好き、語尾「～」）+ ときどき元気（ばんざい、ウインク、「大好き！」）・漢字まじりでゆるい「～」・水色と白、ねこみみ、金の鈴、三日月のヘアピン、エプロンの名札
+  Product   : VRChat で「ぷぷりえ」の店員さんをしている、ようかんの紹介ページ。ようかんを知っている人・会いに行きたい人向け。
+  Dialect   : ゆめかわ。本人が「水色の可愛いの」が好きで、VRChat のファンページ。水色を主役に、ピンクとラベンダーを添える。
+  Feel      : ふわっと、ねむたげ、ときどきぱっと明るい
+  World     : 寝る前に見る水色の夢。シャボン玉と、三日月のヘアピンから取った月。
+  Star      : ヒーロー = 立ち絵（タップ／ホバーでばんざい）。好きなもの = ウインク写真（プリント）。フッター = なし（Stage）。
+  Shape     : 月（円）と有機的な波。背景は全ページ共通で開いたまま。ヒーローでは顔の後ろに大きなガラスの月（円）、写真の後ろにも同じ月。
+              名札は本人のエプロンの名札の形。吹き出しはしっぽで顔を指す。色が変わるのはフッターだけで、大きな波で入る。
+  Atmosphere: ゆめかわ。水色 6 割、ピンクとラベンダー、白い光をあいだに。うずを巻く虹色の背景。顔の後ろだけはガラスの月で静かにする。
+  Type/motion: 名前 h1 は Kiwi Maru の大きな文字に水色の三日月を一つ。h2 は同じ書体で一段小さく。
+              動くのは一つだけ：立ち絵が最初にふわっと着地する（約 0.9 秒、一度だけ）。ページ内リンクはなし、scroll-behavior は no-preference のときだけ smooth。
 -->
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ようかん</title>
-<meta name="description" content="VRChat「ぷぷりえ」の店員さん、ようかんの紹介ページ">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="../assets/youkan-banzai.webp">
-<script>document.documentElement.classList.add('js');</script>
-<style>
-  :root {
-    --page: #EAF2FA;        /* ワンピースの水色をうすく */
-    --mat: #F9FBFE;         /* エプロンの白 */
-    --foot: #D9E7F6;
-    --ink: #2B3856;         /* ワンピースの紺のライン */
-    --sky: #6FAEDD;         /* リボンの水色 */
-    --lemon: #F2D85A;       /* 三日月のヘアピン */
-    --star-dark: 46 74 120; /* 影はすべてこの紺で */
-    --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-    --dash-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Cpath d='M0 .75H36M.75 0V36' stroke='%236FAEDD' stroke-opacity='.45' stroke-width='1.5' stroke-dasharray='4 5'/%3E%3C/svg%3E");
-    --display: "Mochiy Pop One", "Zen Kaku Gothic New", sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--page);
-    color: var(--ink);
-    font-family: "Zen Kaku Gothic New", system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 17px;
-    line-height: 1.85;
-    letter-spacing: 0.04em;
-    word-break: auto-phrase;
-  }
-  main, .foot { overflow-x: clip; }
-  img { display: block; max-width: 100%; }
-  a { color: inherit; }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ようかん</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* three hues + white + ink */
+      --aqua: #a9e3f5;
+      --aqua-2: #c4ecf8;
+      --aqua-deep: #4f9cc9;
+      --pink: #f7cbe4;
+      --lavender: #d8cdf6;
+      --white: #ffffff;
+      --ink: #1f3658;
+      --ink-soft: #3d5578;
+      --star-dark: 40 74 118;   /* 立ち絵のスカートの紺 */
+      --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+      --wave-h: clamp(40px, 8vw, 112px);
+    }
 
-  /* ---------- 文字ごとの表示(見出し共通) ---------- */
-  .ph { white-space: nowrap; display: inline-block; }
-  .ph i { font-style: normal; display: inline-block; }
+    * { box-sizing: border-box; }
 
-  .sticker {
-    font-family: var(--display);
-    font-weight: 400;
-    color: var(--ink);
-    paint-order: stroke fill;
-    -webkit-text-stroke: 0.16em #fff;
-    filter: drop-shadow(0 6px 10px rgb(var(--star-dark) / 0.14));
-    letter-spacing: 0.06em;
-    line-height: 1.2;
-    margin: 0;
-  }
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
 
-  /* ---------- ヒーロー ---------- */
-  .hero {
-    position: relative;
-    min-height: 100svh;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.45fr);
-    align-items: end;
-    padding: 0 clamp(24px, 6vw, 96px) 3svh;
-  }
-  .intro {
-    position: relative;
-    z-index: 2;
-    align-self: center;
-    justify-self: end;
-    padding: 30svh clamp(16px, 3vw, 48px) 0 0;
-  }
-  .name {
-    font-size: clamp(56px, 7.4vw, 112px);
-    letter-spacing: 0.02em;
-    position: relative;
-    display: inline-block;
-    white-space: nowrap;
-  }
-  .name i:nth-child(1) { rotate: -5deg; }
-  .name i:nth-child(2) { rotate: 3deg;  translate: 0 0.06em; }
-  .name i:nth-child(3) { rotate: -2deg; translate: 0 -0.03em; }
-  .name i:nth-child(4) { rotate: 6deg;  translate: 0 0.05em; }
-  .name .moon {
-    position: absolute;
-    width: 0.3em; height: 0.3em;
-    right: -0.04em; top: 0.02em;
-    rotate: 18deg;
-  }
-  .role { margin: 18px 0 0 0.3em; font-size: 18px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #eef8fc;
+      font: 500 1rem/1.9 "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+      letter-spacing: 0.03em;
+      word-break: auto-phrase;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .stage-wrap {
-    position: relative;
-    z-index: 1;
-    height: min(91svh, 1100px);
-    min-height: 560px;
-  }
-  .stage {
-    position: relative;
-    height: 100%;
-    aspect-ratio: 706 / 1215;
-  }
-  /* 背景の円は「入れもの」ではなく構図の一部 */
-  .grid-circle {
-    position: absolute;
-    width: 172%; aspect-ratio: 1;
-    left: -4%; top: 16%;
-    border-radius: 50%;
-    background-color: #E2ECF8;
-    background-image: var(--dash-grid);
-    background-size: 36px 36px;
-    pointer-events: none;
-  }
-  .mat {
-    position: absolute;
-    width: 108%; aspect-ratio: 1;
-    left: -3%; top: -1%;
-    border-radius: 50%;
-    background: var(--mat);
-    pointer-events: none;
-  }
+    img { display: block; max-width: 100%; }
 
-  .star {
-    position: absolute; inset: 0;
-    padding: 0; border: 0; background: none;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    border-radius: 24px;
-  }
-  .star:focus-visible { outline: 3px solid var(--sky); outline-offset: 6px; }
-  .star .arrive { position: absolute; inset: 0; }
-  .star .sway { position: absolute; inset: 0; transform-origin: 52% 100%; }
-  .star .hopper { position: absolute; inset: 0; }
-  .star::after { /* 足元の接地影 */
-    content: "";
-    position: absolute; left: 53%; bottom: 0.2%;
-    width: 36%; height: 3.2%;
-    translate: -50% 0;
-    border-radius: 50%;
-    background: rgb(var(--star-dark) / 0.24);
-    filter: blur(7px);
-    z-index: -1;
-  }
-  .star img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: contain; object-position: bottom center;
-    filter:
-      drop-shadow(0 1px 2px rgb(var(--star-dark) / 0.22))
-      drop-shadow(-12px 16px 22px rgb(var(--star-dark) / 0.16));
-    transition: opacity 160ms ease-out;
-    user-select: none; -webkit-user-drag: none;
-  }
-  .star .pose-banzai { opacity: 0; }
-  .is-banzai .star .pose-banzai { opacity: 1; }
-  .is-banzai .star .pose-stand { opacity: 0; }
+    h1, h2 {
+      margin: 0;
+      font-family: "Kiwi Maru", "Hiragino Maru Gothic ProN", serif;
+      font-weight: 500;
+      line-height: 1.1;
+      text-wrap: balance;
+    }
 
-  /* 吹き出し: しっぽは顔に向ける */
-  .bubble {
-    position: absolute;
-    z-index: 3;
-    right: 84%;
-    top: 9%;
-    width: min(330px, 26vw);
-    margin: 0;
-    padding: 20px 24px;
-    background: #fff;
-    border-radius: 22px;
-    box-shadow: 0 10px 28px rgb(var(--star-dark) / 0.10);
-    transition: opacity 220ms var(--ease-soft), translate 220ms var(--ease-soft);
-  }
-  .bubble .tail {
-    position: absolute;
-    right: -17px; top: 42%;
-    width: 22px; height: 26px;
-    color: #fff;
-  }
-  .bubble .tail-down { display: none; }
-  .is-banzai .bubble { opacity: 0; translate: -10px 0; pointer-events: none; }
+    /* ---------- ゆめかわ background: aqua leads, white light between ---------- */
+    .page { position: relative; isolation: isolate; overflow-x: clip; }
+    .page::before {
+      content: "";
+      position: fixed;
+      inset: -12%;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(38% 30% at 16% 20%, #a9e3f5 0%, transparent 70%),
+        radial-gradient(40% 34% at 80% 26%, #bfe9f7 0%, transparent 72%),
+        radial-gradient(40% 32% at 58% 82%, #9fd8f2 0%, transparent 70%),
+        radial-gradient(30% 26% at 22% 70%, #b6e6f6 0%, transparent 70%),
+        radial-gradient(26% 22% at 46% 46%, #ffffff 0%, transparent 72%),
+        radial-gradient(18% 16% at 70% 56%, #ffffff 0%, transparent 70%),
+        radial-gradient(22% 18% at 90% 72%, #f7c8e4 0%, transparent 70%),
+        radial-gradient(18% 16% at 34% 4%, #f7d3e8 0%, transparent 70%),
+        radial-gradient(22% 18% at 6% 88%, #d6c8f6 0%, transparent 70%),
+        radial-gradient(16% 14% at 96% 6%, #ddd2f8 0%, transparent 70%),
+        radial-gradient(10% 9% at 52% 16%, #fff3c4 0%, transparent 70%),
+        linear-gradient(118deg, transparent 30%, rgb(255 255 255 / .9) 42%, transparent 54%),
+        linear-gradient(28deg, transparent 56%, rgb(247 200 228 / .45) 64%, transparent 73%),
+        #e6f6fc;
+      filter: url(#swirl) blur(6px);
+    }
 
-  /* ---------- すきなもの ---------- */
-  .likes {
-    position: relative;
-    max-width: 1040px;
-    margin: clamp(88px, 12vw, 160px) auto 0;
-    padding: 0 clamp(24px, 6vw, 64px);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(48px, 7vw, 96px);
-    align-items: center;
-  }
-  .print-wrap { position: relative; justify-self: end; width: min(100%, 420px); }
-  .print-wrap::before { /* ヒーローの破線グリッドの円をもう一度 */
-    content: "";
-    position: absolute;
-    width: 115%; aspect-ratio: 1;
-    left: -38%; top: -22%;
-    border-radius: 50%;
-    background-color: #E2ECF8;
-    background-image: var(--dash-grid);
-    background-size: 36px 36px;
-    z-index: -1;
-  }
-  .print {
-    position: relative;
-    margin: 0;
-    padding: 14px 14px 52px;
-    background: #fff;
-    border-radius: 6px;
-    rotate: -2.5deg;
-    box-shadow:
-      0 2px 3px rgb(var(--star-dark) / 0.08),
-      -8px 16px 30px rgb(var(--star-dark) / 0.14);
-  }
-  .print img { width: 100%; height: auto; aspect-ratio: 680 / 565; object-fit: cover; border-radius: 3px; }
-  .print::before { /* マスキングテープ */
-    content: "";
-    position: absolute;
-    left: 50%; top: -14px;
-    width: 104px; height: 30px;
-    translate: -50% 0; rotate: 4deg;
-    background: rgb(111 174 221 / 0.42);
-    border-radius: 3px;
-  }
+    /* a few iridescent bubbles and sparkles, only at the edges */
+    .deco { position: absolute; z-index: -1; pointer-events: none; }
+    .soap {
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 28%, rgb(255 255 255 / .95) 0 9%, transparent 10%),
+        radial-gradient(circle at 50% 50%, rgb(255 255 255 / .18) 58%, transparent 70%);
+      box-shadow:
+        inset 0 0 0 1.5px rgb(255 255 255 / .85),
+        inset 4px -6px 14px rgb(247 190 222 / .55),
+        inset -6px 6px 14px rgb(140 210 240 / .55);
+    }
+    .spark { width: 14px; height: 14px; color: #fff; }
 
-  .likes h2 { font-size: clamp(36px, 4.4vw, 54px); margin-bottom: 28px; }
-  .tags { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; justify-items: start; }
-  .tags li {
-    display: inline-flex; align-items: center; gap: 12px;
-    padding: 12px 22px 12px 18px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgb(var(--star-dark) / 0.07);
-  }
-  .tags li:nth-child(2) { margin-left: 28px; }
-  .tags li:nth-child(3) { margin-left: 8px; }
-  .tags svg { width: 22px; height: 22px; flex: none; }
-
-  /* ---------- フッター: エプロンのフリルで切り替え ---------- */
-  .foot {
-    position: relative;
-    margin-top: clamp(96px, 10vw, 136px);
-    background: var(--foot);
-    padding: 64px 24px 72px;
-  }
-  .frill {
-    position: absolute; left: 0; right: 0; top: 1px;
-    height: 15px;
-    translate: 0 -100%;
-    background: radial-gradient(circle at 50% 100%, var(--foot) 15px, transparent 15.5px) 0 0 / 28px 15px repeat-x;
-    animation: frill-drift 40s linear infinite;
-    pointer-events: none;
-  }
-  .frill.back {
-    height: 22px;
-    opacity: 0.4;
-    background: radial-gradient(circle at 50% 100%, var(--foot) 21px, transparent 21.5px) 14px 0 / 40px 22px repeat-x;
-    animation-duration: 60s;
-    animation-direction: reverse;
-  }
-  @keyframes frill-drift { to { background-position-x: 280px; } }
-  .frill.back { animation-name: frill-drift-back; }
-  @keyframes frill-drift-back { from { background-position-x: 14px; } to { background-position-x: 294px; } }
-
-  .links {
-    list-style: none; margin: 0 auto; padding: 0;
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 16px;
-    max-width: 760px;
-  }
-  .links a, .links span.tag {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 12px 22px;
-    border-radius: 9999px;
-    background: #fff;
-    font-family: var(--display);
-    font-size: 17px;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    line-height: 1.5;
-  }
-  .links a { transition: translate 220ms var(--ease-poyon), box-shadow 220ms var(--ease-soft); }
-  .links a:hover { translate: 0 -3px; box-shadow: 0 8px 18px rgb(var(--star-dark) / 0.12); }
-  .links a:active { translate: 0 1px; transition-duration: 120ms; }
-  .links a:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
-  .links svg { width: 20px; height: 20px; flex: none; }
-
-  /* ---------- モーション ---------- */
-  @keyframes star-in { from { opacity: 0; translate: 0 32px; } }
-  @keyframes letter-in { from { opacity: 0; translate: 0 12px; } }
-  @keyframes sway { from { rotate: -0.6deg; } to { rotate: 0.8deg; } }
-  @keyframes hop { 0% { translate: 0 0; } 40% { translate: 0 -16px; } 100% { translate: 0 0; } }
-
-  .star .arrive { animation: star-in 760ms var(--ease-poyon) 120ms backwards; }
-  .star .sway { animation: sway 4.6s ease-in-out 1.2s infinite alternate; }
-  .star .hopper.hop { animation: hop 420ms var(--ease-poyon); }
-  .name i { animation: letter-in 620ms var(--ease-poyon) backwards; animation-delay: calc(420ms + var(--i) * 70ms); }
-  .name .moon { animation: letter-in 620ms var(--ease-poyon) 760ms backwards; }
-  .role { animation: letter-in 600ms var(--ease-soft) 820ms backwards; }
-  .bubble { animation: letter-in 600ms var(--ease-poyon) 980ms backwards; }
-
-  /* スクロールで出てくるもの。JS がないときは最初から見えている */
-  .rise { transition: opacity 600ms var(--ease-soft), translate 600ms var(--ease-soft); transition-delay: var(--d, 0ms); }
-  .js .rise.wait { opacity: 0; translate: 0 20px; }
-  .print-wrap.rise .print { transition: rotate 700ms var(--ease-poyon) 120ms; }
-  .js .print-wrap.wait .print { rotate: 4deg; }
-  .likes h2 i { transition: opacity 500ms var(--ease-soft), translate 520ms var(--ease-poyon); transition-delay: calc(var(--i) * 55ms); }
-  .js .likes h2.wait i { opacity: 0; translate: 0 12px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .js .rise.wait, .js .likes h2.wait i { opacity: 1; translate: none; }
-    .js .print-wrap.wait .print { rotate: -2.5deg; }
-  }
-
-  /* ---------- スマホ ---------- */
-  @media (max-width: 760px) {
-    body { font-size: 16px; }
+    /* ---------- hero ---------- */
     .hero {
-      grid-template-columns: 1fr;
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) auto minmax(280px, 0.8fr);
+      grid-template-areas:
+        "name stage ."
+        "facts stage .";
+      grid-template-rows: auto 1fr;
       align-items: start;
-      padding: 0 16px;
-      min-height: auto;
+      column-gap: clamp(24px, 3vw, 56px);
+      padding: 0 clamp(24px, 6vw, 112px) 2svh;
+      max-width: 1440px;
+      margin-inline: auto;
     }
-    .intro { justify-self: center; text-align: center; padding: 28px 0 0; }
-    .name { font-size: clamp(56px, 17vw, 76px); }
-    .role { margin: 4px 0 0; font-size: 16px; }
-    .stage-wrap {
-      justify-self: center;
-      height: auto; min-height: 0;
-      display: flex; flex-direction: column; align-items: center;
-      margin-top: 10px;
-    }
-    .bubble {
+
+    .name {
+      grid-area: name;
+      align-self: end;
+      justify-self: end;
+      padding-top: 30svh;
       position: relative;
-      right: auto; top: auto;
-      width: min(100%, 340px);
-      padding: 14px 20px;
-      margin-bottom: 6px;
+      z-index: 1;
+      font-size: clamp(4rem, 6.6vw, 7rem);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
     }
-    .bubble .tail { display: none; }
-    .bubble .tail-down {
-      display: block;
+    .name .moon {
       position: absolute;
-      left: 54%; bottom: -17px;
-      width: 26px; height: 22px;
-      color: #fff;
+      width: 0.3em;
+      height: 0.3em;
+      right: -0.18em;
+      top: calc(30svh - 0.12em);
+      color: var(--aqua-deep);
+      rotate: 18deg;
     }
-    .is-banzai .bubble { opacity: 1; translate: none; pointer-events: auto; }
-    .stage { height: max(420px, calc(100svh - 290px)); }
-    .likes { grid-template-columns: 1fr; gap: 40px; }
-    .print-wrap { justify-self: center; width: min(88%, 380px); }
-    .likes .text { justify-self: center; }
-    .foot { padding: 52px 16px 60px; }
-  }
-</style>
+
+    .facts {
+      grid-area: facts;
+      justify-self: end;
+      text-align: right;
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      justify-items: end;
+      gap: 18px;
+      font-size: 1.0625rem;
+      color: var(--ink-soft);
+    }
+    .facts .id b { font-weight: 700; color: var(--ink); letter-spacing: 0.04em; }
+
+    /* the apron's name tag */
+    .nametag {
+      position: relative;
+      display: inline-block;
+      padding: 12px 20px 10px;
+      background: var(--white);
+      border-radius: 8px;
+      color: var(--ink);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      box-shadow: 0 6px 18px rgb(var(--star-dark) / .12);
+      rotate: -2deg;
+    }
+    .nametag::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 6px;
+      border-radius: 8px 8px 0 0;
+      background: var(--aqua);
+    }
+
+    .stage {
+      grid-area: stage;
+      position: relative;
+      height: max(560px, 92svh);
+      aspect-ratio: 706 / 1215;
+      align-self: end;
+    }
+
+    /* glass moon behind the face */
+    .moonmat {
+      position: absolute;
+      left: -14%;
+      top: -2%;
+      width: 112%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgb(255 255 255 / .46);
+      -webkit-backdrop-filter: blur(14px) saturate(1.3);
+      backdrop-filter: blur(14px) saturate(1.3);
+      box-shadow:
+        inset 0 0 0 1px rgb(255 255 255 / .75),
+        0 18px 48px rgb(120 180 220 / .18);
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .star:focus-visible { outline: 2px dashed var(--aqua-deep); outline-offset: 6px; border-radius: 24px; }
+
+    .figure { position: absolute; inset: 0; }
+    .figure::after {          /* contact shadow under the shoes */
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -0.6%;
+      width: 40%;
+      height: 3.2%;
+      translate: -48% 0;
+      border-radius: 50%;
+      background: rgb(var(--star-dark) / .26);
+      filter: blur(7px);
+      z-index: -1;
+    }
+    .figure img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter:
+        saturate(1.06) contrast(1.03)
+        drop-shadow(0 1px 1.5px rgb(var(--star-dark) / .22))
+        drop-shadow(12px 18px 26px rgb(var(--star-dark) / .16));
+      transition: opacity 160ms ease-out;
+    }
+    .figure .banzai { opacity: 0; }
+    .is-banzai .figure .banzai { opacity: 1; }
+    .is-banzai .figure .stand { opacity: 0; }
+    @media (hover: hover) and (pointer: fine) {
+      .stage:has(.star:hover) .figure .banzai { opacity: 1; }
+      .stage:has(.star:hover) .figure .stand { opacity: 0; }
+    }
+
+    /* speech bubble — tail points at the face */
+    .say {
+      position: absolute;
+      z-index: 2;
+      left: 74%;
+      top: 5.5%;
+      width: clamp(270px, 22vw, 330px);
+      margin: 0;
+      padding: 22px 26px;
+      background: var(--white);
+      border-radius: 28px;
+      font-size: 1.0625rem;
+      line-height: 1.85;
+      filter: drop-shadow(0 10px 22px rgb(var(--star-dark) / .14));
+      transition: left 280ms var(--ease-soft), top 280ms var(--ease-soft);
+    }
+    .say::before {
+      content: "";
+      position: absolute;
+      left: -25px;
+      top: 54px;
+      width: 28px;
+      height: 26px;
+      background: var(--white);
+      clip-path: path("M28 2 C20 6 10 14 1 24 C1.5 25.5 3 26 4 25.5 C12 22 20 18 28 18 Z");
+    }
+    /* during ばんざい the right hand rises here, so the bubble steps aside */
+    .is-banzai .say { left: 104%; }
+    @media (hover: hover) and (pointer: fine) {
+      .stage:has(.star:hover) .say { left: 104%; }
+    }
+
+    /* ---------- 好きなもの ---------- */
+    .likes {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: clamp(96px, 12vw, 168px) clamp(24px, 6vw, 80px) calc(var(--wave-h) + clamp(96px, 10vw, 140px));
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: center;
+      gap: clamp(48px, 7vw, 112px);
+    }
+
+    .print-wrap { position: relative; justify-self: center; width: min(100%, 400px); }
+    .print-wrap .moonmat {
+      left: auto;
+      right: -22%;
+      top: -16%;
+      width: 86%;
+    }
+    .print {
+      position: relative;
+      margin: 0;
+      padding: 14px 14px 52px;
+      background: var(--white);
+      border-radius: 6px;
+      rotate: -2.5deg;
+      box-shadow:
+        0 2px 4px rgb(var(--star-dark) / .10),
+        10px 18px 36px rgb(var(--star-dark) / .16);
+    }
+    .print img { width: 100%; height: auto; aspect-ratio: 680 / 565; object-fit: cover; border-radius: 3px; }
+
+    .likes h2 { font-size: clamp(2.75rem, 5.2vw, 4.5rem); letter-spacing: 0.06em; }
+    .likes ul {
+      list-style: none;
+      margin: clamp(28px, 3vw, 40px) 0 0;
+      padding: 0;
+      display: grid;
+      gap: 18px;
+      font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
+    }
+    .likes li { display: flex; align-items: center; gap: 14px; }
+    .likes li svg { flex: none; width: 22px; height: 22px; color: var(--aqua-deep); rotate: 18deg; }
+
+    /* ---------- footer ---------- */
+    .foot {
+      position: relative;
+      background: #fbfeff;
+      padding: clamp(24px, 4vw, 48px) 24px clamp(56px, 7vw, 88px);
+    }
+    .wave {
+      position: absolute;
+      left: 0;
+      bottom: calc(100% - 1px);
+      width: 100%;
+      height: var(--wave-h);
+      color: #fbfeff;
+      pointer-events: none;
+    }
+    .links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px clamp(32px, 6vw, 80px);
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 48px;
+      color: var(--ink);
+      text-decoration: none;
+      font-family: "Kiwi Maru", serif;
+      font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+      letter-spacing: 0.04em;
+    }
+    .links .icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--aqua-2);
+      transition: background-color 160ms ease-out, translate 160ms ease-out;
+    }
+    .links .icon svg { width: 22px; height: 22px; }
+    .links a:hover .icon { background: var(--aqua); translate: 0 -2px; }
+    .links a:hover span:last-child { text-decoration: underline; text-decoration-color: var(--aqua-deep); text-underline-offset: 0.3em; }
+    .links a:focus-visible { outline: 2px dashed var(--aqua-deep); outline-offset: 6px; border-radius: 12px; }
+
+    /* ---------- the one decorative motion: the star lands once ---------- */
+    @media (prefers-reduced-motion: no-preference) {
+      .figure { animation: land 900ms var(--ease-soft) 120ms backwards; }
+      @keyframes land {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .say, .figure img, .links .icon { transition: none; }
+    }
+
+    /* ---------- mobile ---------- */
+    @media (max-width: 820px) {
+      :root { --wave-h: 88px; }
+      .hero {
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "name" "stage" "facts";
+        grid-template-rows: auto;
+        padding: 0 20px;
+      }
+      .name {
+        justify-self: center;
+        padding-top: 40px;
+        font-size: clamp(3.75rem, 21vw, 5.5rem);
+      }
+      .name .moon { top: calc(40px + 0.1em); right: -0.1em; }
+      .stage {
+        justify-self: center;
+        height: auto;
+        width: 100%;
+        aspect-ratio: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 16px;
+      }
+      .say {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: min(100%, 360px);
+        padding: 18px 22px;
+        font-size: 0.9375rem;
+        line-height: 1.8;
+        transition: none;
+      }
+      .say::before {
+        left: 54%;
+        top: auto;
+        bottom: -24px;
+        width: 26px;
+        height: 26px;
+        clip-path: path("M2 0 C6 8 6 16 3 25 C3 26 4.5 26.5 5.5 25.5 C12 19 18 10 24 0 Z");
+      }
+      .is-banzai .say { left: auto; }
+      .figure-box {
+        position: relative;
+        margin-top: 22px;
+        height: min(76svh, 640px);
+        aspect-ratio: 706 / 1215;
+      }
+      .figure-box .moonmat { left: -14%; top: -3%; width: 128%; }
+      .facts {
+        justify-self: center;
+        justify-items: center;
+        text-align: center;
+        margin-top: 36px;
+      }
+      .likes {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 96px;
+        gap: 56px;
+      }
+      .likes .text { order: -1; }
+      .print-wrap { width: min(88%, 340px); }
+    }
+    @media (min-width: 821px) {
+      .figure-box { position: absolute; inset: 0; }
+    }
+  </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="moon" viewBox="0 0 24 24">
-      <path d="M15.2 3.4a8.6 8.6 0 1 0 5.4 13.9 7.1 7.1 0 0 1-5.4-13.9Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="swirl" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.007" numOctaves="2" seed="11"/>
+      <feDisplacementMap in="SourceGraphic" scale="130"/>
+    </filter>
+    <symbol id="crescent" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M15.6 2.4a10 10 0 1 0 6 15.9c.4-.6-.2-1.3-.9-1.1A8 8 0 0 1 14.9 3.6c.5-.5.3-1.3-.4-1.3l1.1.1Z"/>
     </symbol>
-  </defs>
-</svg>
+    <symbol id="sparkle" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 1.5c.6 5.4 3.6 9.6 10.5 10.5-6.9.9-9.9 5.1-10.5 10.5C11.4 17.1 8.4 12.9 1.5 12 8.4 11.1 11.4 6.9 12 1.5Z"/>
+    </symbol>
+  </svg>
 
-<main id="top">
-  <section class="hero" aria-label="ようかん">
-    <div class="intro">
-      <h1 class="name sticker" aria-label="ようかん"><span class="ph" aria-hidden="true"><i style="--i:0">よ</i><i style="--i:1">う</i><i style="--i:2">か</i><i style="--i:3">ん</i></span><svg class="moon" style="color:var(--lemon)" aria-hidden="true"><use href="#moon"/></svg></h1>
-      <p class="role">VRChat「ぷぷりえ」の店員さん</p>
-    </div>
+  <div class="page">
+    <span class="deco soap" style="width:64px;height:64px;left:4%;top:16svh"></span>
+    <span class="deco soap" style="width:30px;height:30px;left:9%;top:calc(16svh + 84px)"></span>
+    <span class="deco soap" style="width:96px;height:96px;right:5%;top:68svh"></span>
+    <svg class="deco spark" style="right:9%;top:12svh" aria-hidden="true"><use href="#sparkle"/></svg>
+    <svg class="deco spark" style="left:18%;top:78svh;width:10px;height:10px" aria-hidden="true"><use href="#sparkle"/></svg>
+    <svg class="deco spark" style="right:14%;top:calc(68svh + 120px);width:10px;height:10px" aria-hidden="true"><use href="#sparkle"/></svg>
 
-    <div class="stage-wrap">
-      <p class="bubble"><span class="ph">ようかんって</span><span class="ph">いいます～</span><span class="ph">よろしくね～。</span><span class="ph">えっと</span><span class="ph">水色の</span><span class="ph">可愛いのとも</span><span class="ph">好きかも！</span><span class="ph">ぷぷりえの</span><span class="ph">友達と</span><span class="ph">遊ぶのが</span><span class="ph">大好き！</span><svg class="tail" viewBox="0 0 22 26" aria-hidden="true"><path d="M0 2 C 8 6, 15 10, 20.5 12.2 Q 22 13 20.5 13.8 C 15 16, 8 20, 0 24 Z" fill="currentColor"/></svg><svg class="tail-down" viewBox="0 0 26 22" aria-hidden="true"><path d="M2 0 C 6 8, 10 15, 12.2 20.5 Q 13 22 13.8 20.5 C 16 15, 20 8, 24 0 Z" fill="currentColor"/></svg></p>
-      <div class="stage">
-        <div class="grid-circle" aria-hidden="true"></div>
-        <div class="mat" aria-hidden="true"></div>
-        <button class="star" type="button" aria-label="ようかん" aria-pressed="false">
-          <span class="arrive"><span class="sway"><span class="hopper">
-            <img class="pose-stand" src="../assets/youkan-stand.webp" width="706" height="1215" alt="水色のメイド服に白いエプロンの、ねこみみのようかん" draggable="false">
-            <img class="pose-banzai" src="../assets/youkan-banzai.webp" width="706" height="1215" alt="" draggable="false">
-          </span></span></span>
-        </button>
-      </div>
-    </div>
-  </section>
+    <main>
+      <header class="hero">
+        <h1 class="name">ようかん<svg class="moon" aria-hidden="true"><use href="#crescent"/></svg></h1>
 
-  <section class="likes" aria-labelledby="likes-title">
-    <div class="print-wrap rise">
-      <figure class="print">
-        <img src="../assets/youkan-wink.webp" width="680" height="565" alt="ウインクするようかん" loading="lazy">
-      </figure>
-    </div>
-    <div class="text">
-      <h2 id="likes-title" class="sticker rise" aria-label="すきなもの"><span class="ph" aria-hidden="true"><i style="--i:0">す</i><i style="--i:1">き</i><i style="--i:2">な</i><i style="--i:3">も</i><i style="--i:4">の</i></span></h2>
-      <ul class="tags">
-        <li class="rise" style="--d:120ms"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>水色の、かわいいもの</li>
-        <li class="rise" style="--d:200ms"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>ぷぷりえの友達と遊ぶこと</li>
-        <li class="rise" style="--d:280ms"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>おうちで寝ること</li>
+        <div class="stage" id="stage">
+          <p class="say">ようかんっていいます～よろしくね～。えっと水色の可愛いのとも好きかも！ぷぷりえの友達と遊ぶのが大好き！</p>
+          <div class="figure-box">
+            <span class="moonmat" aria-hidden="true"></span>
+            <button class="star" type="button" aria-pressed="false" aria-label="ようかん（ばんざい）">
+              <span class="figure">
+                <img class="stand" src="../assets/youkan-stand.webp" width="706" height="1215" alt="水色のメイド服にねこみみの、ようかんの立ち絵">
+                <img class="banzai" src="../assets/youkan-banzai.webp" width="706" height="1215" alt="" aria-hidden="true">
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <ul class="facts">
+          <li class="id">VRChat ID <b>ようかんYokan</b></li>
+          <li><span class="nametag">ぷぷりえの店員さん</span></li>
+        </ul>
+      </header>
+
+      <section class="likes" aria-labelledby="likes-title">
+        <div class="print-wrap">
+          <span class="moonmat" aria-hidden="true"></span>
+          <figure class="print">
+            <img src="../assets/youkan-wink.webp" width="680" height="565" alt="ウインクしているようかんの顔" loading="lazy">
+          </figure>
+        </div>
+        <div class="text">
+          <h2 id="likes-title">好きなもの</h2>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#crescent"/></svg>水色の可愛いの</li>
+            <li><svg aria-hidden="true"><use href="#crescent"/></svg>ぷぷりえの友達と遊ぶこと</li>
+            <li><svg aria-hidden="true"><use href="#crescent"/></svg>おうちで寝ること</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <svg class="wave" viewBox="0 0 1440 112" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="currentColor" opacity=".55" d="M0 40C120 36 196 10 318 20S470 70 590 64S790 22 918 18S1086 56 1190 50S1356 14 1440 30V112H0Z"/>
+        <path fill="currentColor" d="M0 62C118 60 150 22 280 24S452 92 600 84S790 34 910 34S1030 66 1116 64S1306 18 1440 48V112H0Z"/>
+      </svg>
+      <ul class="links">
+        <li>
+          <a href="https://x.com/youkan0124" rel="noopener">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path fill="#1f3658" d="M17.8 3h3.1l-6.8 7.7 8 10.3h-6.2l-4.9-6.3L5.4 21H2.3l7.2-8.3L1.8 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></svg>
+            </span>
+            <span>@youkan0124</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://youkan.uk/" rel="noopener">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1f3658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5"/><path d="M6 9v9.5a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M10 20v-4.5a2 2 0 0 1 4 0V20"/></svg>
+            </span>
+            <span>youkan.uk</span>
+          </a>
+        </li>
       </ul>
-    </div>
-  </section>
-</main>
+    </footer>
+  </div>
 
-<footer class="foot">
-  <div class="frill back" aria-hidden="true"></div>
-  <div class="frill" aria-hidden="true"></div>
-  <ul class="links">
-    <li><a href="https://x.com/youkan0124" rel="noopener" target="_blank" aria-label="X youkan0124">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3Zm-1.08 16.2h1.7L7.4 4.73H5.58L16.67 19.2Z"/></svg>youkan0124</a></li>
-    <li><a href="https://youkan.uk/" rel="noopener" target="_blank">
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5"/><path d="M6 9v9.5a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M10 20v-5h4v5"/></svg>ホームページ</a></li>
-    <li><span class="tag"><svg style="color:var(--sky)" aria-hidden="true"><use href="#moon"/></svg>VRChat ID ようかんYokan</span></li>
-  </ul>
-</footer>
-
-<script>
-(() => {
-  const hero = document.querySelector('.hero');
-  const star = hero.querySelector('.star');
-  const hopper = star.querySelector('.hopper');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const setPose = (banzai) => {
-    if (hero.classList.contains('is-banzai') === banzai) return;
-    hero.classList.toggle('is-banzai', banzai);
-    star.setAttribute('aria-pressed', String(banzai));
-    if (!reduce) {
-      hopper.classList.remove('hop');
-      void hopper.offsetWidth;
-      hopper.classList.add('hop');
-    }
-  };
-  star.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') setPose(true); });
-  star.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') setPose(false); });
-  star.addEventListener('pointerup', (e) => {
-    if (e.pointerType !== 'mouse') setPose(!hero.classList.contains('is-banzai'));
-  });
-  star.addEventListener('click', (e) => { if (e.detail === 0) setPose(!hero.classList.contains('is-banzai')); });
-  hopper.addEventListener('animationend', () => hopper.classList.remove('hop'));
-
-  // スクロールで出てくるもの。最初の画面に見えているもの・IO がない環境では隠さない
-  if (reduce || !('IntersectionObserver' in window)) return;
-  const items = [...document.querySelectorAll('.rise')]
-    .filter((el) => el.getBoundingClientRect().top > innerHeight * 0.92);
-  items.forEach((el) => el.classList.add('wait'));
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      en.target.classList.remove('wait');
-      io.unobserve(en.target);
-    });
-  }, { rootMargin: '0px 0px -12% 0px' });
-  items.forEach((el) => io.observe(el));
-  // 念のため: 何かで発火しなくても最後は必ず見える
-  setTimeout(() => items.forEach((el) => { if (el.classList.contains('wait') && el.getBoundingClientRect().top < innerHeight) el.classList.remove('wait'); }), 3000);
-})();
-</script>
+  <script>
+    // Tap or keyboard toggles ばんざい. Mouse uses :hover instead, so a click after hover doesn't flip it twice.
+    (() => {
+      const stage = document.getElementById('stage');
+      const star = stage.querySelector('.star');
+      const fine = matchMedia('(hover: hover) and (pointer: fine)');
+      let lastPointer = '';
+      star.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; });
+      star.addEventListener('keydown', () => { lastPointer = 'keyboard'; });
+      star.addEventListener('click', () => {
+        if (lastPointer === 'mouse' && fine.matches) return;
+        const on = !stage.classList.contains('is-banzai');
+        stage.classList.toggle('is-banzai', on);
+        star.setAttribute('aria-pressed', String(on));
+        lastPointer = '';
+      });
+    })();
+  </script>
 </body>
 </html>

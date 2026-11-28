@@ -59,6 +59,13 @@ A hard, straight edge between two background colors looks like a template, and i
 1. **No boundary.** Keep the same flat background through the whole page. Separate sections only with space and titles. This is the default.
 2. **A shallow organic edge.** Use it where the background color actually changes. Draw a few smooth rises and dips of uneven widths and heights, and use the next section's fill. A second, fainter offset layer can add depth if the composition calls for it.
 
+**The curve must read at a glance.** Squint at the screenshot: if the boundary still looks like a straight line, it is one.
+- Height of the curve: at least 56px on desktop and 32px on mobile, measured from the highest rise to the lowest dip. 80 to 120px on desktop is a good range.
+- The two fills must differ clearly. If the section above and the footer are almost the same pale tint, the curve disappears even when it is big. Make the next fill noticeably lighter, darker or more saturated (for example white against a mid pastel, or a mid pastel against white), or add the fainter offset layer in a stronger tint so the edge shows.
+- Use two to four big rises across the full width, not dozens of tiny bumps. A row of small scallops or lace (under about 24px) reads as a straight band with a texture, so it doesn't count as a curve. Small scallops can decorate a big curve, but never replace it.
+
+**The footer always gets a clear curve.** The footer is where the page usually changes color, so it is the one boundary every page has. Enter it with a big wave, cloud, drip or hill shape, or make the footer itself an organic shape (a large blob rising from the bottom, or a mound with a big rounded top). A footer that starts with a straight edge or a tiny scallop row makes the whole page feel boxed in.
+
 ### Curved join between fills
 
 ```html
