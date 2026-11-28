@@ -37,6 +37,17 @@ How to turn the word "kawaii" into concrete design decisions is covered in [refe
 - **Do not make every element equally cute. If everything is loud, nothing feels special.**
 - If the design lacks warmth or personality, request assets instead of faking cuteness with excessive decoration.
 
+## Read the character first
+
+Understanding the character is the core of this skill. Before choosing colors or shapes, read who the character is: apparent age (幼い, 少女, 大人), temperament (元気, おっとり, 眠たげ, クール, ダウナー, 照れ屋, 上品), voice (how they write, how much ひらがな), main color and signature details (accessories, colors, motifs). Then let that decide the type, shapes, color, copy and motion.
+
+- A child-like character gets mostly ひらがな headings, very round chunky type, round shapes, bright pastels and bouncy motion.
+- A grown-up character gets 大人かわいい, which looks very different: thin, light titles, small body text (12 to 14px with a line height around 2), one flat pale background with one accent color, lots of whitespace, slow motion and exactly one sweet detail per screen.
+- A sleepy or shy character gets soft, slow and round. A cool or downer character gets cooler colors, straighter lines and little motion.
+- Design for the character's fans. Everything follows the character, including headings, labels and decoration.
+
+When there is no character, read the product's persona the same way. Details and tables are in [references/character.md](references/character.md).
+
 ## Stage mode and Star mode
 
 Before changing anything, find the star. Star content is **visually strong**: characters, mascots, illustrations, product photos, artwork, user-made images, screenshots, game screens, and photos of people or pets. Text is never the star on its own. A timeline of text posts, an article list, a chat, a form or a dashboard is Stage mode, even though the posts are the "content". Only the images inside them (a photo in a post, a cover image) are small stars.
@@ -48,8 +59,8 @@ Decide the mode **per region**, not per page. A hero with a character is Star mo
 The UI is the only thing to look at, so it has to be **clearly cute on its own**. This is where kawaii-design must win against a generic "make it cute" result, not just look more tasteful. Restraint is for Star mode. In Stage mode, spend the cuteness budget generously, and keep it coherent.
 
 - **Draw.** Illustration is the strongest source of cuteness, so make your own: a mascot or a face in the logo, small character avatars (animals, objects, round creatures) instead of initials, spot illustrations in posts, empty states and headers. Draw them in inline SVG with one consistent style (same line weight, same proportions, same palette). Inventing characters is expected, for real products as well as fictional ones. If the product already has a character, use that one instead of adding a second.
-- **Unify the palette.** Pick three hues plus white and an ink color, and take every color on the page from that set: background, panels, buttons, icons, avatars and illustrations. A pink nav on a green page with yellow buttons is scattered, not cute.
-- **Use color with joy, and pass the first-glance test.** Cuteness is judged in the first second, mostly by color. Choose a palette that reads as cute before anyone looks at the details: clear, light pastels (pink, peach, lemon, mint, sky, lavender) with a clear main color and two or three supporting colors that work as a set. Cream, pastel washes and rich pastel gradients are available. Polka dots and gingham work as accents, not as wallpaper.
+- **Unify the palette.** Pick three hues plus white and an ink color (in ゆめかわ: the character's main hue plus two partners, with a small accent allowed only inside the background), and take every color on the page from that set: background, panels, buttons, icons, avatars and illustrations. A pink nav on a green page with yellow buttons is scattered, not cute.
+- **Use color with joy, and pass the first-glance test.** Cuteness is judged in the first second, mostly by color. Choose a palette that reads as cute before anyone looks at the details: clear, light pastels (pink, peach, lemon, mint, sky, lavender) with a clear main color and two or three supporting colors that work as a set. Cream, pastel washes and rich pastel gradients are available.
   - Earthy or muted palettes (moss, sage, olive, beige, dusty or gray-heavy colors) read as calm, natural or tasteful, not cute. Even if the world is a forest or a rainy day, find its bright, light side: young leaves in spring sun, a pink sky after rain, red persimmons, lemon light. Use muted palettes only when the direction explicitly asks for 大人かわいい or the brand demands them.
   - Check: take a screenshot, shrink it to thumbnail size and look at it next to a generic "make it cute" result. If the generic one reads as cuter at a glance, raise the lightness and saturation of your pastels, or bring in a warmer accent such as pink or peach.
 - **Give the controls personality.** Buttons, tabs, toggles, the compose box and the like/reaction can carry the motif (a paw like button, a drop counter, a sticker button). Raised sticker buttons are allowed here.
@@ -65,7 +76,7 @@ The UI keeps its soft shapes, type and copy, but lowers its voice.
 - Keep backgrounds quiet, and choose the atmosphere on purpose: white, a flat tint from the star, a page-wide 透明感 pastel gradient, or the ゆめかわ background behind a character with pastel colors (see [references/backgrounds-and-images.md](references/backgrounds-and-images.md)). Don't use a competing hue, and don't default to warm cream or to an all-one-color page.
 - Keep decoration minimal and push it to the edges, away from faces and focal points.
 - **Make the image itself good before adding anything around it.** Clean cutout edges, a contact shadow where the character touches the ground, a soft drop shadow tinted with the star's own dark color, and enough resolution do more than any frame. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
-- Shapes behind the star are part of the composition, not a box that holds it. A circle, arch or blob can be partial, offset and shared with other elements, and the star overlaps it freely. Don't enclose the star to "protect" it, and don't use borders.
+- Let the star overlap the edge of any shape behind it. A partial frame, offset mat, or low-contrast edge can echo the character or product while leaving its focal point open.
 - Lead the eye toward the star with whitespace, alignment and one accent that points in.
 - Take UI colors from the star's palette, at lower saturation.
 - The cutest thing on the screen is the star. Never place a UI mascot next to the product's own character.
@@ -81,13 +92,16 @@ The UI keeps its soft shapes, type and copy, but lowers its voice.
 
 ## Write less
 
-Every line of text on the page has to be content: the star's own words, an essential fact, or the name of something. Don't add captions, hints, sub-labels, source notes or narration that comments on the page. Small text is almost always one of these, so if you're setting something small, delete it instead. Use only two text roles for content: body and display. Display text (a logo, the star's name, titles) may come in a few sizes, but nothing on the page is smaller than body. If a detail needs a smaller size to fit (a description under a timeline entry, a category or price under a product), it shouldn't be there. Short names of things at body size are fine. Functional UI text is content too: form labels, error messages, button labels and one sentence in an empty state that says what will happen. Keep it at body size and as short as possible. Structure stays simple: a title and its content, without a stack of label, heading, lead paragraph and buttons.
+Every line of text on the page has to be content: the star's own words, an essential fact, or the name of something. Don't add captions, hints, sub-labels, source notes or narration that comments on the page. Use body and display text for most content. Display text may come in a few sizes. Keep supporting context at a readable body size, and use `<ruby>` when a word genuinely needs a reading. If a detail only fits when shrunk below body size, reconsider the detail or give it room. Functional UI text is content too: form labels, error messages, button labels and one sentence in an empty state that says what will happen. Structure stays simple: a title and its content, without a stack of label, heading, lead paragraph and buttons.
 
 Images that come from the star's own official sources need no credit line on the star's own page. Don't use third-party art, like fan art or illustrations of other people, unless the user confirms the rights.
 
 ## Where the cuteness lives
 
-Cuteness can come from many layers: the shape language, display type, a faint pattern (gingham, polka dots, a dashed grid), the illustration's layout, copy and motion. **Titles and motion deserve real effort**: set the star's name and section titles in a display face with a treatment, and animate arrivals (the star settling in, titles appearing letter by letter, sections rising). Pick two or three for a project and leave the rest plain. Which ones you pick should change with the star and the world. If every project gets the same cream background, raised yellow button and outlines, that is a house style, not a design.
+- **Shapes and seams.** Start with an open layout, shared backgrounds, and generous gaps. When a frame or edge adds something, borrow its shape from what it holds or does: a heart for a personal gift, a paper fold for notes, or a speech-bubble edge for a reply. Use a tinted fill, a partial outline, or a curved edge to carry that silhouette. Let background color changes meet at a shallow curve. See [content-shaped frames and edges](references/shapes-and-patterns.md#content-shaped-frames-and-edges).
+- **Background texture.** If a plain draft feels sparse, try a low-contrast pattern in the open parts of the background: tiny polka dots, gingham, or a dashed check. Look for usable background art first. If a specific illustration or texture would shape the design, invite the user to share it and keep working with a CSS pattern as a fallback. See [backgrounds-and-images.md](references/backgrounds-and-images.md).
+- **Section titles.** Give each major section one visible `h2`. When the user asks for background lettering, text layered behind artwork, or section titles like an illustrator site, make that `h2` oversized with a thin, soft outline. Layer the artwork over part of it so the artwork draws the eye first. For regular headings, vary the display scale or use hiragana when it suits the wording. See [title treatments](references/shapes-and-patterns.md#title-treatments) and the [HTML example](references/organic-sections.html#paper).
+- **Motion and scrolling.** Include one decorative animation per page or app view by default, such as a single entrance on the hero heading or the star. Use native smooth scrolling for in-page navigation. Preserve functional feedback and honor `prefers-reduced-motion` for both the animation and scrolling. See [tokens.md](references/tokens.md#motion).
 
 ## Cuteness budget
 
@@ -98,16 +112,17 @@ If you can't name the charm point of a region, it has either none or too many.
 ## Run it
 
 1. **Look.** Find the files that render the screen. Render and screenshot it if you can, so you judge what people actually see. When building something new, there is nothing to look at yet. Do the investigation in "When the request is vague" instead, and still render each draft as you go.
-2. **Find the star.** List the content on the screen and assign Stage or Star mode to each region.
-3. **Set the direction.** Write eight lines:
+2. **Read the character and find the star.** Read the character (or the product's persona) as described in "Read the character first". List the content on the screen and assign Stage or Star mode to each region.
+3. **Set the direction.** Write nine lines:
+   - **Character**: apparent age, main and second temperament, voice, main color and signature details, in one line. For example `幼い・眠たげ+照れ屋・ひらがなで「〜」が多い・ねこみみ、三日月のピン` or `大人・上品+少しおちゃめ・です・ます・リボンと真珠`. See [references/character.md](references/character.md).
    - **Product**: what it is and who it is for, in one plain sentence.
    - **Dialect**: one from [references/dialects.md](references/dialects.md), with a reason.
    - **Feel**: two or three concrete words. "Cute", "kawaii", "playful" and "fun" are banned on their own because they say nothing. Write something like `ふわっと、のんびり、少し照れ屋` or `ぽてっとした文房具みたい`.
    - **World**: the small world the UI belongs to, such as a stationery shop, a bakery, a picture book or a sticker sheet. It sets the motif, the material and the palette.
    - **Star**: what the star is on each screen, or "none, Stage mode".
-   - **Shape language**: circle, rounded rectangle or organic, read from the star, and where each one is used. Also decide how sections meet: no boundary, or a layered wave edge. See [references/shapes-and-patterns.md](references/shapes-and-patterns.md).
-   - **Atmosphere**: simple (white or a flat tint from the star), 透明感 (a page-wide, very gentle pastel gradient, a little more grown-up and airy), or ゆめかわ (a complex pastel gradient with glass UI on top). Say why. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
-   - **Type and motion**: the display face and title treatment, and how the star and titles arrive.
+   - **Shape language**: where the layout stays open, which detail from each featured section can shape its frame or edge, and where a change of background needs a curved edge. See [references/shapes-and-patterns.md](references/shapes-and-patterns.md).
+   - **Atmosphere**: simple, 透明感, or ゆめかわ. Decide which background image or faint pattern fits the direction and where the background needs to stay quiet. See [references/backgrounds-and-images.md](references/backgrounds-and-images.md).
+   - **Type and motion**: the scale and layering of the section headings, the one element that moves and when it starts, and which in-page links scroll smoothly.
 4. **Confirm.** Show the direction and wait for the user's answer before editing. Skip this only when the user has already said to just do it.
 5. **Apply the passes in order**, each across the whole screen before the next: shape → spacing → color → type → copy → icons → motif and detail → motion. Shape and spacing come first because they decide most of the warmth. Motif and motion come last because they should only add to a screen that already works. Values are in [references/tokens.md](references/tokens.md).
 6. **Check** against the checklist below and [references/anti-patterns.md](references/anti-patterns.md). Render again and fix what remains.
@@ -115,12 +130,12 @@ If you can't name the charm point of a region, it has either none or too many.
 
 ### When the request is vague
 
-"Make it cute" says nothing about the star, the audience or the dialect, and those three decide almost everything. Resolve them in this order.
+"Make it cute" says nothing about the star, the character or the dialect, and those three decide almost everything. Resolve them in this order.
 
-1. **Investigate first.** Look in the code and the page for existing assets (images, SVGs, character art, product photos), brand colors, the logo, the copy, the README and hints about who it is for. If the product, brand or character exists publicly and you can browse, look up its official art and colors. Never research "kawaii design trends". The direction comes from the product, not from what is popular.
+1. **Investigate first.** Look in the code and the page for existing assets (character art, product photos, background images or textures), brand colors, the logo, the copy, the README and hints about who it is for. If the product, brand or character exists publicly and you can browse, look up its official art and colors. Never research "kawaii design trends". The direction comes from the product, not from what is popular.
 2. **Ask only what you couldn't find**, and only questions whose answer changes the design. Ask three at most, each with a recommended default:
    - Is there star content (a character, illustrations, product photos, people's work)? Can you share it?
-   - Who uses it and how old are they? This decides between childish and 大人かわいい.
+   - What is the character like (age, temperament, voice, main color)? This decides between ひらがな-and-round and 大人かわいい, and which color leads.
    - Which dialect feels closest? Offer two or three candidates, one line each.
 3. **If the user says おまかせ or "just do it"**, still investigate, but skip both the questions and the confirmation. Write your assumptions at the top of the direction, and clearly mark anything you invented (a fictional character, placeholder copy).
 
@@ -131,6 +146,8 @@ Don't fake it with stacks of emoji, sparkles and hearts. Draw instead: create th
 
 ## Checklist
 
+- [ ] Can you state the character in one line (apparent age, temperament, voice), and would the character feel at home on this page? Do the type, kana ratio, shapes, color and motion match it?
+
 - [ ] Star mode: when you squint, is the star the first thing you see?
 - [ ] Stage mode: put your screen next to what a generic "make it cute" prompt would produce. Is yours clearly **cuter**, not just calmer? If it only looks more tasteful, add illustration, color and personality until it wins.
 - [ ] Is the mode right? Text-only content (posts, articles, chats) is Stage mode.
@@ -138,23 +155,25 @@ Don't fake it with stacks of emoji, sparkles and hearts. Draw instead: create th
 - [ ] Can you point to exactly one charm point per region?
 - [ ] Is the radius different for small and large elements, instead of everything being a pill?
 - [ ] Does the shape language (circle, rounded rectangle, organic) match the star, and can you say why?
-- [ ] Is every border, cream background and raised button justified by the world or dialect, rather than habit?
+- [ ] Can you trace each decorative frame or edge back to its content? Do text, artwork, and controls have enough room clear of points and notches?
+- [ ] Does each cream background or raised button fit the world or dialect?
 - [ ] Star mode: is the illustration big enough to be the star, at least half of the first screen?
-- [ ] Are patterns used as accents in one or two places, not as wallpaper, and kept away from text, faces and works?
+- [ ] If the background feels sparse, did you try a faint pattern or suitable background art? Do text, faces and works stay easy to see?
 - [ ] Does every color on the page come from one set of three hues plus white and ink?
-- [ ] Are there no hard straight edges between section colors, and no per-section gradients?
-- [ ] Do the name and section titles use a display face with a treatment, and do they animate in?
+- [ ] Do spacing and headings separate sections first? Where colors change, does the curved join stay seamless at mobile and desktop sizes?
+- [ ] Does each major section have one visible heading that fits on narrow screens? If the user requested background lettering, does the artwork overlap the oversized type while leaving it readable?
 - [ ] Do the Stage sections below the hero still belong to the same world (prints, motif markers, the hero's shapes)?
 - [ ] Does every speech-bubble tail point at its speaker, on desktop and mobile?
 - [ ] Is there no habitual site-name header on a single-character page?
 - [ ] Does text meet 4.5:1 contrast even on pastel backgrounds? Pastel surfaces need deep ink text.
-- [ ] No emoji used as icons or labels, no ✨, and no gradients except the one page-wide 透明感 background.
+- [ ] Are icons free of emoji and sparkle filler? Are soft color blends confined to the page background, with hard stops allowed for CSS patterns?
 - [ ] Is the star's image good on its own: clean edges, a contact shadow, a tinted soft shadow and enough resolution?
 - [ ] Is the star free in the composition rather than boxed inside a shape?
 - [ ] No captions, hints, sub-labels, source notes or narration. Every line is the star's own words, an essential fact or a name.
-- [ ] Only two text sizes for content (body and display). No small secondary text anywhere.
+- [ ] Are body text, supporting context, and any reading aids legible?
 - [ ] Does the page end quietly, without a dark band, circle badges, accent pill buttons or a label-heading-paragraph-buttons stack?
 - [ ] Is the copy gentle and specific, without stacked exclamation marks or baby talk (unless that is the brand's established voice)?
-- [ ] At most one looping animation on screen, and `prefers-reduced-motion` is respected.
+- [ ] Does one decorative animation play in normal motion mode? Do in-page links scroll smoothly in that mode and jump directly in reduced-motion mode?
 - [ ] Do the forms, tables, toggles and errors share the same softness, not just the hero?
-- [ ] Does it fit the audience? Kawaii does not have to be childish. For adults, lean toward 大人かわいい.
+- [ ] Does it fit the character's apparent age? A grown-up character gets 大人かわいい (thin type, small body text), not childish round type.
+- [ ] With a ゆめかわ or rainbow background: is there white between the colors, does it swirl rather than run straight, and does the character's main color take 50 to 70% of it?

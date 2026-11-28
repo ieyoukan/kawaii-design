@@ -12,6 +12,12 @@ Decide this in the direction. It depends on what the page should feel like, not 
 
 A page in one flat color from top to bottom can feel dull. When the star has several colors (pink hair and a blue dress, for example), 透明感 often fits better than one-tone.
 
+### Background images and patterns
+
+- Look through the supplied assets for a background illustration, photo, or texture that fits the product. Check that its focal point survives wide and narrow crops and that it leaves a quiet area for text.
+- If a missing background image would materially change the design, invite the user to share an appropriate asset. Describe the motif and the area that needs to stay quiet. Keep building with a local CSS pattern or plain tint so the missing image does not block the draft.
+- If the design only needs texture, use a faint [pattern](shapes-and-patterns.md#patterns). Dots, gingham, and dashed checks can be drawn in CSS or inline SVG. Base the tint on the palette and leave faces, fine artwork, and reading areas clear.
+
 ### The 透明感 page gradient
 
 One gradient covers the **whole page**: the container that holds every section, from top to bottom. Not each section, and not `background-attachment: fixed` on a single screen. Because it stretches over thousands of pixels, any single screen shows only a slight shift. It reads as air and light, not as "a gradient".
@@ -29,31 +35,60 @@ Rules:
 - Use only very pale colors, close to white (about 92 to 97% lightness). Mix pink, aqua, lavender, mint and plain white, and take the hues from the star where possible.
 - Put a white or near-white stop between colored stops so the hues never meet directly.
 - Use a slight diagonal (160 to 170deg), so the shift isn't a horizontal band.
-- Use only this one gradient. No gradients on sections, cards, buttons, text, or fades at the bottom of images and mats.
+- Keep soft color blends on the page background. CSS gradients with hard stops can draw dots and checks.
 - Check text contrast at the most colored stop.
 - Patterns and wave edges can sit on top of it.
 
-### ゆめかわ background (complex pastel)
+### ゆめかわ background (iridescent, 虹色)
 
-For the ゆめかわ dialect, or whenever the direction asks for something dreamy and rich, the background is the main source of color and must not be simple. Layer several large radial color pools of the palette's hues over a pale base, so it reads like holographic marble or bubbles in light.
+For the ゆめかわ dialect, or whenever the direction asks for something dreamy or rainbow-like, the background is the main source of color and must not be simple. It should look like holographic foil or iridescent film: colors that swirl into each other organically, with white light between them.
+
+**Three rules:**
+
+1. **White between the colors.** Hues never touch directly. Put white (or near-white) pools and bands between them, the way light catches on foil. Without white, it turns into a muddy rainbow.
+2. **Never one straight gradient.** Combine radial pools from several points with a few soft linear bands at different angles, then let the result undulate: distort it with an SVG `feTurbulence` + `feDisplacementMap` filter, or layer large, blurred, rotated blobs. It should flow like marble or liquid, not run in straight stripes.
+3. **The character's main color leads.** Decide the main hue from the character: an aqua character gets aqua, a pink one pink, a purple one lavender. By area, roughly:
+   - main hue: 50 to 70%
+   - one or two partner hues (for an aqua main, pink and lavender): 20 to 40%
+   - small accents (lemon, mint, peach): under 10%
+   - white light between them throughout
 
 ```css
-.page {
-  background-color: #F4ECFB;
-  background-image:
-    radial-gradient(40% 35% at 15% 20%, #F6C6E3 0%, transparent 70%),
-    radial-gradient(45% 40% at 85% 15%, #B8E6F5 0%, transparent 70%),
-    radial-gradient(50% 45% at 70% 70%, #CDBDF4 0%, transparent 70%),
-    radial-gradient(35% 30% at 20% 85%, #B8E6F5 0%, transparent 70%),
-    radial-gradient(30% 30% at 50% 45%, #FFFFFF 0%, transparent 70%);
-  background-attachment: fixed;
+/* Example: an aqua character */
+body { background: #EEF8FC; }
+.page { position: relative; isolation: isolate; }   /* keeps the layer behind the content */
+.page::before {
+  content: ""; position: fixed; inset: -10%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 18% 22%, #A9E3F5 0%, transparent 70%),   /* main: aqua */
+    radial-gradient(42% 34% at 78% 30%, #BFE9F7 0%, transparent 72%),   /* main */
+    radial-gradient(36% 30% at 60% 78%, #9FD8F2 0%, transparent 70%),   /* main */
+    radial-gradient(24% 20% at 38% 55%, #FFFFFF 0%, transparent 70%),   /* white light */
+    radial-gradient(22% 18% at 88% 70%, #F7C8E4 0%, transparent 70%),   /* partner: pink */
+    radial-gradient(22% 18% at 10% 75%, #D6C8F6 0%, transparent 70%),   /* partner: lavender */
+    radial-gradient(12% 10% at 52% 18%, #FFF3B8 0%, transparent 70%),   /* accent: lemon */
+    linear-gradient(118deg, transparent 30%, #FFFFFF 42%, transparent 54%),            /* light band */
+    linear-gradient(28deg, transparent 55%, rgb(247 200 228 / .5) 64%, transparent 74%); /* pink band */
+  filter: url(#swirl) blur(6px);
 }
 ```
 
-- Use only the palette's hues and white. Five to seven pools are enough.
-- For a marbled swirl, add an SVG `feTurbulence` + `feDisplacementMap` filter to a fixed background layer, or place two or three large, blurred, rotated blobs (`filter: blur(60px)`).
-- Sparkles: a few tiny white dots or four-point stars in an SVG layer, at low density. Not a polka-dot wallpaper.
+```html
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="swirl">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.007" numOctaves="2" seed="7"/>
+    <feDisplacementMap in="SourceGraphic" scale="120"/>
+  </filter>
+</svg>
+```
+
+- Check the area ratio at thumbnail size. If the partner hues dominate, the character's color is lost.
+- Sparkles: a few tiny white dots or four-point stars on top, at low density. Not a polka-dot wallpaper.
+- Accents in the same foil: glossy bubbles, balloons, curled ribbons and stars, used in a few places around the edges.
+- Display lettering (the logo, a big title) may use the same iridescent foil, with a white sticker edge so it stays readable. Body text stays solid.
+- Die-cut sticker labels (white edge, soft shadow) suit this world for small buttons and badges.
 - This replaces the page-wide 透明感 gradient. Don't stack both.
+- Reference: an iridescent anniversary site, see [refs.md](refs.md).
 
 ### Glass UI
 

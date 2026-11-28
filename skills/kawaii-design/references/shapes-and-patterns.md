@@ -7,8 +7,8 @@ Choose a shape language before choosing radius values. Write it into the directi
 | Language | What it says | Use for | Avoid for |
 | --- | --- | --- | --- |
 | **Circle** | "One thing, in focus." Faces, coins, buttons you want to press. | Avatars and icons, a mat behind a single character or bust, round arrow or icon buttons, polka dots | Containers for text or lists; info badges with a time or date inside a circle (they read as a template) |
-| **Rounded rectangle** | "Things in order." Calm, readable, reliable. | Cards, galleries, forms, lists, panels, any area with dense information | Being the only shape on a page whose star is soft and flowing; then it feels like a spreadsheet |
-| **Organic** (waves, drips, clouds, blobs) | "A soft world around you." Liquid, sweet, dreamy, alive. | Section transitions, large background masses, hero edges, a menu tab, one big frame around the star | Small controls, text boxes holding paragraphs, anything that has to align in a grid |
+| **Rounded rectangle** | "Things in order." Calm, readable, reliable. | Controls and dense groups that need a visible container | Wrapping every section, list, or paragraph in a panel |
+| **Organic** (waves, drips, clouds, blobs) | "A soft world around you." Liquid, sweet, dreamy, alive. | Section transitions, large background shapes, a mat behind a star, a speech bubble | Small controls and dense grids where the shape could interfere with use |
 
 ### How to pick
 
@@ -17,43 +17,39 @@ Read the star first.
 - **Chibi, round, compact characters** (big heads, short bodies) → circles. Put the character on a circular mat, use round badges and round icon buttons.
 - **Long flowing hair, ribbons, liquids, sweets, clouds** in the illustration → organic. Let one wave or drip shape echo the illustration's curves at the section edges.
 - **Graphic, flat or geometric illustration, product photos, screenshots, many works in a grid** → rounded rectangles, with circles as an accent.
-- **No star (Stage mode)** → rounded rectangles for structure, plus one circle or organic element as the charm point.
+- **No star (Stage mode)** → use alignment and spacing for structure. Give a selected surface an organic shape when it fits the world.
 
 Rules:
 
 - Organic shapes are large and few: one or two per screen. Many small blobs look like clip art.
 - Organic edges should come from the world (cream, syrup, clouds, water, fabric), not be random wobble.
-- Even with organic edges, the content inside stays in rounded rectangles so it can still be read.
+- Place text and lists directly on the section surface when grouping is clear. When a mat, bubble, or illustrated panel needs a shape, choose a contour that reflects its content. Keep readable text in the generous inner area, with room to grow when it wraps.
 
-### Organic edges in CSS
+### Content-shaped frames and edges
 
-Use an SVG path for the edge, not `border-radius` hacks.
+Read the content before drawing the outline. Choose one recognizable feature from the object, action, or character in that section and build it into the silhouette. Related items can share a frame. When the section tells a different story, its edge can change while the palette and line weight connect the page.
 
-```html
-<svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M0 64 C 180 20, 360 108, 560 70 C 760 32, 900 96, 1100 66 C 1260 42, 1360 70, 1440 56 V120 H0 Z" fill="currentColor"/>
-</svg>
-```
+| Content | Shape to try |
+| --- | --- |
+| A personal gift or thank-you | A low-contrast heart behind the gift, or a heart accent tucked into one corner of the frame |
+| A memo, diary, or stationery collection | A folded paper corner, torn seam, or the perforation of a notebook |
+| A conversation or reply | A speech-bubble edge with a tail aimed at the speaker |
+| A character with a signature motif | Echo one feature such as a rounded ear, the curve of a ribbon, or a crescent from an accessory |
 
-```css
-.wave { display: block; width: 100%; height: clamp(48px, 8vw, 120px); color: var(--next-section-bg); margin-bottom: -1px; }
-```
+Use the whole silhouette for a decorative background or illustration frame. Use just part of it at the edge of a text-heavy section. A tinted fill or a short, quiet stroke can suggest a frame. A full outline works when it carries the motif and leaves the contents clear. See the [folded paper](organic-sections.html#paper) and [heart-shaped gift frame](organic-sections.html#wrap) in the same sample.
 
-For a drip, add a few rounded downward bumps to the path. Keep it to three or four drips across the full width.
+### Organic surfaces
 
-For regular edges (a scalloped frill, lace, a ticket edge), a repeating `radial-gradient` is lighter and more even than a path:
-
-```css
-.scallop { height: 20px; background: radial-gradient(circle at 50% 100%, var(--next-section-bg) 10px, transparent 10.5px) 0 0 / 28px 20px repeat-x; }
-```
+Use an inline SVG with a closed Bézier path for the visible fill. Put it behind the content as its own decorative layer with `aria-hidden="true"` and `pointer-events: none`, so the text and controls can wrap and size normally. To crop an image or texture to the same shape, clip only that decorative layer with an SVG `<clipPath>` or use a fill pattern on the path. Keep focus indicators and click targets outside the clipping layer. See the patterned shapes in the [HTML example](organic-sections.html).
 
 ## Borders
 
 Default to **no borders**. Separate surfaces by value and tint instead: a slightly darker page behind a lighter panel, or a white card on a pale tinted section.
 
-Use outlines only when:
+Use outlines when:
 
-- They match the line art of the illustration (same weight and color), as in the ポップ dialect, or
+- They match the line art of the illustration (same weight and color), as in the ポップ dialect,
+- A quiet stroke traces a content-shaped edge and makes its motif clear, or
 - A control would otherwise be invisible (an input on a white background needs a faint 1.5px line or a tinted fill).
 
 ## Section boundaries
@@ -61,52 +57,34 @@ Use outlines only when:
 A hard, straight edge between two background colors looks like a template, and it chops the page into boxes. Don't use per-section gradients to hide the edge either. (A single page-wide 透明感 gradient isn't a boundary. See [backgrounds-and-images.md](backgrounds-and-images.md).) Choose one of these:
 
 1. **No boundary.** Keep the same flat background through the whole page. Separate sections only with space and titles. This is the default.
-2. **A layered wave edge** (the `wave` + `wave back` technique). Use it where the color really has to change, usually once or twice per page (into the footer, for example).
+2. **A shallow organic edge.** Use it where the background color actually changes. Draw a few smooth rises and dips of uneven widths and heights, and use the next section's fill. A second, fainter offset layer can add depth if the composition calls for it.
 
-### Layered wave edge
-
-Two copies of the same hand-drawn wave sit on top of the next section's top edge:
-
-- **Front wave**: the next section's color, fully opaque.
-- **Back wave**: the same path mirrored horizontally, same color, at about 40% opacity. It peeks out above and between the front wave's bumps and gives depth.
-- Both are wide strips (three times the screen width) that drift sideways very slowly at different speeds, like water or cream. The drift is ambient and doesn't count as the page's one idle loop, but it must stop under `prefers-reduced-motion`.
-- Draw the wave by hand: irregular bumps of different widths and heights, not a sine curve. Keep it low, about 60 to 110px tall on desktop.
-- Use the same wave everywhere the color changes on the page.
-- If the world has its own edge (a scalloped frill, lace, a cloud), you can use that instead of a wave, with the same front and back layering.
+### Curved join between fills
 
 ```html
-<footer class="has-wave">
-  <div class="wave back" aria-hidden="true">
-    <svg viewBox="0 0 945 8" preserveAspectRatio="none"><use href="#wave-path"/><use href="#wave-path" x="315"/><use href="#wave-path" x="630"/></svg>
-  </div>
-  <div class="wave" aria-hidden="true">
-    <svg viewBox="0 0 945 8" preserveAspectRatio="none">
-      <defs><path id="wave-path" d="M0 2 C 18 0.4, 30 5.6, 52 3.4 S 88 0.2, 110 2.8 S 150 6.2, 176 2.6 S 220 0.6, 246 3.6 S 292 5.4, 315 2 V8 H0 Z"/></defs>
-      <use href="#wave-path"/><use href="#wave-path" x="315"/><use href="#wave-path" x="630"/>
-    </svg>
-  </div>
+<section class="has-wave">
+  <svg class="wave" viewBox="0 0 1440 112" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 55 C116 55 142 23 272 25 S445 88 594 79 S785 37 902 36 S1026 61 1110 60 S1300 19 1440 46 V112 H0 Z"/>
+  </svg>
+  <h2>お知らせ</h2>
   ...
-</footer>
+</section>
 ```
 
 ```css
-.has-wave { position: relative; background: var(--next-bg); }
+.has-wave { position: relative; background: var(--section-bg); }
 .wave {
-  position: absolute; left: 0; top: 1px; transform: translateY(-100%);
-  width: 100%; height: clamp(60px, 8vw, 110px); overflow: hidden; pointer-events: none;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-end: calc(100% - 1px);
+  width: 100%;
+  height: clamp(36px, 7vw, 112px);
+  color: var(--section-bg);
+  pointer-events: none;
 }
-.wave svg { width: 300%; height: 100%; fill: var(--next-bg); animation: wave-drift 40s linear infinite; }
-.wave.back { opacity: 0.4; }
-.wave.back svg { transform: scaleX(-1); animation-duration: 60s; animation-direction: reverse; }
-@keyframes wave-drift { to { translate: -33.333% 0; } }
-@media (prefers-reduced-motion: reduce) { .wave svg { animation: none; } }
 ```
 
-For the drift to loop without a jump, the path must start and end at the same height, so the three copies tile cleanly. The SVG is three screens wide and moves by one copy (a third of its width) per cycle.
-
-The bottom of a mat, arch or frame behind the star doesn't count as a section boundary. Letting the star overlap it is fine, but don't fade it out with a gradient.
-
-Don't alternate white and tinted bands with straight edges. If you can see a horizontal line across the page where one color stops, redo it.
+Leave room for the wave in the preceding section's bottom padding so it cannot cover content. The one-pixel overlap hides the rasterization seam. Check both ends at narrow and wide widths. Inline paths keep the curve self-contained and let it inherit the theme's color. Store a local SVG if several pages need to share the exact silhouette.
 
 ## Keeping Stage sections warm
 
@@ -144,9 +122,9 @@ Rules:
 
 ## Patterns
 
-Patterns carry a lot of kawaii with very little effort, but use them as **accents**, not as wallpaper. A whole page covered in polka dots or gingham looks like a default, not a decision. Put a pattern in one or two places where it means something: inside a shape, on a card header, in a band behind a title, on a button's pressed state, in the hero's mat. Cover the whole background with a pattern only when the world itself is fabric or paper.
+When a blank background feels flat, give it a material. Try tiny polka dots for a soft, airy finish, gingham for a fabric or stationery feel, or a dashed grid for paper. Start with one pattern in a background area with open space. A very faint page-wide repeat can work when the page reads as a single sheet of paper or fabric.
 
-- Keep them to around 4 to 10% contrast against the surface. You should almost miss them.
+- Start with a tint of the page ink or accent at roughly 4 to 10% opacity and render it on the actual surface. It should recede behind the content while still being visible at normal zoom. Gingham overlaps two color layers, so use less opacity per layer.
 - Take the colors from the star or the dialect.
 - Never place them directly behind body text, behind the star's face, or behind a gallery of works. With a full-body character in a patterned hero, put a mat behind the upper body so the face sits on a plain surface, and keep the pattern outside the mat.
 - Use one pattern per page, or two at most if they are clearly in separate sections.
@@ -157,7 +135,7 @@ Patterns carry a lot of kawaii with very little effort, but use them as **accent
 
 ```css
 .gingham {
-  --c: rgb(120 170 220 / 0.14);
+  --c: rgb(120 170 220 / 0.10);
   background-color: #fff;
   background-image:
     linear-gradient(90deg, var(--c) 50%, transparent 50%),
@@ -170,13 +148,10 @@ Patterns carry a lot of kawaii with very little effort, but use them as **accent
 
 ```css
 .dots {
-  --c: rgb(240 160 190 / 0.22);
+  --c: rgb(138 77 107 / 0.09);
   background-color: #fff;
-  background-image:
-    radial-gradient(var(--c) 22%, transparent 23%),
-    radial-gradient(var(--c) 22%, transparent 23%);
-  background-size: 28px 28px;
-  background-position: 0 0, 14px 14px;
+  background-image: radial-gradient(circle, var(--c) 1px, transparent 1.5px);
+  background-size: 22px 22px;
 }
 ```
 
@@ -212,11 +187,13 @@ Use one display face per page, for the name and section titles only. Keep body t
 
 ### Title treatments
 
-Pick one or two per page and use them consistently on every section title:
+Choose treatments that fit the composition and repeat the ones that connect related sections:
 
 - **A lettered name.** Set the star's name in the display face, very large, with one detail: a dot or motif replacing a counter or a dakuten, one letter in the accent color, or letters slightly rotated and offset like stickers.
-- **Ghost titles**: giant section titles in a very faint tint (white on a pale tint, or 6 to 10% ink) behind the section, partly cut off by the screen edge. Keep the real, readable heading separate.
+- **One section title**: use the `h2` itself as the visual feature. A short title can go very large; a longer one can use a smaller display size with the same typeface and weight. Use `clamp()` and check the actual text on narrow screens. Hiragana can soften the title, as in 「つつむもの」.
+- **Background lettering on request**: for 「見出しを背景に重ねる」, 「作品の背面に大きな文字」, or headings like an illustrator site, use the actual `h2` as a large outlined layer across much of the section width. Put a foreground illustration, image or gallery partly over its lower or trailing edge so the layers visibly intersect. Start with a thin outline in a muted tint of the text color, and keep enough of each character visible to read. If the title draws the eye first, soften the tint or thin the stroke before reducing the scale. Check legibility and layering on mobile. The [紙もの example](organic-sections.html#paper) uses one readable heading with artwork over the edge.
+- **A large title with a small companion**: use a quieter line only when it adds information. For example, 「紙もの」 can sit above 「便箋とメモ帳」 to name what the section contains. Keep only the title in the `h2`. If the companion is a useful reading of a kanji term, use `<ruby>` with `<rt>` to keep the term and its reading together.
 - **A sticker title**: the display face with a thick outline in the background color and a soft offset shadow in the star's dark tint, so the title looks cut out and stuck on.
 - **A custom SVG logotype** for the star's name when the page is about one character. Build the letters from circles and rounded strokes. This is the strongest option and worth the time on a personal page.
 
-Animate titles on entrance. See Motion in [tokens.md](tokens.md).
+If a heading carries the page's decorative animation, move one heading as a unit on entry. See [Motion](tokens.md#motion).

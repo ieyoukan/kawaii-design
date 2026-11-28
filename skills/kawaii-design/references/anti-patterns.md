@@ -26,8 +26,8 @@ Every other item on this list is mostly a specific case of this one.
 - Pink or lavender chosen by default instead of from the world and the dialect.
 - ✨ 💖 🎀 🌸 used in labels, headings, buttons or as icons.
 - `border-radius: 9999px` on everything, including large cards and modals.
-- Hover bounce on every element, or floating and pulsing loops. Animating arrivals and responses is good. Looping UI is not.
-- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on text. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or text. Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
+- A heading entrance, staggered cards, and a moving wave all on the same page. Give the motion to one target and preserve functional feedback.
+- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on body text. Iridescent foil on the logo or one big display title is allowed when it has a white sticker edge and stays readable. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or body text. Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
 - Boxing the star: putting a character inside a colored arch or panel just to separate it from the background. Fix the image's edge and shadow instead.
 - A page in one flat color from top to bottom when the direction asked for something airy. One-tone is a choice, not a default.
 - Glowing buttons, neon shadows.
@@ -37,7 +37,7 @@ Every other item on this list is mostly a specific case of this one.
 
 ## Wallpaper patterns
 
-- Polka dots, gingham or leaf prints covering the whole background by default. Use a pattern as an accent in one or two meaningful places, or use a rich background (like the ゆめかわ gradient) instead.
+- A loud all-over print, or a flat background left bare when the composition needs texture. Try faint dots or checks in open space and keep the foreground readable.
 
 ## Scattered palettes
 
@@ -68,9 +68,10 @@ Any one of these can be right for a specific world, like the ポップ dialect o
 ## Template structure
 
 - A site-name header bar at the top left on a page about one character or person, added out of habit. The star's name in the hero is the title. Navigation, if needed at all, is a small floating menu or a corner tab.
-- Hard, straight edges between alternating white and tinted section bands. Use no boundary, or the layered wave edge.
-- Plain headings: section titles in the body font, just bigger. Titles deserve a display face and a treatment.
-- A page with no motion at all, where everything just appears. Arrivals should animate.
+- Hard, straight edges between alternating white and tinted section bands. Let spacing group content on a shared background and add a curved seam where fills change.
+- Identical rounded boxes around unrelated content. Let text sit on the page and use asymmetric fills where a shape adds to the composition.
+- A section title repeated as large background text. Let one visible `h2` carry the section and add smaller text only when it tells the reader something useful.
+- Oversized background lettering placed entirely above the artwork when the requested effect is layering. Let a foreground element cross the edge of the title while keeping the word legible.
 - Stage sections that turn into a bordered table, a bare photo grid or a row of identical link cards.
 - A speech bubble whose tail points at nothing, or away from the speaker.
 

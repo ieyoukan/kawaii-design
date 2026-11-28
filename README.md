@@ -121,7 +121,7 @@ Claude Code では `/kawaii-design` に続けてやりたいことを書きま�
 | --- | --- |
 | [examples/youkan/](examples/youkan/) | 主役がいる例 (Star モード)。VRChat のアバターを主役にした紹介ページ。ワントーン、波の縁、文字ごとの登場アニメーション |
 | [examples/compare/](examples/compare/) | 上の比較画像の元。`character/` (ようかんの紹介ページ) と `sns/` (ゆめかわいい SNS) それぞれに、Skill なし (`without/`) とあり (`with/`) |
-| [examples/kotonoha/](examples/kotonoha/) | 素材がない例 (Stage モード)。架空の交換日記アプリのログイン画面と、日記がまだない状態のホーム画面 |
+| [examples/kotonoha/](examples/kotonoha/) | 素材がない例 (Stage モード)。架空の交換日記アプリで、デモログインから最初の一枚を書き、次の人に回すところまで試せます。 |
 
 `file://` ではフォントや一部の動きが読み込まれないことがあるので、ローカルサーバーで開いてください。
 
@@ -135,6 +135,7 @@ cd examples && python3 -m http.server
 | ファイル | 内容 |
 | --- | --- |
 | [SKILL.md](skills/kawaii-design/SKILL.md) | 原則、Stage / Star モード、可愛さの予算、作業手順、チェックリスト |
+| [character.md](skills/kawaii-design/references/character.md) | キャラクター性の読み取り方。見た目の年齢 (幼い・少女・大人)、性格、口調から、文字・形・色・動きを決める |
 | [kawaii-vs-cute.md](skills/kawaii-design/references/kawaii-vs-cute.md) | 「kawaii」を具体的なデザイン判断に翻訳する方法 |
 | [dialects.md](skills/kawaii-design/references/dialects.md) | ゆるかわ、ゆめかわ、ワントーン、ポップ、レトロ、大人かわいい、ぶさかわ |
 | [anti-patterns.md](skills/kawaii-design/references/anti-patterns.md) | 主役を食う装飾、cute slop、小さい文字、AI っぽい締め、偽物の可愛さ |

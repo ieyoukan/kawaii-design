@@ -21,7 +21,7 @@ Radius scales with size. Small things can be very round, large things stay gentl
 
 **Points and corners in illustrations and motifs**: round them too. A sharp tip (a raindrop, a star, a speech-bubble tail) reads cold next to soft UI. Give it a small curve.
 
-**Borders**: none by default. Separate surfaces by value and tint. Use outlines only to match an illustration's line art (same weight and color, usually 1.5 to 2.5px), or where a control would otherwise disappear.
+**Borders**: none by default. Separate surfaces by value and tint. Use an outline where a control needs it, to match an illustration's line art, or to trace a [content-shaped edge](shapes-and-patterns.md#content-shaped-frames-and-edges).
 
 **Buttons**: pick a style that comes from the world, not a default:
 
@@ -82,7 +82,7 @@ Japanese:
 
 Latin pairing: Nunito, M PLUS Rounded 1c (Latin glyphs), Fredoka for ポップ display.
 
-Display type can be the main decoration of the page (font list and title treatments in [shapes-and-patterns.md](shapes-and-patterns.md)): a chunky, rounded, geometric face for the logo and section titles, and giant faint ghost titles behind sections. Rotate through faces. Zen Maru Gothic on everything turns into a house style too. Also consider a clean non-rounded gothic (Noto Sans JP, BIZ UDPGothic) for body when the display type and the illustration already carry the softness.
+Display type can be the main decoration of the page. Give a short section heading room to work at a large scale. Use a smaller size for longer headings, and consider hiragana where it suits the wording. See [title treatments](shapes-and-patterns.md#title-treatments). Zen Maru Gothic on everything turns into a house style too. Consider a clean non-rounded gothic (Noto Sans JP, BIZ UDPGothic) for body when the display type and the illustration already carry the softness.
 
 - Body line height: 1.7 to 1.9 for Japanese, 1.5 to 1.6 for Latin.
 - Letter spacing: `0.02em` to `0.05em` for Japanese body, up to `0.08em` for headings.
@@ -98,45 +98,37 @@ Display type can be the main decoration of the page (font list and title treatme
 
 ## Motion
 
-Motion is one of the main ways a page feels alive and kawaii. Plan it as part of the direction, not as an afterthought. The rule is simple: animate **arrivals and responses** generously, keep **idle** motion rare.
+Include one decorative animation per page or app view in normal motion mode. Pick one target and one effect. A heading can settle once as a whole, the hero illustration can arrive once, or one quiet ambient detail can move. If the main title moves, keep section titles, images, waves, and patterns static.
 
 ```css
 --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);   /* small overshoot */
 --ease-soft:  cubic-bezier(0.22, 1, 0.36, 1);      /* gentle settle */
 ```
 
-### Arrivals (play once)
+### A single entrance
 
-- **The star**: rises 16 to 32px and settles with `--ease-poyon`, 500 to 800ms, on load.
-- **Titles**: letter-by-letter. Wrap each character in a span and stagger it by 30 to 60ms, rising 8 to 12px with `--ease-poyon`. Trigger on load for the hero and when scrolled into view for section titles (IntersectionObserver, or `animation-timeline: view()` where supported).
-- **Letter-by-letter titles without breaking Japanese or accessibility**:
-  - Group the letters by phrase (文節). Wrap each phrase in a `white-space: nowrap` span and the letters inside it in their own spans, so lines still break between phrases and never before 、。.
-  - Put the readable text on the heading (`aria-label="5のつく夜は、ぷぷりえへ"`) and mark the letter spans `aria-hidden="true"`, or keep a visually hidden copy of the text.
-  - Start from the visible final state in CSS and only add the hidden starting state from JS, so the title is never lost if the script fails.
+- **Heading**: move the entire heading 8 to 12px into place with `--ease-soft` in about 450 to 600ms. Keep it as one text node or phrase-grouped text so Japanese wraps naturally.
+- **Star**: as an alternative, let the image settle once with `--ease-poyon` over about 500 to 800ms. A small movement is enough.
 
-  ```html
-  <h2 aria-label="5のつく夜は、ぷぷりえへ"><span class="ph" aria-hidden="true"><i>5</i><i>の</i><i>つ</i><i>く</i><i>夜</i><i>は</i><i>、</i></span><span class="ph" aria-hidden="true"><i>ぷ</i><i>ぷ</i><i>り</i><i>え</i><i>へ</i></span></h2>
-  ```
+### Interaction feedback
 
-  ```css
-  .ph { white-space: nowrap; display: inline-block; }
-  .ph i { font-style: normal; display: inline-block; }
-  ```
-- **Sections and cards**: fade and rise 12 to 24px with `--ease-soft`, 400 to 600ms, staggered by 60 to 100ms.
-- **Photos as prints**: drop in with a slight rotation that settles to their resting tilt.
-
-### Responses
-
-- Press: 150 to 250ms with a slight overshoot.
-- Hover on a title: letters wiggle or hop once in sequence.
-- Tap or hover on the star: change the pose or expression, with a small hop. Use pointer events and check `pointerType`, so a mouse click after a hover doesn't toggle the pose twice.
-- Success moments may get a small celebration. Normal clicks don't.
+- Keep immediate focus, pressed, validation, and success states. A short transition can clarify a state change.
+- If a pose or expression change is an intended interaction, respond to tap or keyboard activation. For hover support, check the input type so a mouse click after hover does not toggle the pose twice.
 
 ### Idle
 
-- At most one looping animation visible in the viewport at any time, and keep it subtle: a blink, a 1 to 2° sway, or a 4px float over 3 to 5 seconds. It usually belongs on the star.
-- No infinite bounce, pulse or glow on UI.
+- An ambient animation uses the same single slot as an entrance, even when it is behind the content. Keep the motion subtle and stop it after five seconds or provide a pause control if it keeps running alongside content.
+
+### In-page scrolling
+
+Use ordinary fragment links and set `scroll-behavior` on the page root for smooth navigation. If the app scrolls a nested panel, apply it to that scroll container instead. Set `scroll-margin-block-start` on targets when a fixed header would cover them. Keep the browser's native wheel, touch, and keyboard scrolling. Navigation scrolling and functional feedback can coexist with the single decorative animation.
+
+```css
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+```
 
 ### Always
 
-- Provide a `prefers-reduced-motion: reduce` fallback. Show everything in its final state with no movement. Content must never stay hidden if the script or observer fails.
+- In reduced-motion mode, show everything in its final state and let in-page navigation jump directly. Content must never stay hidden if the script or observer fails.

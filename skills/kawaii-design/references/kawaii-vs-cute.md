@@ -21,7 +21,7 @@ So never use "kawaii" as a style keyword. Translate it into the feelings it shou
 | Pink and lavender gradient by default | Palette taken from the world and the dialect. Kawaii can be cream and tomato red, or mint and charcoal. |
 | `border-radius: 9999px` on everything | Radius chosen per size. Small chips can be pills, large cards stay gently rounded. |
 | ✨ 💖 🎀 in labels and headings | Real icons with rounded ends and a consistent stroke. One custom motif at most. |
-| Bounce on every hover, floating loops | One soft "ぽよん" on press or appear, played once |
+| Bounce on every hover, floating loops | One deliberate animation, such as an entrance on the focal element. Clear interaction feedback where needed. |
 | "Yay!! 🎉 You did it!!!" | 「できました。おつかれさまです」, or a small illustration that does the celebrating |
 | Handwritten or comic font for body text | Readable rounded gothic for body, handwritten only for one accent |
 | Same amount of decoration everywhere | One charm point per region, quiet everywhere else |

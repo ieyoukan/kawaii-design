@@ -3,707 +3,539 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ようかん | ロリっ子喫茶ぷぷりえ</title>
-<meta name="description" content="VRChat のロリっ子喫茶ぷぷりえの店員さん、ようかんの紹介ページ">
-<link rel="icon" href="youkan-wink.webp">
+<title>ようかん | ぷぷりえの店員さん</title>
+<!--
+  Direction (kawaii-design)
+  前提: おまかせ。素材と言葉は ぷぷりえ公式プロフィールと youkan.uk の本人素材・本人の文章のみ。創作したキャラクターや台詞はなし。
+  Character   : 幼い(ロリっ子喫茶の店員・シュクレのちびっこ体型)・おっとり/眠たげ(「〜ね〜」「おうちで寝るのが好き」)+元気(ばんざい、「！」)・ひらがな多めで「〜」と「！」・水色、銀髪、ねこみみ、黄色い三日月のヘアピン、鈴、水色リボン、フリルのエプロン
+  Product     : ぷぷりえに通うファン向けの、店員さん「ようかん」をひと目で好きになれる紹介ページ
+  Dialect     : ゆめかわ(水色主役)。VRChat のファン文化・本人サイトの「フリルと水」のテーマ・依頼の虹色に合う
+  Feel        : ふわっと、のんびり、ときどきばんざい
+  World       : 水色のシャボン玉の中のおみせ。素材はガラスと水、フリルのエプロン
+  Star        : ヒーローは立ち絵(タップ/ホバーでばんざい)。ようかんのことは本人写真。ほかは Stage(プリント写真・三日月の目印・ガラス)
+  Shape       : 開いたレイアウト。きろくの白い面は上が水の波、下がエプロンのフリル。フッターも水の波。立ち絵は水しずく形のマットからはみ出し、次のセクションへ足が出る
+  Atmosphere  : ゆめかわ。水色 6 割、ピンク、レモン少し、白い光を挟んだ渦。顔の後ろだけは無地の水色マットで静かに
+  Type/motion : 名前と h2 は Mochiy Pop One(ひらがな、大きく)、本文は本人サイトと同じ Zen Maru Gothic。動くのは立ち絵の登場 1 回だけ(ぽよん)。ナビのリンクはなめらかにスクロール
+  Palette     : 水色 #a9dcf6/#5fa9d6/#2a6a96、ピンク #f8cfe0/#e58fb4、レモン #fff0a6/#f2cf4a、白、インク #4a3352
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* ワントーン: ようかんの水色と白から */
-    --page: #E8F0F8;        /* 白い髪がほんのり浮く、水色寄りの白 */
-    --mat: #D3E3F3;         /* リボンの水色をうすくしたもの */
-    --paper: #FFFFFF;
-    --foot: #F8FBFE;
-    --ink: #283452;         /* エプロンの紺 */
-    --link: #3A69AE;        /* 瞳の青を深くしたもの */
-    --water: #8FC0E6;       /* youkan.uk の水色 */
-    --moon: #E4C064;        /* 三日月のヘアピン */
-    --star-dark: 46 66 108;
+    --aqua-100: #e3f4fd;
+    --aqua-200: #cdebfa;
+    --aqua-300: #a9dcf6;
+    --aqua-500: #5fa9d6;
+    --aqua-800: #2a6a96;
+    --pink-200: #f8cfe0;
+    --pink-400: #e58fb4;
+    --lemon-200: #fff0a6;
+    --lemon-400: #f2cf4a;
+    --ink: #4a3352;
+    --star-dark: 52 84 128;
     --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
     --display: "Mochiy Pop One", "Zen Maru Gothic", sans-serif;
-    --body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
-    --fs-body: 17px;
-    --fs-title: clamp(30px, 3.4vw, 42px);
-    --wrap: 1080px;
+    --space: clamp(1.25rem, 5vw, 4.5rem);
   }
 
-  *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  * { box-sizing: border-box; }
+  html { background: #eef8fd; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
   body {
     margin: 0;
-    background: var(--page);
     color: var(--ink);
-    font-family: var(--body);
-    font-weight: 500;
-    font-size: var(--fs-body);
-    line-height: 1.85;
-    letter-spacing: 0.03em;
+    font: 500 1.0625rem/1.85 "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+    letter-spacing: .03em;
     word-break: auto-phrase;
     overflow-x: hidden;
   }
-  img { display: block; max-width: 100%; height: auto; }
-  a { color: var(--link); text-underline-offset: 0.25em; text-decoration-thickness: 1.5px; }
-  a:hover { text-decoration-style: wavy; }
-  :focus-visible { outline: 3px solid var(--water); outline-offset: 4px; border-radius: 12px; }
+  a { color: var(--aqua-800); text-underline-offset: .25em; text-decoration-thickness: 1.5px; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua-500); outline-offset: 4px; border-radius: 12px; }
+  img { display: block; max-width: 100%; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: 1.2; text-wrap: balance; }
   p { margin: 0; }
-  ul, ol { margin: 0; padding: 0; list-style: none; }
+  ul, ol { list-style: none; margin: 0; padding: 0; }
 
-  /* ---------- 三日月 (ヘアピンのモチーフ) ---------- */
-  .moon { display: inline-block; width: 1em; height: 1em; }
-  .moon path { stroke-linejoin: round; stroke-linecap: round; }
+  /* ゆめかわの背景: 水色が主役、ピンクとレモン、あいだに白い光 */
+  .page { position: relative; isolation: isolate; }
+  .page::before {
+    content: ""; position: fixed; inset: -12%; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(34% 28% at 16% 18%, #a9dcf6 0%, transparent 70%),
+      radial-gradient(40% 32% at 82% 26%, #b7e3f8 0%, transparent 72%),
+      radial-gradient(38% 30% at 58% 82%, #9fd5f2 0%, transparent 70%),
+      radial-gradient(30% 26% at 12% 72%, #b4e0f7 0%, transparent 70%),
+      radial-gradient(24% 20% at 42% 48%, #ffffff 0%, transparent 72%),
+      radial-gradient(20% 18% at 70% 56%, #ffffff 0%, transparent 70%),
+      radial-gradient(22% 17% at 90% 74%, #f8cfe0 0%, transparent 70%),
+      radial-gradient(20% 16% at 34% 8%, #f9d6e5 0%, transparent 70%),
+      radial-gradient(18% 15% at 6% 44%, #f6cde0 0%, transparent 70%),
+      radial-gradient(8% 6% at 56% 20%, rgb(255 240 166 / .8) 0%, transparent 70%),
+      radial-gradient(7% 6% at 26% 92%, rgb(255 243 184 / .8) 0%, transparent 70%),
+      linear-gradient(116deg, transparent 28%, #ffffff 40%, transparent 52%),
+      linear-gradient(24deg, transparent 56%, rgb(248 207 224 / .55) 65%, transparent 75%),
+      #e7f5fc;
+    filter: url(#swirl) blur(8px);
+  }
+  .specks {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      radial-gradient(circle at 12% 30%, #fff 0 1.5px, transparent 2px),
+      radial-gradient(circle at 88% 14%, #fff 0 2px, transparent 2.5px),
+      radial-gradient(circle at 94% 62%, #fff 0 1.5px, transparent 2px),
+      radial-gradient(circle at 4% 86%, #fff 0 2px, transparent 2.5px),
+      radial-gradient(circle at 46% 4%, #fff 0 1.5px, transparent 2px);
+  }
 
-  /* ---------- タイトル ---------- */
-  .title {
-    position: relative;
-    margin: 0;
-    font-family: var(--display);
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: 0.06em;
-    text-wrap: balance;
+  /* ナビ: 右上の小さなガラス */
+  .nav {
+    position: absolute; top: clamp(.75rem, 2vw, 1.5rem); right: clamp(.75rem, 2.5vw, 2rem); z-index: 5;
+    display: flex; gap: .25rem; padding: .3rem;
+    background: rgb(255 255 255 / .55);
+    backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    border: 1px solid rgb(255 255 255 / .75);
+    border-radius: 9999px;
+    box-shadow: 0 8px 24px rgb(var(--star-dark) / .10);
   }
-  .title .ph { display: inline-block; white-space: nowrap; }
-  .title .ph i { display: inline-block; font-style: normal; }
-  .title .pin {
-    position: absolute;
-    width: 0.62em; height: 0.62em;
-    rotate: 24deg;
-    pointer-events: none;
+  .nav a {
+    display: inline-flex; align-items: center; min-height: 40px; padding: 0 .95rem;
+    border-radius: 9999px; text-decoration: none; color: var(--ink); font-size: .9375rem; font-weight: 700; white-space: nowrap;
   }
-  .section-title {
-    font-size: var(--fs-title);
-    text-align: center;
-    margin-bottom: 56px;
-  }
-  .section-title .inner { position: relative; display: inline-block; }
-  .section-title .pin { right: -0.42em; top: -0.32em; }
+  .nav a:hover { background: rgb(255 255 255 / .8); }
 
-  /* ---------- ヒーロー ---------- */
+  /* ヒーロー */
   .hero {
-    position: relative;
+    position: relative; z-index: 2;
     min-height: 100svh;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.42fr);
-    align-items: end;
-    padding: 4svh clamp(24px, 6vw, 96px) 0;
-    max-width: 1600px;
-    margin: 0 auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1rem, 4vw, 4rem);
+    padding: 0 var(--space);
+    max-width: 92rem; margin-inline: auto;
   }
-  .hero-name {
-    grid-column: 1;
-    grid-row: 1;
-    position: relative;
-    z-index: 2;
-    align-self: center;
-    padding-bottom: 6svh;
-  }
+  .hero-text { padding-block: 6rem 4rem; justify-self: end; }
   .name {
-    font-size: clamp(72px, 7.4vw, 124px);
-    letter-spacing: 0.02em;
-    line-height: 1.05;
-    margin: 0 0 20px -0.04em;
-    color: var(--ink);
+    position: relative; display: inline-block;
+    font-size: clamp(4.25rem, 10.5vw, 10rem);
+    line-height: 1;
+    letter-spacing: .02em;
+    color: var(--aqua-800);
+    -webkit-text-stroke: .12em #fff;
+    paint-order: stroke fill;
+    filter: drop-shadow(0 6px 10px rgb(var(--star-dark) / .14));
   }
-  .name .inner { position: relative; display: inline-block; }
-  .name .pin { right: -0.3em; top: -0.02em; width: 0.42em; height: 0.42em; }
-  .role { font-size: var(--fs-body); padding-left: 0.3em; }
-  .role a { color: inherit; }
+  .name .moon {
+    position: absolute; width: .32em; height: .32em; top: -.12em; right: -.08em; rotate: 18deg;
+  }
+  .hero-facts { margin-top: clamp(1.25rem, 2.5vw, 2rem); display: grid; gap: .6rem; font-size: clamp(1.0625rem, 1.4vw, 1.25rem); }
+  .hero-facts .shop { font-weight: 700; }
+  .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .tags li {
+    padding: .2rem .9rem; border-radius: 9999px; font-size: 1rem;
+    background: rgb(255 255 255 / .6); border: 1px solid rgb(255 255 255 / .8);
+  }
 
-  .star {
-    grid-column: 2;
-    grid-row: 1;
+  .star-wrap {
     position: relative;
-    height: min(92svh, 1215px);
-    min-height: 560px;
-    aspect-ratio: 706 / 1215;
+    height: min(88svh, 1000px);
+    aspect-ratio: 722 / 1231;
+    align-self: end;
+    margin-bottom: 1.5rem;
   }
   .mat {
-    position: absolute;
-    left: 50%; top: -2%;
-    width: 132%;
-    aspect-ratio: 1;
-    translate: -54% 0;
-    border-radius: 50%;
-    background: var(--mat);
+    position: absolute; z-index: -1; pointer-events: none;
+    left: -22%; top: -4%; width: 144%; height: auto;
+    color: var(--aqua-200);
   }
-  .floor {
-    position: absolute;
-    left: 50%; bottom: 0.6%;
-    width: 34%; height: 2.6%;
-    translate: -50% 0;
-    border-radius: 50%;
-    background: rgb(var(--star-dark) / 0.24);
-    filter: blur(7px);
-  }
-  .star-body {
-    position: absolute; inset: 0;
-    margin: 0; padding: 0;
-    border: 0; background: none;
-    cursor: pointer;
+  .star {
+    all: unset; cursor: pointer; display: block; position: absolute; inset: 0;
     -webkit-tap-highlight-color: transparent;
   }
-  .star-body:focus-visible { outline-offset: -8px; border-radius: 32px; }
-  .pose {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: contain;
+  .star img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
     filter:
-      drop-shadow(0 2px 2px rgb(var(--star-dark) / 0.16))
-      drop-shadow(14px 22px 26px rgb(var(--star-dark) / 0.16));
-    transition: opacity 90ms linear;
-    user-select: none;
-    -webkit-user-drag: none;
+      drop-shadow(0 2px 2px rgb(var(--star-dark) / .20))
+      drop-shadow(12px 20px 26px rgb(var(--star-dark) / .20));
   }
-  .pose.banzai { opacity: 0; }
-  .is-banzai .pose.stand { opacity: 0; }
-  .is-banzai .pose.banzai { opacity: 1; }
+  .star .pose-banzai { visibility: hidden; }
+  .star[aria-pressed="true"] .pose-stand { visibility: hidden; }
+  .star[aria-pressed="true"] .pose-banzai { visibility: visible; }
+  .contact {
+    position: absolute; left: 50%; bottom: .2%; width: 40%; height: 3.2%; translate: -50% 0;
+    border-radius: 50%; background: rgb(var(--star-dark) / .26); filter: blur(7px); pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .star-figure { animation: star-in 820ms var(--ease-poyon) 120ms both; transform-origin: 50% 100%; }
+    @keyframes star-in {
+      from { transform: translateY(32px) scale(.96); }
+      to { transform: none; }
+    }
+  }
+  .star-figure { position: absolute; inset: 0; }
 
+  /* 吹き出し: しっぽは顔に向ける */
   .bubble {
-    position: absolute;
-    right: 84%; top: 12%;
-    width: max-content;
-    max-width: 15em;
-    padding: 16px 24px;
-    background: var(--paper);
-    border-radius: 22px;
-    box-shadow: 8px 12px 26px rgb(var(--star-dark) / 0.12);
-    font-size: var(--fs-body);
-    line-height: 1.7;
-    transform-origin: 100% 60%;
+    position: absolute; z-index: 3;
+    right: 81%; top: 7%;
+    width: max-content; max-width: 15.5rem;
+    padding: 1rem 1.3rem;
+    background: rgb(255 255 255 / .82);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-radius: 26px 26px 10px 26px;
+    box-shadow: 0 10px 26px rgb(var(--star-dark) / .14);
+    font-weight: 700; line-height: 1.7;
   }
-  .bubble::after { /* しっぽは顔のほうへ */
-    content: "";
-    position: absolute;
-    right: -10px; top: 56%;
-    width: 22px; height: 22px;
-    background: var(--paper);
-    border-radius: 0 6px 0 0;
-    transform: translateY(-50%) rotate(45deg) skew(10deg, 10deg);
+  .bubble::after {
+    content: ""; position: absolute; right: -16px; bottom: 6px;
+    width: 26px; height: 22px;
+    background: inherit;
+    clip-path: path("M0 0 C8 8 16 12 26 16 C16 20 6 20 0 18 Z");
   }
-  .is-banzai .bubble { right: 99%; top: 14%; }
-  .say-banzai { display: none; }
-  .is-banzai .say-stand { display: none; }
-  .is-banzai .say-banzai { display: inline; }
+  .star-wrap.is-banzai .bubble { right: 99%; }
+  .bubble [data-pose="banzai"] { display: none; }
+  .star-wrap.is-banzai .bubble [data-pose="stand"] { display: none; }
+  .star-wrap.is-banzai .bubble [data-pose="banzai"] { display: inline; }
 
-  /* ---------- セクション共通 ---------- */
-  .section {
-    max-width: var(--wrap);
-    margin: 0 auto;
-    padding: 128px clamp(20px, 5vw, 48px) 0;
-  }
+  /* セクション */
+  section { position: relative; }
+  .inner { width: min(100% - 2 * var(--space), 68rem); margin-inline: auto; }
+  h2 { font-size: clamp(2.5rem, 6.4vw, 4.75rem); color: var(--aqua-800); -webkit-text-stroke: .1em #fff; paint-order: stroke fill; }
+  h2.long { font-size: clamp(2.1rem, 5.2vw, 4rem); }
+  h3 { font-size: clamp(1.375rem, 2.4vw, 1.75rem); color: var(--ink); }
+  [id] { scroll-margin-block-start: 1.5rem; }
 
-  /* プリント (写真の見せ方) */
+  /* ようかんのこと */
+  .about { padding-block: clamp(6rem, 11vw, 9rem) clamp(5rem, 9vw, 8rem); }
+  .about-grid {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2.5rem, 6vw, 5.5rem); align-items: center; margin-top: clamp(2rem, 4vw, 3.5rem);
+  }
   .print {
-    --tilt: -2deg;
-    position: relative;
-    margin: 0;
-    padding: 12px 12px 14px;
-    background: var(--paper);
-    border-radius: 12px;
-    box-shadow:
-      0 1px 2px rgb(var(--star-dark) / 0.10),
-      10px 14px 28px rgb(var(--star-dark) / 0.13);
-    transform: rotate(var(--tilt));
+    position: relative; margin: 0;
+    background: #fff; padding: 12px 12px 34px; border-radius: 6px;
+    box-shadow: 0 2px 3px rgb(var(--star-dark) / .10), 0 14px 30px rgb(var(--star-dark) / .14);
   }
-  .print img { border-radius: 6px; width: 100%; }
-  .print::before { /* マスキングテープ */
-    content: "";
-    position: absolute;
-    left: 50%; top: -12px;
-    width: 92px; height: 26px;
-    translate: -50% 0;
-    rotate: calc(var(--tilt) * -1.6);
+  .print img { border-radius: 3px; width: 100%; height: auto; }
+  .print::before {
+    content: ""; position: absolute; top: -12px; left: 50%; width: 92px; height: 26px; translate: -50% 0; rotate: -4deg;
+    background: rgb(248 207 224 / .78);
+    background-image: repeating-linear-gradient(90deg, rgb(255 255 255 / .35) 0 6px, transparent 6px 12px);
     border-radius: 3px;
-    background: rgb(143 192 230 / 0.5);
   }
-  .print a { display: block; color: inherit; text-decoration: none; }
-  .print figcaption, .print .label {
-    display: block;
-    padding-top: 10px;
-    text-align: center;
-    font-family: var(--display);
-    letter-spacing: 0.04em;
+  .about .print { rotate: -2.5deg; }
+  .words {
+    position: relative;
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3vw, 2.5rem);
+    background: rgb(255 255 255 / .72);
+    backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    border: 1px solid rgb(255 255 255 / .8);
+    border-radius: 32px;
+    box-shadow: 0 12px 32px rgb(var(--star-dark) / .12);
+    font-size: clamp(1.125rem, 1.7vw, 1.3125rem); font-weight: 700; line-height: 2;
+  }
+  .words::before {
+    content: ""; position: absolute; left: -22px; top: 34%;
+    width: 30px; height: 30px; background: rgb(255 255 255 / .72);
+    clip-path: path("M30 4 C20 10 10 12 0 12 C10 16 20 22 30 28 Z");
+  }
+  .facts { margin-top: clamp(1.5rem, 3vw, 2.25rem); display: grid; gap: .7rem; }
+  .facts li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem; padding-left: 1.75rem; position: relative; }
+  .facts li > svg { position: absolute; left: 0; top: .42em; width: 1.05rem; height: 1.05rem; }
+  .facts b { font-weight: 700; color: var(--aqua-800); min-width: 5.5em; }
+
+  /* きろく: 上は水の波、下はエプロンのフリル */
+  .fill {
+    --t: clamp(44px, 6.5vw, 96px);
+    --b: 34px;
+    background: rgb(255 255 255 / .74);
+    backdrop-filter: blur(18px) saturate(1.25); -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    padding-block: calc(var(--t) + clamp(2.5rem, 6vw, 4.5rem)) calc(var(--b) + clamp(3.5rem, 7vw, 6rem));
+    -webkit-mask:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 52C96 30 170 22 262 38S420 86 560 72S778 18 930 24S1120 74 1238 66S1384 30 1440 36V100H0Z'/%3E%3C/svg%3E") left top / 100% var(--t) no-repeat,
+      linear-gradient(#000 0 0) 0 calc(var(--t) - 1px) / 100% calc(100% - var(--t) - var(--b) + 2px) no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 34'%3E%3Cpath d='M0 0H120V14A20 17 0 0 1 80 14A18 15 0 0 1 44 14A22 18 0 0 1 0 14Z'/%3E%3C/svg%3E") left bottom / 120px var(--b) repeat-x;
+            mask:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 52C96 30 170 22 262 38S420 86 560 72S778 18 930 24S1120 74 1238 66S1384 30 1440 36V100H0Z'/%3E%3C/svg%3E") left top / 100% var(--t) no-repeat,
+      linear-gradient(#000 0 0) 0 calc(var(--t) - 1px) / 100% calc(100% - var(--t) - var(--b) + 2px) no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 34'%3E%3Cpath d='M0 0H120V14A20 17 0 0 1 80 14A18 15 0 0 1 44 14A22 18 0 0 1 0 14Z'/%3E%3C/svg%3E") left bottom / 120px var(--b) repeat-x;
+  }
+  .timeline { position: relative; margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); }
+  .timeline::before {
+    content: ""; position: absolute; top: .5rem; bottom: .5rem; left: 50%; width: 8px; translate: -50% 0;
+    background: radial-gradient(circle, var(--aqua-300) 0 2.5px, transparent 3px) center top / 8px 16px repeat-y;
+  }
+  .timeline li { position: relative; width: calc(50% - 2.5rem); }
+  .timeline li:nth-child(odd) { justify-self: end; text-align: left; }
+  .timeline li:nth-child(even) { justify-self: start; text-align: right; }
+  .timeline .mark { position: absolute; top: .2rem; width: 1.6rem; height: 1.6rem; }
+  .timeline li:nth-child(odd) .mark { left: calc(-2.5rem - .8rem); }
+  .timeline li:nth-child(even) .mark { right: calc(-2.5rem - .8rem); }
+  .timeline time { display: block; font-family: var(--display); color: var(--aqua-800); font-size: 1.125rem; letter-spacing: .04em; line-height: 1.5; }
+  .timeline p { font-weight: 700; font-size: 1.125rem; line-height: 1.75; }
+  .timeline .latest p {
+    display: inline-block; margin-top: .25rem; padding: .55rem 1.1rem; border-radius: 18px;
+    background: var(--pink-200);
   }
 
-  /* ---------- ようかんのこと ---------- */
-  .about {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: 72px;
-    align-items: center;
-  }
-  .about-photo { position: relative; }
-  .about-photo::before { /* ヒーローの丸をもういちど */
-    content: "";
-    position: absolute;
-    width: 78%; aspect-ratio: 1;
-    left: -14%; top: -16%;
-    border-radius: 50%;
-    background: var(--mat);
-  }
-  .about-photo .print { --tilt: -2.5deg; max-width: 440px; }
-  .about-photo .print::before { left: 22%; }
-  .quote {
-    position: relative;
-    padding: 22px 28px;
-    background: var(--paper);
-    border-radius: 22px;
-    box-shadow: 8px 12px 26px rgb(var(--star-dark) / 0.10);
-    margin-bottom: 40px;
-  }
-  .quote::after { /* しっぽは写真のほうへ */
-    content: "";
-    position: absolute;
-    left: -10px; top: 50%;
-    width: 22px; height: 22px;
-    background: var(--paper);
-    border-radius: 0 0 0 6px;
-    transform: translateY(-50%) rotate(45deg) skew(10deg, 10deg);
-  }
-  .facts li {
-    display: grid;
-    grid-template-columns: 1.4em 1fr;
-    gap: 8px;
-    padding: 6px 0;
-  }
-  .facts .moon { margin-top: 0.42em; width: 0.95em; height: 0.95em; }
-
-  /* ---------- きろく ---------- */
-  .timeline {
-    position: relative;
-    max-width: 760px;
-    margin: 0 auto;
-  }
-  .timeline::before { /* 点線 */
-    content: "";
-    position: absolute;
-    left: 15px; top: 12px; bottom: 24px;
-    width: 3px;
-    background: radial-gradient(circle, var(--water) 1.4px, transparent 1.8px) 0 0 / 3px 11px repeat-y;
-  }
-  .timeline li {
-    position: relative;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: baseline;
-    column-gap: 20px;
-    padding: 0 0 30px 56px;
-  }
-  .timeline li:nth-child(even) { padding-left: 88px; }
-  .timeline .mark {
-    position: absolute;
-    left: 4px; top: 6px;
-    width: 26px; height: 26px;
-  }
-  .timeline time {
-    display: inline-block;
-    padding: 2px 14px;
-    background: var(--paper);
-    border-radius: 999px;
-    font-family: var(--display);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    rotate: -2deg;
-    box-shadow: 0 2px 6px rgb(var(--star-dark) / 0.08);
-  }
-  .timeline li:nth-child(even) time { rotate: 1.5deg; }
-  .timeline li:nth-child(even) .mark { left: 4px; }
-  .timeline li.now { padding-bottom: 0; }
-  .timeline li.now time { background: var(--ink); color: var(--paper); }
-  .timeline li.now .mark { width: 34px; height: 34px; left: 0; top: 3px; }
-
-  /* ---------- つくったもの ---------- */
-  .goods {
-    display: flex;
-    justify-content: center;
-    gap: clamp(28px, 5vw, 64px);
-    margin-bottom: 64px;
-  }
-  .goods .print { width: min(320px, 42vw); }
+  /* つくったもの */
+  .made { padding-block: clamp(5rem, 9vw, 7.5rem) clamp(2rem, 4vw, 3rem); }
+  .goods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 5vw, 4.5rem); margin-top: clamp(2.5rem, 5vw, 4rem); max-width: 52rem; }
+  .goods a { display: block; text-decoration: none; color: inherit; }
+  .goods .print { transition: rotate 200ms ease-out; }
+  .goods li:nth-child(1) .print { rotate: -2deg; }
+  .goods li:nth-child(2) .print { rotate: 1.8deg; margin-top: 2rem; }
+  .goods a:hover .print, .goods a:focus-visible .print { rotate: 0deg; }
   .goods .print img { aspect-ratio: 1; object-fit: cover; }
-  .goods .print:nth-child(1) { --tilt: -2deg; }
-  .goods .print:nth-child(2) { --tilt: 1.8deg; margin-top: 28px; }
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px 12px;
-    max-width: 820px;
-    margin: 0 auto;
+  .goods .label { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .9rem .25rem 0; font-weight: 700; line-height: 1.6; }
+  .goods .price { font-family: var(--display); color: var(--aqua-800); white-space: nowrap; }
+  .goods .print { padding-bottom: 14px; }
+  .apps { margin-top: clamp(3.5rem, 7vw, 5.5rem); }
+  .pills { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+  .pills a {
+    display: inline-flex; align-items: center; min-height: 48px; padding: .4rem 1.3rem;
+    border-radius: 9999px; text-decoration: none; font-weight: 700; color: var(--aqua-800);
+    background: rgb(255 255 255 / .66);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgb(255 255 255 / .85);
+    box-shadow: 0 6px 18px rgb(var(--star-dark) / .08);
   }
-  .chips a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 20px;
-    border-radius: 24px;
-    background: var(--mat);
-    color: var(--ink);
-    text-decoration: none;
-    transition: translate 200ms var(--ease-poyon), background-color 200ms ease;
-  }
-  .chips a:hover { translate: 0 -3px; background: #C5DAEF; }
-  .chips a:active { translate: 0 1px; }
+  .pills a:hover { background: #fff; }
 
-  /* ---------- おうちのサーバー ---------- */
-  .server-say {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 22px;
-    margin-bottom: 64px;
+  /* おうちのサーバー */
+  .server { padding-block: clamp(4rem, 8vw, 6rem) clamp(7rem, 12vw, 10rem); }
+  .server-quote {
+    margin-top: clamp(1.5rem, 3vw, 2rem); max-width: 34rem; font-weight: 700; font-size: clamp(1.125rem, 1.6vw, 1.25rem);
   }
-  .face {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: 40% 40%;
-    flex: none;
-    box-shadow: 0 0 0 4px var(--paper), 4px 8px 16px rgb(var(--star-dark) / 0.14);
-  }
-  .server-say .quote { margin: 0; }
-  .servers {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: clamp(24px, 4vw, 48px);
-    align-items: center;
-  }
-  .servers .print:nth-child(1) { --tilt: -1.5deg; }
-  .servers .print:nth-child(2) { --tilt: 2deg; margin-top: 24px; }
-  .servers .print:nth-child(3) { --tilt: -1deg; }
+  .server-quote a { display: inline-block; margin-top: .5rem; }
+  .server-prints { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: clamp(1.25rem, 3vw, 2.5rem); margin-top: clamp(2.5rem, 5vw, 3.5rem); align-items: start; }
+  .server-prints .print { padding-bottom: 12px; }
+  .server-prints .print img { aspect-ratio: 1; object-fit: cover; }
+  .server-prints li:nth-child(1) .print { rotate: -1.6deg; }
+  .server-prints li:nth-child(1) .print img { aspect-ratio: 16 / 10; }
+  .server-prints li:nth-child(2) .print { rotate: 2.2deg; margin-top: 1.5rem; }
+  .server-prints li:nth-child(3) .print { rotate: -1.2deg; margin-top: .5rem; }
+  .server-prints li:nth-child(2) .print::before { background-color: rgb(169 220 246 / .8); }
 
-  /* ---------- おわり ---------- */
-  .has-wave {
-    position: relative;
-    margin-top: 160px;
-    background: var(--foot);
-    padding: 56px 24px 72px;
+  /* フッター: 水の波で白へ */
+  .foot {
+    --t: clamp(44px, 6vw, 88px);
+    position: relative; background: #fff;
+    padding: clamp(2rem, 4vw, 3rem) var(--space) clamp(3rem, 6vw, 4.5rem);
   }
-  .wave {
-    position: absolute; left: 0; top: 1px;
-    transform: translateY(-100%);
-    width: 100%; height: clamp(60px, 8vw, 110px);
-    overflow: hidden; pointer-events: none;
-  }
-  .wave svg { display: block; width: 300%; height: 100%; fill: var(--foot); animation: wave-drift 40s linear infinite; }
-  .wave.back { opacity: 0.4; }
-  .wave.back svg { transform: scaleX(-1); animation-duration: 60s; animation-direction: reverse; }
-  @keyframes wave-drift { to { translate: -33.333% 0; } }
+  .foot .wave { position: absolute; left: 0; bottom: calc(100% - 1px); width: 100%; height: var(--t); color: #fff; pointer-events: none; display: block; }
+  .foot ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem clamp(1rem, 3vw, 2.25rem); max-width: 60rem; margin-inline: auto; }
+  .foot a { display: inline-flex; align-items: center; min-height: 48px; font-family: var(--display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); text-decoration: none; color: var(--aqua-800); }
+  .foot a:hover { text-decoration: underline; }
+  .foot .moon { display: block; width: 2rem; height: 2rem; margin: 0 auto 1rem; rotate: 18deg; }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 12px 36px;
-    max-width: 820px;
-    margin: 0 auto;
-    font-family: var(--display);
-    letter-spacing: 0.04em;
-  }
-  .links a { color: var(--ink); text-decoration: none; }
-  .links a:hover { color: var(--link); text-decoration: underline wavy; text-decoration-thickness: 1.5px; }
-
-  /* ---------- うごき ---------- */
-  @keyframes letter-in {
-    from { opacity: 0; translate: 0 11px; }
-    to { opacity: 1; translate: 0 0; }
-  }
-  @keyframes rise {
-    from { opacity: 0; translate: 0 22px; }
-    to { opacity: 1; translate: 0 0; }
-  }
-  @keyframes star-in {
-    from { opacity: 0; translate: 0 30px; }
-    to { opacity: 1; translate: 0 0; }
-  }
-  @keyframes pop {
-    from { opacity: 0; scale: 0.6; }
-    to { opacity: 1; scale: 1; }
-  }
-  @keyframes print-in {
-    from { opacity: 0; transform: translateY(-18px) rotate(calc(var(--tilt) - 7deg)); }
-    to { opacity: 1; transform: translateY(0) rotate(var(--tilt)); }
-  }
-  @keyframes hop {
-    0% { translate: 0 0; }
-    40% { translate: 0 -16px; }
-    100% { translate: 0 0; }
-  }
-  @keyframes letter-hop {
-    0%, 100% { translate: 0 0; }
-    45% { translate: 0 -0.14em; }
-  }
-
-  .title.pre i { opacity: 0; }
-  .title.play i { animation: letter-in 620ms var(--ease-poyon) both; animation-delay: calc(var(--d, 0ms) + var(--i) * 48ms); }
-  .title.play.hover-ok:hover i { animation: letter-hop 420ms var(--ease-poyon) both; animation-delay: calc(var(--i) * 40ms); }
-  .rise.pre { opacity: 0; }
-  .rise.play { animation: rise 560ms var(--ease-soft) both; animation-delay: var(--d, 0ms); }
-  .print.pre { opacity: 0; }
-  .print.play { animation: print-in 760ms var(--ease-poyon) both; animation-delay: var(--d, 0ms); }
-  .star.pre { opacity: 0; }
-  .star.play { animation: star-in 780ms var(--ease-poyon) both; }
-  .bubble.pre { opacity: 0; }
-  .bubble.play { animation: pop 460ms var(--ease-poyon) both; animation-delay: var(--d, 0ms); }
-  .star-body.hop { animation: hop 420ms var(--ease-poyon); }
-
-  /* ---------- スマホ ---------- */
-  @media (max-width: 760px) {
-    :root { --fs-body: 16px; }
-    .hero {
-      grid-template-columns: 1fr;
-      align-items: start;
-      justify-items: center;
-      padding: 28px 16px 0;
-      min-height: auto;
-    }
-    .hero-name { grid-column: 1; text-align: center; padding: 0; }
-    .name { font-size: clamp(64px, 19vw, 96px); margin: 0 0 4px; }
-    .role { padding: 0; }
-    .star {
-      grid-column: 1;
-      grid-row: 2;
-      height: min(66svh, 152vw);
-      min-height: 0;
-      margin-top: 92px;
-    }
-    .mat { width: 118%; top: -1%; translate: -50% 0; }
+  /* モバイル */
+  @media (max-width: 52rem) {
+    .hero { grid-template-columns: minmax(0, 1fr); align-items: start; min-height: auto; gap: 0; padding-top: 4.5rem; }
+    .hero-text { justify-self: center; text-align: center; padding-block: 0; }
+    .name { font-size: clamp(3.75rem, 19vw, 6rem); }
+    .hero-facts { margin-top: .75rem; gap: .4rem; font-size: 1rem; }
+    .tags { justify-content: center; }
+    .star-wrap { height: min(72svh, 640px); justify-self: center; margin-top: 7rem; margin-bottom: -1.5rem; }
     .bubble {
-      right: auto; left: 50%; top: -86px;
-      translate: -78% 0;
-      max-width: 15em;
-      padding: 12px 20px;
-      transform-origin: 70% 100%;
+      right: auto; left: 50%; top: auto; bottom: calc(100% + 14px); translate: -50% 0;
+      max-width: min(17rem, 80vw); text-align: center; border-radius: 24px; padding: .8rem 1.1rem; font-size: 1rem;
     }
-    .is-banzai .bubble { right: auto; top: -86px; }
-    .bubble::after {
-      right: auto; left: 70%; top: auto; bottom: -9px;
-      border-radius: 0 0 6px 0;
-      transform: translateX(-50%) rotate(45deg) skew(10deg, 10deg);
-    }
-    .section { padding-top: 96px; }
-    .section-title { margin-bottom: 40px; }
-    .about { grid-template-columns: 1fr; gap: 56px; }
-    .about-photo { padding: 0 8px; }
-    .quote::after {
-      left: 22%; top: -9px;
-      border-radius: 6px 0 0 0;
-      transform: translateX(-50%) rotate(45deg) skew(10deg, 10deg);
-    }
-    .timeline li, .timeline li:nth-child(even) {
-      grid-template-columns: 1fr;
-      padding-left: 52px;
-      row-gap: 4px;
-    }
-    .timeline time { justify-self: start; }
-    .goods { gap: 20px; }
-    .goods .print { width: 46%; padding: 8px 8px 10px; }
-    .server-say { flex-direction: column; gap: 18px; }
-    .server-say .quote::after {
-      left: 50%; top: -9px;
-      border-radius: 6px 0 0 0;
-    }
-    .servers { grid-template-columns: 1fr 1fr; }
-    .servers .print:nth-child(1) { grid-column: 1 / -1; }
-    .servers .print:nth-child(2) { margin-top: 0; }
-    .has-wave { margin-top: 120px; }
+    .star-wrap.is-banzai .bubble { right: auto; }
+    .bubble::after { right: auto; left: 50%; bottom: -15px; translate: -50% 0; width: 22px; height: 16px; clip-path: path("M0 0 H22 C16 5 13 10 11 16 C9 10 6 5 0 0 Z"); }
+    .nav { left: 50%; right: auto; translate: -50% 0; }
+    .nav a { padding: 0 .6rem; font-size: .8125rem; min-height: 38px; }
+    .about-grid { grid-template-columns: minmax(0, 1fr); }
+    .about .print { width: min(84%, 22rem); justify-self: center; }
+    .words::before { left: 50%; top: -22px; translate: -50% 0; width: 28px; height: 24px; clip-path: path("M4 24 C10 16 12 8 12 0 C16 8 22 16 28 24 Z"); }
+    .timeline::before { left: .8rem; }
+    .timeline li, .timeline li:nth-child(odd), .timeline li:nth-child(even) { width: auto; justify-self: stretch; text-align: left; padding-left: 2.75rem; }
+    .timeline li:nth-child(odd) .mark, .timeline li:nth-child(even) .mark { left: 0; right: auto; }
+    .goods { grid-template-columns: minmax(0, 1fr); max-width: 24rem; margin-inline: auto; }
+    .goods li:nth-child(2) .print { margin-top: 0; }
+    .server-prints { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .server-prints li:nth-child(1) { grid-column: 1 / -1; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .wave svg { animation: none; }
-    *, *::before, *::after { animation: none !important; transition: none !important; }
+  @media (max-width: 22rem) {
+    .nav a { padding: 0 .5rem; }
   }
 </style>
 </head>
 <body>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="moon" viewBox="0 0 24 24">
-      <path d="M14.5 2.6a9.6 9.6 0 1 0 7 15.4 8 8 0 0 1-7-15.4Z" stroke-width="2.4"/>
-    </symbol>
-  </defs>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="swirl" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.006" numOctaves="2" seed="11"/>
+    <feDisplacementMap in="SourceGraphic" scale="140"/>
+  </filter>
+  <symbol id="moon" viewBox="0 0 24 24">
+    <path d="M15.5 2.6c-4.9.7-8.6 4.9-8.6 9.9 0 5 3.7 9.2 8.6 9.9-1 .4-2.2.6-3.4.6C6.5 23 2 18.5 2 12.9S6.5 2 12.1 2c1.2 0 2.4.2 3.4.6Z" fill="#fff0a6" stroke="#e3b92e" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
 </svg>
+<div class="specks" aria-hidden="true"></div>
 
-<main>
-  <section class="hero" aria-label="ようかん">
-    <div class="hero-name">
-      <h1 class="title name" data-in style="--d: 260ms"><span class="inner"><span class="ph">ようかん</span><svg class="moon pin" aria-hidden="true"><use href="#moon" fill="var(--moon)" stroke="var(--moon)"/></svg></span></h1>
-      <p class="role rise" data-in style="--d: 760ms">ロリっ子喫茶<a href="https://pple.vr2.info/casts/%E3%82%88%E3%81%86%E3%81%8B%E3%82%93/">ぷぷりえ</a>の店員さん</p>
-    </div>
+<div class="page">
+  <nav class="nav" aria-label="ページ内">
+    <a href="#about">こと</a>
+    <a href="#kiroku">きろく</a>
+    <a href="#made">つくったもの</a>
+    <a href="#server">サーバー</a>
+  </nav>
 
-    <div class="star" data-in>
-      <div class="mat" aria-hidden="true"></div>
-      <div class="floor" aria-hidden="true"></div>
-      <button class="star-body" type="button" aria-pressed="false" aria-label="ようかん">
-        <img class="pose stand" src="youkan-stand.webp" width="706" height="1215" alt="白い髪に猫耳、水色のメイド服を着たようかんのアバター">
-        <img class="pose banzai" src="youkan-banzai.webp" width="706" height="1215" alt="" aria-hidden="true">
-      </button>
-      <p class="bubble" data-in style="--d: 900ms"><span class="say-stand">ようかんっていいます～<br>よろしくね～。</span><span class="say-banzai">なんでもやさんです！</span></p>
-    </div>
-  </section>
-
-  <section class="section" id="about">
-    <h2 class="title section-title" data-in><span class="inner"><span class="ph">ようかんの</span><span class="ph">こと</span><svg class="moon pin" aria-hidden="true"><use href="#moon" fill="var(--moon)" stroke="var(--moon)"/></svg></span></h2>
-    <div class="about">
-      <div class="about-photo">
-        <figure class="print" data-in>
-          <img src="youkan-wink.webp" width="680" height="565" alt="ウインクするようかんのアップ" loading="lazy">
-        </figure>
-      </div>
-      <div>
-        <p class="quote rise" data-in style="--d: 120ms">えっと水色の可愛いのとも好きかも！<br>ぷぷりえの友達と遊ぶのが大好き！</p>
-        <ul class="facts rise" data-in style="--d: 240ms">
-          <li><svg class="moon" aria-hidden="true"><use href="#moon" fill="var(--water)" stroke="var(--water)"/></svg><span>なんでもやさん。声の話も、技術の話（web・インフラ・VRトラッカー）も、服も</span></li>
-          <li><svg class="moon" aria-hidden="true"><use href="#moon" fill="var(--water)" stroke="var(--water)"/></svg><span>おうちで寝るのが好き</span></li>
-          <li><svg class="moon" aria-hidden="true"><use href="#moon" fill="var(--water)" stroke="var(--water)"/></svg><span>Dev &amp; VTuber / House Cat</span></li>
-          <li><svg class="moon" aria-hidden="true"><use href="#moon" fill="var(--water)" stroke="var(--water)"/></svg><span>VRChat：<a href="https://vrchat.com/home/user/usr_1cfecaae-35cc-41f5-8c0e-6a7e68ce4a37">ようかんYokan</a></span></li>
+  <header class="hero">
+    <div class="hero-text">
+      <h1 class="name">ようかん<svg class="moon" aria-hidden="true"><use href="#moon"/></svg></h1>
+      <div class="hero-facts">
+        <p class="shop">ロリっ子喫茶ぷぷりえ の店員さん</p>
+        <ul class="tags">
+          <li>#家猫ようかん</li>
+          <li>#ぷぷりえ</li>
         </ul>
       </div>
     </div>
-  </section>
 
-  <section class="section" id="kiroku">
-    <h2 class="title section-title" data-in><span class="inner"><span class="ph">かつどうの</span><span class="ph">きろく</span><svg class="moon pin" aria-hidden="true"><use href="#moon" fill="var(--moon)" stroke="var(--moon)"/></svg></span></h2>
-    <ol class="timeline" role="list">
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2018-12">2018.12</time><span>VRChatに登録</span></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2024-08">2024.08</time><span>VRChatを再開！</span></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2025-04">2025.04</time><span>ぷぷりえの店員さんに</span></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2025-04-22">2025.04.22</time><a href="https://pplale.vercel.app/">ぷぷりえーるのWebサイト制作を開始！</a></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2026-03-24">2026.03.24</time><a href="https://zenn.dev/yokan/articles/kubernetes-misskey-recovery">MisskeyのHDDが死んだけど、なんとかなった話</a></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2026-08-04">2026.08.04</time><span>おうちのサーバーにUPSを導入</span></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2026-09-02">2026.09</time><a href="https://zenn.dev/yokan/articles/pixiv-summer-intern-2026">PIXIV SUMMER BOOT CAMP 2026に参加！</a></li>
-      <li class="rise" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--page)" stroke="var(--water)"/></svg><time datetime="2026-10-05">2026.10.05</time><a href="https://pplale.vercel.app/game/">ぷぷりえーるに対戦機能を追加！</a></li>
-      <li class="rise now" data-in><svg class="moon mark" aria-hidden="true"><use href="#moon" fill="var(--moon)" stroke="var(--moon)"/></svg><time datetime="2026-10-19">2026.10.19</time><a href="https://metacul-frontier.com/?p=38424">ぷぷりえとして記事に登場！</a></li>
-    </ol>
-  </section>
-
-  <section class="section" id="tsukutta">
-    <h2 class="title section-title" data-in><span class="inner"><span class="ph">つくった</span><span class="ph">もの</span><svg class="moon pin" aria-hidden="true"><use href="#moon" fill="var(--moon)" stroke="var(--moon)"/></svg></span></h2>
-    <div class="goods">
-      <figure class="print" data-in>
-        <a href="https://youkan.uk/shop/7625414">
-          <img src="tsuki-acce.webp" width="600" height="542" alt="" loading="lazy">
-          <span class="label">月アクセ</span>
-        </a>
-      </figure>
-      <figure class="print" data-in style="--d: 140ms">
-        <a href="https://youkan.uk/shop/6763447">
-          <img src="mokomoko-pajama.webp" width="600" height="600" alt="" loading="lazy">
-          <span class="label">もこもこぱじゃま</span>
-        </a>
-      </figure>
+    <div class="star-wrap">
+      <svg class="mat" viewBox="0 0 400 420" aria-hidden="true">
+        <path fill="currentColor" d="M206 18C262 22 318 58 344 112C370 166 382 214 360 262C338 310 300 330 252 346C204 362 156 352 116 326C76 300 40 262 34 208C28 154 50 104 92 66C126 34 160 15 206 18Z"/>
+      </svg>
+      <p class="bubble">
+        <span data-pose="stand">ようかんっていいます～よろしくね～。</span><span data-pose="banzai">ぷぷりえの友達と遊ぶのが大好き！</span>
+      </p>
+      <div class="star-figure">
+        <span class="contact" aria-hidden="true"></span>
+        <button class="star" type="button" aria-pressed="false" aria-label="ようかん ばんざい">
+          <img class="pose-stand" src="youkan-stand.webp" width="722" height="1231" alt="水色のメイド服で立つ、ねこみみのようかん">
+          <img class="pose-banzai" src="youkan-banzai.webp" width="722" height="1231" alt="" aria-hidden="true">
+        </button>
+      </div>
     </div>
-    <ul class="chips rise" data-in>
-      <li><a href="https://pplale.vercel.app/">ぷぷりえーる デッキ構築</a></li>
-      <li><a href="https://youkan.uk/works/vrc-queue-monitor">VRChat 待機列モニター</a></li>
-      <li><a href="https://youkan.uk/works/camesura">かめすら</a></li>
-      <li><a href="https://youkan.uk/works/ubichill">Ubichill</a></li>
-      <li><a href="https://mi.youkan.uk/@youkan">ようかんのみすきー</a></li>
-      <li><a href="https://youkan.uk/">youkan.uk</a></li>
-      <li><a href="https://pple.booth.pm/items/8648921">歌ったCD「なぞ？なぞ！ぷぷりえ☆大解決？」</a></li>
-    </ul>
-  </section>
+  </header>
 
-  <section class="section" id="server">
-    <h2 class="title section-title" data-in><span class="inner"><span class="ph">おうちの</span><span class="ph">サーバー</span><svg class="moon pin" aria-hidden="true"><use href="#moon" fill="var(--moon)" stroke="var(--moon)"/></svg></span></h2>
-    <div class="server-say rise" data-in>
-      <img class="face" src="youkan-wink.webp" width="680" height="565" alt="ようかん" loading="lazy">
-      <p class="quote">ここからMisskeyなどの自宅サーバーは落ちてません！</p>
-    </div>
-    <div class="servers">
-      <figure class="print" data-in><img src="server-tower.webp" width="900" height="506" alt="自宅のタワーサーバー" loading="lazy"></figure>
-      <figure class="print" data-in style="--d: 120ms"><img src="server-minipc.webp" width="560" height="560" alt="ミニPCとネットワークスイッチ" loading="lazy"></figure>
-      <figure class="print" data-in style="--d: 240ms"><img src="server-ups.webp" width="560" height="560" alt="稼働中の無停電電源装置" loading="lazy"></figure>
-    </div>
-  </section>
-</main>
+  <main>
+    <section id="about" class="about" aria-labelledby="about-title">
+      <div class="inner">
+        <h2 id="about-title">ようかんのこと</h2>
+        <div class="about-grid">
+          <figure class="print">
+            <img src="youkan-wink.webp" width="740" height="656" alt="ウインクするようかんの自撮り">
+          </figure>
+          <div>
+            <p class="words">ようかんです。なんでもやさんです！<br>声の話も技術の話(web,インフラ,vrトラッカー)も服も<br>おうちで寝るのが好き</p>
+            <ul class="facts">
+              <li><svg aria-hidden="true"><use href="#moon"/></svg><b>VRChat</b><span>ようかんYokan</span></li>
+              <li><svg aria-hidden="true"><use href="#moon"/></svg><b>ぷぷりえ</b><span>2025.04 から店員さん</span></li>
+              <li><svg aria-hidden="true"><use href="#moon"/></svg><b>アバター</b><span>水色のシュクレ(sucre)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<footer class="has-wave">
-  <div class="wave back" aria-hidden="true">
-    <svg viewBox="0 0 945 8" preserveAspectRatio="none"><use href="#wave-path"/><use href="#wave-path" x="315"/><use href="#wave-path" x="630"/></svg>
-  </div>
-  <div class="wave" aria-hidden="true">
-    <svg viewBox="0 0 945 8" preserveAspectRatio="none">
-      <defs><path id="wave-path" d="M0 2 C 18 0.4, 30 5.6, 52 3.4 S 88 0.2, 110 2.8 S 150 6.2, 176 2.6 S 220 0.6, 246 3.6 S 292 5.4, 315 2 V8 H0 Z"/></defs>
-      <use href="#wave-path"/><use href="#wave-path" x="315"/><use href="#wave-path" x="630"/>
+    <section id="kiroku" class="fill" aria-labelledby="kiroku-title">
+      <div class="inner">
+        <h2 id="kiroku-title">きろく</h2>
+        <ol class="timeline">
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2018-12">2018.12</time><p>VRChatに登録</p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2024-08">2024.08</time><p>VRChatを再開！</p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2025-04">2025.04</time><p>ぷぷりえ店員配属</p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2025-04-22">2025.04.22</time><p><a href="https://pplale.vercel.app/">ぷぷりえーるのWebサイト制作を開始！</a></p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2026-03-24">2026.03.24</time><p><a href="https://zenn.dev/yokan/articles/kubernetes-misskey-recovery">MisskeyのHDDが死んだけど、なんとかなった話</a></p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2026-08-04">2026.08.04</time><p>おうちのサーバーにUPSを導入</p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2026-09-02">2026.09.02 → 09.11</time><p><a href="https://zenn.dev/yokan/articles/pixiv-summer-intern-2026">PIXIV SUMMER BOOT CAMP 2026に参加！</a></p></li>
+          <li><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2026-10-05">2026.10.05</time><p><a href="https://pplale.vercel.app/game/">ぷぷりえーるに対戦機能を追加！</a></p></li>
+          <li class="latest"><svg class="mark" aria-hidden="true"><use href="#moon"/></svg><time datetime="2026-10-19">2026.10.19</time><p><a href="https://metacul-frontier.com/?p=38424">ぷぷりえとして記事に登場！</a></p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="made" class="made" aria-labelledby="made-title">
+      <div class="inner">
+        <h2 id="made-title">つくったもの</h2>
+        <ul class="goods">
+          <li>
+            <a href="https://youkan.uk/shop/7625414">
+              <figure class="print">
+                <img src="tsuki-acce.webp" width="800" height="723" alt="水色にきらめく三日月のアクセサリー">
+                <figcaption class="label"><span>【無料】月アクセ</span><span class="price">無料</span></figcaption>
+              </figure>
+            </a>
+          </li>
+          <li>
+            <a href="https://youkan.uk/shop/6763447">
+              <figure class="print">
+                <img src="mokomoko-pajama.webp" width="800" height="800" alt="もこもこぱじゃま 2色セット">
+                <figcaption class="label"><span>もこもこぱじゃま</span><span class="price">¥500</span></figcaption>
+              </figure>
+            </a>
+          </li>
+        </ul>
+
+        <div class="apps">
+          <h3>サイトとアプリ</h3>
+          <ul class="pills">
+            <li><a href="https://youkan.uk/works/youkan-uk">youkan.uk</a></li>
+            <li><a href="https://youkan.uk/works/misskey">ようかんのみすきー</a></li>
+            <li><a href="https://youkan.uk/works/pplale-web">ぷぷりえーる デッキ構築</a></li>
+            <li><a href="https://youkan.uk/works/vrc-queue-monitor">VRChat 待機列モニター</a></li>
+            <li><a href="https://youkan.uk/works/ubichill">Ubichill</a></li>
+            <li><a href="https://youkan.uk/works/camesura">かめすら（CameSura）</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="server" class="server" aria-labelledby="server-title">
+      <div class="inner">
+        <h2 id="server-title" class="long">おうちのサーバー</h2>
+        <p class="server-quote">ここからMisskeyなどの自宅サーバーは落ちてません！（2026年10月時点）<br><a href="https://mi.youkan.uk/@youkan">ようかんのみすきー</a></p>
+        <ul class="server-prints">
+          <li><figure class="print"><img src="server-tower.webp" width="800" height="450" alt="自宅のタワーサーバー"></figure></li>
+          <li><figure class="print"><img src="server-minipc.webp" width="480" height="480" alt="ミニPCとネットワークスイッチ"></figure></li>
+          <li><figure class="print"><img src="server-ups.webp" width="480" height="480" alt="稼働中の無停電電源装置"></figure></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="currentColor" opacity=".55" d="M0 40C120 26 214 12 330 24S520 70 660 62S880 14 1010 18S1230 58 1330 52S1410 34 1440 30V100H0Z"/>
+      <path fill="currentColor" d="M0 58C110 44 190 36 300 50S470 92 610 82S820 36 960 38S1160 80 1270 74S1400 50 1440 46V100H0Z"/>
     </svg>
-  </div>
-  <ul class="links">
-    <li><a href="https://mi.youkan.uk/@youkan">Misskey</a></li>
-    <li><a href="https://x.com/youkan0124">X</a></li>
-    <li><a href="https://bsky.app/profile/youkan.uk">Bluesky</a></li>
-    <li><a href="https://github.com/ieyoukan">GitHub</a></li>
-    <li><a href="https://zenn.dev/yokan">Zenn</a></li>
-    <li><a href="https://youkan.uk/">youkan.uk</a></li>
-    <li><a href="https://pple.vr2.info/casts/%E3%82%88%E3%81%86%E3%81%8B%E3%82%93/">ぷぷりえ</a></li>
-  </ul>
-</footer>
+    <svg class="moon" aria-hidden="true"><use href="#moon"/></svg>
+    <ul>
+      <li><a href="https://mi.youkan.uk/@youkan">Misskey</a></li>
+      <li><a href="https://x.com/youkan0124">Twitter</a></li>
+      <li><a href="https://bsky.app/profile/youkan.uk">Bluesky</a></li>
+      <li><a href="https://github.com/ieyoukan">GitHub</a></li>
+      <li><a href="https://zenn.dev/yokan">Zenn</a></li>
+      <li><a href="https://www.pixiv.net/users/36804964">pixiv</a></li>
+      <li><a href="https://pple.vr2.info/casts/%E3%82%88%E3%81%86%E3%81%8B%E3%82%93/">ぷぷりえ</a></li>
+      <li><a href="https://youkan.uk/">youkan.uk</a></li>
+    </ul>
+  </footer>
+</div>
 
 <script>
-(() => {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // タイトルを一文字ずつに (読み上げは aria-label で)
-  document.querySelectorAll('.title').forEach((t) => {
-    t.setAttribute('aria-label', t.textContent.trim());
-    let k = 0;
-    t.querySelectorAll('.ph').forEach((ph) => {
-      const chars = [...ph.textContent];
-      ph.textContent = '';
-      ph.setAttribute('aria-hidden', 'true');
-      chars.forEach((c) => {
-        const i = document.createElement('i');
-        i.textContent = c;
-        i.style.setProperty('--i', k++);
-        ph.append(i);
-      });
+  // ホバー(マウス)とタップ/キーボードで、ばんざいのポーズに切り替える
+  (() => {
+    const wrap = document.querySelector('.star-wrap');
+    const star = wrap.querySelector('.star');
+    let lastPointer = '';
+    const set = (on) => {
+      star.setAttribute('aria-pressed', String(on));
+      wrap.classList.toggle('is-banzai', on);
+    };
+    star.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; });
+    star.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') set(true); });
+    star.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') set(false); });
+    star.addEventListener('click', () => {
+      if (lastPointer !== 'mouse') set(star.getAttribute('aria-pressed') !== 'true');
+      lastPointer = '';
     });
-  });
-
-  // 登場
-  if (!reduce && 'IntersectionObserver' in window) {
-    const els = document.querySelectorAll('[data-in]');
-    els.forEach((el) => el.classList.add('pre'));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        el.classList.remove('pre');
-        el.classList.add('play');
-        if (el.classList.contains('title')) setTimeout(() => el.classList.add('hover-ok'), 1400);
-        io.unobserve(el);
-      });
-    }, { rootMargin: '0px 0px -8% 0px' });
-    els.forEach((el) => io.observe(el));
-  }
-
-  // ポーズ: マウスはホバー、タッチやキーボードはタップで
-  const wrap = document.querySelector('.star');
-  const body = document.querySelector('.star-body');
-  let lastPointer = 'mouse';
-  const setPose = (on) => {
-    if (wrap.classList.contains('is-banzai') === on) return;
-    wrap.classList.toggle('is-banzai', on);
-    body.setAttribute('aria-pressed', String(on));
-    if (!reduce) {
-      body.classList.remove('hop');
-      void body.offsetWidth;
-      body.classList.add('hop');
-    }
-  };
-  body.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') setPose(true); });
-  body.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') setPose(false); });
-  body.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; });
-  body.addEventListener('keydown', () => { lastPointer = 'keyboard'; });
-  body.addEventListener('click', () => {
-    if (lastPointer !== 'mouse') setPose(!wrap.classList.contains('is-banzai'));
-  });
-})();
+  })();
 </script>
 </body>
 </html>
