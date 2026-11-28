@@ -27,7 +27,7 @@ Every other item on this list is mostly a specific case of this one.
 - ✨ 💖 🎀 🌸 used in labels, headings, buttons or as icons.
 - `border-radius: 9999px` on everything, including large cards and modals.
 - A heading entrance, staggered cards, and a moving wave all on the same page. Give the motion to one target and preserve functional feedback.
-- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on body text. Iridescent foil on the logo or one big display title is allowed when it has a white sticker edge and stays readable. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or body text. (Exception: in the Liquid Glass style, the soft pastel tint inside glass cards, headers, footers and buttons is part of the material.) Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
+- Visible color blends anywhere except the page background (the gentle 透明感 gradient, or the complex ゆめかわ background) and small iridescent accents like bubbles or the rim of one primary button. Never on body text. Iridescent foil on the logo or one big display title is allowed when it has a white sticker edge and stays readable. Gradient functions with hard stops that draw patterns, lines or dots are fine, because they don't blend colors: no gradients on section transitions, fades at the bottom of images or mats, buttons, cards or body text. (Exception: in the Liquid Glass style, the soft pastel tint inside glass cards, headers, footers and buttons, the tinted rim and the glitter are part of the material.) Even the page-wide one must be very gentle and pale. See [backgrounds-and-images.md](backgrounds-and-images.md).
 - Boxing the star: putting a character inside a colored arch or panel just to separate it from the background. Fix the image's edge and shadow instead.
 - A page in one flat color from top to bottom when the direction asked for something airy. One-tone is a choice, not a default.
 - Glowing buttons, neon shadows.
@@ -38,7 +38,7 @@ Every other item on this list is mostly a specific case of this one.
 ## Curves too small to see
 
 - A row of tiny scallops, lace or bumps (under about 24px) as the only boundary between colors. At a glance it reads as a straight band, and the page feels boxed in. Use a few big rises instead, at least 56px tall on desktop.
-- A footer that starts with a straight edge.
+- A footer that starts with a straight edge. In an app, a feed that just stops, or a bottom bar with a straight top edge.
 
 ## Wallpaper patterns
 
@@ -88,6 +88,7 @@ Any one of these can be right for a specific world, like the ポップ dialect o
 - Descriptions in a smaller size under timeline entries, products or links, like categories, prices or one-line explanations. If it needs to be smaller, it doesn't belong.
 - If a line of text exists only to explain, describe or annotate something on the page, delete it. Keep only the star's own words, the essential facts and the names of things.
 - The one exception is a legally required credit, as a single line at the very end of the page.
+- Not narration: the functional metadata of an app. The @handle, the time and the reaction counts in an SNS, chat or feed stay, at 13px or more and with 4.5:1 contrast. What goes is commentary around them.
 
 ## The AI closing section
 

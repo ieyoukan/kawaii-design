@@ -1,0 +1,938 @@
+<!doctype html>
+<!--
+  Direction（kawaii-design・おまかせ）
+  前提: おまかせなので調査・質問・確認は省略。実在のサービス・キャラクター・素材はなし。
+        サービス名「ぷかり」、マスコット「ぷるる」、ユーザー・アイコン・投稿イラスト・投稿文・トレンドはすべて創作（あとで差し替える前提）。
+        投稿＝「ぷかり」、いいね＝「あわ」、リポスト＝「おすそわけ」と、この世界のことばに置きかえた。
+  - Character: 幼い〜少女・のんびり＋好奇心・ひらがな多めで「〜だよ」「〜ね」・ももゼリーのくらげ、頭のつやハイライト、5つの味のリボン足（1本だけくるん）
+  - Product: ゼリーのいきものたちが、写真やひとことを「ぷかり」と浮かべあう Twitter 型 SNS。10〜20代の日常の共有向け。
+  - Dialect: ゆめかわ（SNS と虹色背景＋ガラス面の方言。「カラフル」指定なので色数を増やし、明るく澄ませる）
+  - Feel: つるん、ぷるっ、ひんやり明るい
+  - World: フルーツゼリーの国。もも（主役）・ソーダ・ぶどう＋レモン・メロンの5つの味がパレット。ガラス＝ゼリーの表面、背景の粒＝ゼリーの粒。
+  - Star: 全体は Stage mode（文字のタイムライン）。投稿の中のイラストが小さな主役。マスコットのぷるるを右カラム・ピンどめ投稿・タイムラインの終わりに大きく置く。
+  - Shape language: 角丸長方形（ガラスのカード 28px、ナビ 32px）＋円（アイコン、あわボタン、FAB）＋有機形（背景のゼリー粒、タブのゼリーインジケーター、フィード終わりのミルクゼリーの丘）。
+                    色が切りかわるのはフィードの終わりだけ＝大きな丘のカーブで受ける。モバイルの下部バーはカプセルで浮かせる。
+  - Atmosphere: Liquid Glass。もも主導の虹色背景＋大きなゼリー粒。屈折は重いので、ナビ・ヘッダー・検索・ボタンと、
+                ぷるるの足に重なるトレンドのカードだけ。投稿と投稿欄は軽いすりガラス。
+                長文のカードは中央を乳白にして読みやすく、縁だけ背景の色を曲げる。トレンドのカードはぷるるの足の上に重ねて、足の色を曲げる。
+  - Type and motion: M PLUS Rounded 1c（見出し 800・本文 500）。見出しは「ホーム」「いま ぷかぷか」「なかよくなれそう」。
+                     装飾アニメはひとつ：背景のゼリー粒が読み込み時に約5秒かけて流れ着き、止まる。ロゴ・ホーム・「うえに もどる」はなめらかスクロール。
+                     reduced motion では粒は最初から静止、スクロールは即ジャンプ。押したときの伸び・タブの移動・あわの膨らみは機能フィードバック。
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ホーム / ぷかり</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #3D2747;
+    --ink-soft: #6A4F75;
+    --berry: #A82A6A;
+    --momo: #FF9FC9;  --momo-pale: #FFE3EF;
+    --soda: #8FDAF5;  --soda-pale: #E0F5FD;
+    --budou: #C6B2FF; --budou-pale: #EEE8FF;
+    --lemon: #FFE27A; --lemon-pale: #FFF6D2;
+    --melon: #9EEBC9; --melon-pale: #E0F8EE;
+    --milk: #FFF9FC;
+    --star-dark: 140 56 112;
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  body {
+    margin: 0;
+    font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", system-ui, sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    background: #FFEFF7;
+    word-break: auto-phrase;
+    line-break: strict;
+  }
+  h1, h2 { text-wrap: balance; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :focus-visible { outline: 3px solid #E0559A; outline-offset: 2px; }
+
+  /* ---------- 背景：もも主導の虹色＋ゼリー粒 ---------- */
+  .app { position: relative; isolation: isolate; min-height: 100vh; overflow-x: clip; --cols: 268px minmax(0, 620px) 340px; }
+  .bg { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+  .bg::before {
+    content: ""; position: absolute; inset: -12%;
+    background:
+      radial-gradient(40% 32% at 16% 20%, #FFB6D6 0%, transparent 70%),
+      radial-gradient(44% 36% at 82% 28%, #FFC4DE 0%, transparent 72%),
+      radial-gradient(42% 34% at 58% 84%, #FFAED2 0%, transparent 70%),
+      radial-gradient(28% 24% at 40% 50%, #FFFFFF 0%, transparent 70%),
+      radial-gradient(28% 22% at 90% 70%, #A6E2F8 0%, transparent 70%),
+      radial-gradient(26% 22% at 6% 74%, #CDB9FF 0%, transparent 70%),
+      radial-gradient(16% 13% at 52% 12%, #FFEA9E 0%, transparent 70%),
+      radial-gradient(15% 12% at 30% 94%, #B4F0D6 0%, transparent 70%),
+      linear-gradient(118deg, transparent 30%, rgb(255 255 255 / 0.9) 42%, transparent 54%),
+      linear-gradient(28deg, transparent 56%, rgb(166 226 248 / 0.45) 65%, transparent 75%),
+      #FFEDF6;
+    filter: url(#swirl) blur(6px);
+  }
+  .blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .blob {
+    position: absolute; width: var(--s); aspect-ratio: 1;
+    border-radius: 46% 54% 52% 48% / 55% 45% 55% 45%;
+    background:
+      radial-gradient(26% 20% at 32% 26%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 100%),
+      radial-gradient(circle at 44% 40%, var(--c1) 0%, var(--c2) 62%, var(--c3) 100%);
+    filter: blur(1.5px);
+  }
+  .b1 { --s: 420px; left: -130px; top: 48%; --c1: #FFC7E0; --c2: #FF9CC8; --c3: #FF86BC; --dx: -60px; --dy: 40px; }
+  .b2 { --s: 330px; right: -70px; top: -90px; --c1: #C9F0FC; --c2: #8ED8F5; --c3: #6FCBF0; --dx: 50px; --dy: -40px; border-radius: 55% 45% 48% 52% / 46% 54% 46% 54%; }
+  .b3 { --s: 210px; left: 20%; top: 20%; --c1: #FFF2B8; --c2: #FFE07A; --c3: #FFD45C; --dx: -40px; --dy: -50px; }
+  .b4 { --s: 400px; right: 3%; bottom: -170px; --c1: #E2D6FF; --c2: #C2ABFF; --c3: #AE94FF; --dx: 40px; --dy: 60px; border-radius: 52% 48% 44% 56% / 50% 56% 44% 50%; }
+  .b5 { --s: 230px; left: 55%; top: 56%; --c1: #D2F8E8; --c2: #9EEBC9; --c3: #7FDFB6; --dx: 50px; --dy: 30px; }
+  .b6 { --s: 300px; left: 39%; top: -170px; --c1: #FFD3E6; --c2: #FFA9CF; --c3: #FF92C2; --dx: -30px; --dy: -50px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .blob { animation: glide 5.2s var(--ease-soft) both; }
+    .b2 { animation-delay: .15s; } .b3 { animation-delay: .3s; } .b4 { animation-delay: .1s; }
+    .b5 { animation-delay: .25s; } .b6 { animation-delay: .05s; }
+  }
+  @keyframes glide { from { translate: var(--dx) var(--dy); scale: 0.9; rotate: -8deg; } }
+
+  /* ---------- ガラス ---------- */
+  .glass {
+    position: relative; isolation: isolate;
+    border-radius: 28px;
+    background: linear-gradient(135deg,
+      rgb(255 210 232 / 0.42), rgb(255 255 255 / 0.2) 45%, rgb(196 236 250 / 0.4));
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow:
+      0 14px 36px rgb(var(--star-dark) / 0.16),
+      inset 0 1px 1px rgb(255 255 255 / 0.85),
+      inset 0 0 0 1px rgb(255 255 255 / 0.5);
+  }
+  /* 長文が乗るガラス：縁は色を曲げたまま、中央だけ乳白に */
+  .milk::before {
+    content: ""; position: absolute; inset: 10px; z-index: -1; pointer-events: none;
+    border-radius: 18px;
+    background: rgb(255 255 255 / 0.62);
+    filter: blur(9px);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass { background: rgb(255 250 253 / 0.9); }
+  }
+
+  /* ---------- レイアウト ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: var(--cols);
+    gap: 0 28px;
+    justify-content: center;
+    padding: 20px 24px 0;
+  }
+  .side-l { position: sticky; top: 20px; z-index: 2; grid-column: 1; grid-row: 1 / span 2; align-self: start; display: flex; flex-direction: column; gap: 16px; }
+  .timeline { grid-column: 2; grid-row: 1; min-width: 0; display: flex; flex-direction: column; }
+  .side-r { grid-column: 3; grid-row: 1; align-self: start; display: flex; flex-direction: column; gap: 20px; padding-bottom: 48px; }
+
+  /* ---------- 左ナビ ---------- */
+  .navpanel { padding: 18px 14px 16px; border-radius: 32px; }
+  .navpanel::before { border-radius: 24px; }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 12px 14px; text-decoration: none; color: var(--ink); width: max-content;
+  }
+  .logo svg { width: 44px; height: 44px; flex: none; }
+  .wordmark { font-weight: 800; font-size: 28px; letter-spacing: 0.06em; line-height: 1; }
+  .wordmark .fu { position: relative; margin-right: 0.08em; }
+  .wordmark .maru {
+    position: absolute; right: -0.24em; top: 0.02em;
+    width: 0.34em; height: 0.34em; border-radius: 50%;
+    border: 0.075em solid #3FB8E6;
+    background: radial-gradient(circle at 34% 30%, #fff 0 22%, rgb(255 255 255 / 0) 30%), rgb(169 228 255 / 0.5);
+  }
+  .nav { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .nav a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 11px 16px; border-radius: 18px;
+    font-size: 18px; font-weight: 700; text-decoration: none; color: var(--ink);
+    transition: background-color .3s var(--ease-soft);
+  }
+  .nav a:hover { background: rgb(255 255 255 / 0.55); }
+  .nav a[aria-current="page"] {
+    font-weight: 800; background: rgb(255 255 255 / 0.72);
+    box-shadow: inset 0 1px 0 #fff, 0 4px 12px rgb(var(--star-dark) / 0.08);
+  }
+  .nav svg { width: 26px; height: 26px; flex: none; }
+  .badge {
+    margin-left: auto; min-width: 26px; height: 26px; padding: 0 8px;
+    display: grid; place-items: center; border-radius: 999px;
+    background: var(--momo); color: var(--ink); font-size: 13px; font-weight: 800;
+    box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.8);
+  }
+  .ic { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ぷかりする：ラメ入りゼリーのボタン */
+  .jelly {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    height: 64px; padding: 0 24px; border: 0; border-radius: 999px; cursor: pointer;
+    font-size: 19px; font-weight: 800; letter-spacing: 0.06em; color: var(--ink);
+    background: linear-gradient(135deg, rgb(255 160 205 / 0.66), rgb(255 255 255 / 0.4) 52%, rgb(160 222 248 / 0.6));
+    box-shadow:
+      0 14px 30px rgb(var(--star-dark) / 0.24),
+      inset 0 1px 1px rgb(255 255 255 / 0.95),
+      inset 0 0 0 1px rgb(255 255 255 / 0.6);
+    transition: scale .6s var(--ease-soft);
+  }
+  .jelly svg { width: 24px; height: 24px; }
+  .jelly:active { scale: 1.05 0.94; transition-duration: .12s; }
+
+  .me { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; border-radius: 26px; text-decoration: none; }
+  .me .avatar { width: 44px; height: 44px; }
+  .me b { display: block; font-size: 15px; font-weight: 800; }
+  .me span { font-size: 13.5px; color: var(--ink-soft); }
+
+  /* ---------- タイムラインのヘッダー ---------- */
+  .tl-head {
+    position: sticky; top: 16px; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    height: 66px; padding: 0 10px 0 28px; margin-bottom: 18px;
+    border-radius: 999px;
+  }
+  .tl-head::before { inset: 8px; border-radius: 999px; background: rgb(255 255 255 / 0.6); }
+  .tl-title { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.06em; }
+  .logo-m { display: none; }
+  .tabs {
+    position: relative; display: grid; grid-template-columns: 1fr 1fr;
+    width: 272px; height: 48px; padding: 4px; border-radius: 999px;
+    background: rgb(255 255 255 / 0.4);
+    box-shadow: inset 0 1px 3px rgb(var(--star-dark) / 0.1);
+  }
+  .tabs button {
+    position: relative; z-index: 1; border: 0; background: none; cursor: pointer;
+    border-radius: 999px; font-size: 15px; font-weight: 700; color: var(--ink-soft);
+  }
+  .tabs button[aria-selected="true"] { color: var(--ink); font-weight: 800; }
+  .tab-ind {
+    position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
+    border-radius: 999px;
+    background:
+      radial-gradient(40% 36% at 26% 26%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 100%),
+      radial-gradient(120% 140% at 40% 30%, #FFD9EA 0%, #FFB0D3 62%, #FF9AC7 100%);
+    box-shadow:
+      inset 0 -3px 6px rgb(240 96 159 / 0.22),
+      inset 0 1px 1px rgb(255 255 255 / 0.9),
+      0 6px 14px rgb(var(--star-dark) / 0.2);
+    transition: translate .6s var(--ease-soft);
+  }
+  .tabs[data-active="1"] .tab-ind { translate: 100% 0; }
+  .tabs.stretch .tab-ind { animation: stretch .6s var(--ease-soft); }
+  @keyframes stretch { 35% { scale: 1.2 0.86; } }
+
+  /* ---------- 投稿フォーム ---------- */
+  .compose { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; padding: 20px 22px 14px; margin-bottom: 18px; }
+  .compose:focus-within { box-shadow: 0 14px 36px rgb(var(--star-dark) / 0.16), inset 0 0 0 2px rgb(255 159 201 / 0.9), inset 0 1px 1px #fff; }
+  .compose textarea {
+    width: 100%; min-height: 66px; padding: 10px 0 6px; border: 0; resize: none; outline: none;
+    background: transparent; font: inherit; font-size: 18px; line-height: 1.7; color: var(--ink);
+  }
+  .compose textarea::placeholder { color: var(--ink-soft); }
+  .compose-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 6px; }
+  .tools { display: flex; gap: 2px; margin-left: -8px; }
+  .tool {
+    width: 42px; height: 42px; border: 0; border-radius: 50%; background: none; cursor: pointer;
+    display: grid; place-items: center; color: var(--berry);
+  }
+  .tool:hover { background: rgb(255 255 255 / 0.6); }
+  .tool svg { width: 22px; height: 22px; }
+  .btn-main {
+    height: 44px; padding: 0 22px; border: 0; border-radius: 999px; cursor: pointer;
+    font-size: 15px; font-weight: 800; letter-spacing: 0.06em; color: var(--ink);
+    background: var(--momo);
+    box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.9), inset 0 -2px 4px rgb(220 70 140 / 0.18), 0 6px 14px rgb(var(--star-dark) / 0.2);
+    transition: scale .5s var(--ease-soft);
+  }
+  .btn-main:active { scale: 1.05 0.94; transition-duration: .12s; }
+
+  /* ---------- 投稿 ---------- */
+  .post { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; padding: 22px 24px 12px; margin-bottom: 16px; }
+  .post[hidden] { display: none; }
+  .avatar { display: block; width: 48px; height: 48px; border-radius: 50%; box-shadow: 0 3px 8px rgb(var(--star-dark) / 0.16); }
+  .pinned { display: flex; align-items: center; gap: 6px; margin: -6px 0 4px; font-size: 13.5px; font-weight: 700; color: var(--ink-soft); }
+  .pinned svg { width: 16px; height: 16px; }
+  .post-head { display: flex; align-items: baseline; column-gap: 6px; min-width: 0; line-height: 1.5; white-space: nowrap; }
+  .name { flex: none; font-size: 15.5px; font-weight: 800; text-decoration: none; }
+  .handle { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .post-head time, .sep { flex: none; }
+  .name:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .handle, .post-head time, .sep { font-size: 13.5px; color: var(--ink-soft); }
+  .more {
+    flex: none; margin-left: auto; align-self: center; width: 34px; height: 34px; margin-right: -8px;
+    border: 0; border-radius: 50%; background: none; cursor: pointer; color: var(--ink-soft);
+    display: grid; place-items: center;
+  }
+  .more:hover { background: rgb(255 255 255 / 0.6); }
+  .more svg { width: 20px; height: 20px; }
+  .text { margin: 4px 0 12px; font-size: 16px; line-height: 1.85; letter-spacing: 0.02em; }
+  .tag { color: var(--berry); font-weight: 700; text-decoration: none; white-space: nowrap; }
+  .tag:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .media { margin: 0 0 8px; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgb(var(--star-dark) / 0.14); }
+  .media svg { display: block; width: 100%; height: auto; }
+  .actions { display: flex; justify-content: space-between; max-width: 460px; margin-left: -10px; }
+  .act {
+    display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px;
+    border: 0; border-radius: 999px; background: none; cursor: pointer;
+    font-size: 13.5px; font-weight: 700; color: var(--ink-soft);
+    transition: background-color .3s var(--ease-soft);
+  }
+  .act:hover { background: rgb(255 255 255 / 0.65); color: var(--ink); }
+  .act svg { width: 22px; height: 22px; overflow: visible; }
+  .awa .fill { fill: none; transition: fill .3s var(--ease-soft); }
+  .awa .shine { stroke: currentColor; }
+  .awa[aria-pressed="true"] { color: var(--berry); }
+  .awa[aria-pressed="true"] .fill { fill: var(--momo); }
+  .awa[aria-pressed="true"] .shine { stroke: #fff; }
+  .awa.pop svg { animation: pop .55s var(--ease-soft); }
+  @keyframes pop { 30% { scale: 1.3; } }
+
+  /* アンケート */
+  .poll { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
+  .poll li {
+    position: relative; isolation: isolate; height: 46px; padding: 0 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    border-radius: 14px; background: rgb(255 255 255 / 0.6); overflow: hidden;
+    font-size: 15px; font-weight: 700;
+  }
+  .poll li::before {
+    content: ""; position: absolute; inset: 0 auto 0 0; z-index: -1;
+    width: var(--p); border-radius: 14px; background: var(--c);
+    box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.8);
+  }
+  .poll .mine { font-weight: 800; display: inline-flex; align-items: center; gap: 6px; }
+  .poll .mine svg { width: 18px; height: 18px; }
+  .poll-meta { margin: 0 0 6px; font-size: 13.5px; color: var(--ink-soft); }
+
+  /* ---------- フィードのおわり：ミルクゼリーの丘（画面幅いっぱい） ---------- */
+  .feed-end { grid-column: 1 / -1; grid-row: 2; margin: 70px calc(50% - 50vw) 0; text-align: center; }
+  .mound { display: block; width: 100%; height: 170px; }
+  .mound-body { margin-top: -1px; padding: 0 24px 96px; background: var(--milk); }
+  .end-inner { display: grid; grid-template-columns: var(--cols); column-gap: 28px; justify-content: center; }
+  .end-cell { grid-column: 2; position: relative; padding-top: 30px; }
+  .sleeper {
+    position: absolute; left: 50%; top: -196px; width: 150px; height: 188px;
+    translate: -40% 0; rotate: -9deg;
+    filter: drop-shadow(0 10px 14px rgb(var(--star-dark) / 0.16));
+  }
+  .end-words { margin: 0 0 18px; font-size: 17px; font-weight: 700; line-height: 1.9; letter-spacing: 0.04em; }
+  .to-top {
+    display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 14px;
+    font-size: 15px; font-weight: 800; text-decoration: none; color: var(--ink);
+    background: var(--momo-pale); box-shadow: inset 0 1px 1px #fff, 0 4px 10px rgb(var(--star-dark) / 0.1);
+  }
+  .to-top:hover { background: #FFD3E6; }
+
+  /* ---------- 右カラム ---------- */
+  .search { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 22px; border-radius: 999px; }
+  .search::before { inset: 7px; border-radius: 999px; }
+  .search svg { width: 22px; height: 22px; color: var(--ink-soft); flex: none; }
+  .search input { flex: 1; min-width: 0; border: 0; outline: none; background: none; font: inherit; font-size: 15.5px; color: var(--ink); }
+  .search input::placeholder { color: var(--ink-soft); }
+  .search:focus-within { box-shadow: 0 14px 36px rgb(var(--star-dark) / 0.16), inset 0 0 0 2px rgb(255 159 201 / 0.9); }
+  .side-hero { position: relative; height: 210px; margin-bottom: -6px; }
+  .side-mascot {
+    position: absolute; left: 50%; top: -14px; width: 236px; height: 295px; translate: -50% 0;
+    filter: drop-shadow(0 18px 22px rgb(var(--star-dark) / 0.18));
+  }
+  .card { padding: 22px 24px 16px; }
+  .card h2 { margin: 0 0 8px; font-size: 21px; font-weight: 800; letter-spacing: 0.06em; }
+  .trend ol, .follow ul { list-style: none; margin: 0; padding: 0; }
+  .trend a { display: block; padding: 9px 12px; margin: 0 -12px; border-radius: 16px; text-decoration: none; }
+  .trend a:hover { background: rgb(255 255 255 / 0.6); }
+  .trend b { display: block; font-size: 15.5px; font-weight: 800; }
+  .trend span { font-size: 13.5px; color: var(--ink-soft); }
+  .follow li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 8px 0; }
+  .follow .avatar { width: 44px; height: 44px; }
+  .follow b { display: block; font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .follow span { display: block; font-size: 13.5px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-sub {
+    height: 38px; padding: 0 16px; border: 0; border-radius: 14px; cursor: pointer;
+    font-size: 14px; font-weight: 800; color: var(--ink);
+    background: rgb(255 255 255 / 0.78);
+    box-shadow: inset 0 1px 1px #fff, 0 3px 8px rgb(var(--star-dark) / 0.12);
+  }
+  .btn-sub:hover { background: #fff; }
+
+  /* ---------- モバイル専用 ---------- */
+  .bottombar, .fab { display: none; }
+
+  @media (max-width: 1199px) {
+    .app { --cols: 248px minmax(0, 620px); }
+    .side-r { display: none; }
+  }
+  @media (max-width: 719px) {
+    html { scroll-padding-top: 84px; }
+    .shell { display: block; padding: 10px 12px 0; }
+    .side-l, .compose { display: none; }
+    .tl-head { top: 10px; height: 60px; padding: 0 8px 0 12px; margin-bottom: 14px; }
+    .tl-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .logo-m { display: flex; padding: 0; gap: 6px; }
+    .logo-m svg { width: 36px; height: 36px; }
+    .logo-m .wordmark { font-size: 22px; }
+    .tabs { width: 196px; height: 44px; }
+    .tabs button { font-size: 14px; }
+    .post { grid-template-columns: 42px minmax(0, 1fr); gap: 12px; padding: 18px 16px 8px; margin-bottom: 12px; border-radius: 26px; }
+    .post .avatar { width: 42px; height: 42px; }
+    .text { font-size: 15.5px; }
+    .media { border-radius: 16px; }
+    .actions { margin-left: -12px; margin-right: -6px; }
+    .act { padding: 0 8px; }
+    .feed-end { margin-top: 64px; }
+    .mound { height: 84px; }
+    .end-inner { display: block; }
+    .end-cell { padding-top: 26px; }
+    .sleeper { width: 116px; height: 145px; top: -114px; }
+    .mound-body { padding: 0 20px 128px; }
+    .end-words { font-size: 16px; }
+    .bottombar {
+      display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 10;
+      height: 66px; padding: 0 10px; border-radius: 999px;
+      align-items: center; justify-content: space-around;
+    }
+    .bottombar::before { inset: 8px; border-radius: 999px; background: rgb(255 255 255 / 0.5); }
+    .bottombar a {
+      position: relative; width: 54px; height: 48px; border-radius: 999px;
+      display: grid; place-items: center; color: var(--ink-soft);
+    }
+    .bottombar a[aria-current="page"] {
+      color: var(--ink);
+      background:
+        radial-gradient(40% 36% at 28% 26%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 100%),
+        radial-gradient(120% 140% at 40% 30%, #FFD9EA 0%, #FFB0D3 62%, #FF9AC7 100%);
+      box-shadow: inset 0 -3px 6px rgb(240 96 159 / 0.22), inset 0 1px 1px #fff, 0 6px 14px rgb(var(--star-dark) / 0.2);
+    }
+    .bottombar svg { width: 26px; height: 26px; }
+    .dot { position: absolute; top: 9px; right: 13px; width: 10px; height: 10px; border-radius: 50%; background: #F0609F; box-shadow: 0 0 0 2px #fff; }
+    .fab {
+      display: flex; position: fixed; right: 16px; bottom: 92px; z-index: 11;
+      width: 64px; height: 64px; padding: 0;
+    }
+    .fab svg { width: 28px; height: 28px; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="swirl" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.007" numOctaves="2" seed="11"/>
+    <feDisplacementMap in="SourceGraphic" scale="130"/>
+  </filter>
+  <defs>
+    <!-- ぷるる：ももゼリーのくらげ（からだ） -->
+    <g id="pururu-body">
+      <g fill="none" stroke-linecap="round" stroke-width="10">
+        <path stroke="#FFB0D2" d="M74 138 C62 168 84 190 72 218 C64 236 76 250 70 264"/>
+        <path stroke="#FFE38A" d="M97 146 C90 178 110 200 99 230 C93 248 103 262 99 278"/>
+        <path stroke="#A6EED0" d="M120 148 C114 184 134 204 124 236 C118 256 128 270 140 268 C152 266 152 250 140 248"/>
+        <path stroke="#9FDDF7" d="M143 146 C152 178 132 200 143 230 C149 248 139 262 143 278"/>
+        <path stroke="#CBB7FF" d="M166 138 C178 168 156 190 168 218 C176 236 164 250 170 264"/>
+      </g>
+      <path fill="#FFA3CB" d="M40 128 C40 70 76 34 120 34 C164 34 200 70 200 128 C200 141 190 147 180 143 C170 139 162 149 150 146 C140 144 134 152 120 152 C106 152 100 144 90 146 C78 149 70 139 60 143 C50 147 40 141 40 128Z"/>
+      <path fill="#FFC4DF" d="M68 106 C68 74 92 50 120 50 C148 50 172 74 172 106 C154 100 138 98 120 98 C102 98 86 100 68 106Z"/>
+      <ellipse cx="88" cy="76" rx="21" ry="10" fill="#fff" opacity=".9" transform="rotate(-38 88 76)"/>
+      <circle cx="112" cy="58" r="5" fill="#fff" opacity=".85"/>
+    </g>
+    <g id="blush">
+      <ellipse cx="82" cy="133" rx="11" ry="6" fill="#FF6FAE" opacity=".42"/>
+      <ellipse cx="158" cy="133" rx="11" ry="6" fill="#FF6FAE" opacity=".42"/>
+    </g>
+    <pattern id="glit" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="5" r="1.6" fill="#FF6FB0"/>
+      <circle cx="15" cy="3" r="1.1" fill="#fff"/>
+      <circle cx="11" cy="12" r="1.9" fill="#F4C430"/>
+      <circle cx="19" cy="16" r="1.3" fill="#9D86FF"/>
+      <circle cx="5" cy="18" r="1.2" fill="#3FC1EE"/>
+      <path d="M17 9 l1.6 .9 v1.8 l-1.6 .9 l-1.6 -.9 v-1.8z" fill="#fff"/>
+    </pattern>
+  </defs>
+  <symbol id="pururu" viewBox="0 0 240 300">
+    <use href="#pururu-body"/>
+    <use href="#blush"/>
+    <ellipse cx="100" cy="120" rx="6.5" ry="8" fill="#3D2747"/>
+    <ellipse cx="140" cy="120" rx="6.5" ry="8" fill="#3D2747"/>
+    <circle cx="102.5" cy="116.5" r="2.4" fill="#fff"/>
+    <circle cx="142.5" cy="116.5" r="2.4" fill="#fff"/>
+    <path d="M114 131 q6 6 12 0" fill="none" stroke="#3D2747" stroke-width="3.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="pururu-sleep" viewBox="0 0 240 300">
+    <use href="#pururu-body"/>
+    <use href="#blush"/>
+    <path d="M92 119 q8 7 16 0 M132 119 q8 7 16 0" fill="none" stroke="#3D2747" stroke-width="3.6" stroke-linecap="round"/>
+    <ellipse cx="120" cy="133" rx="3.4" ry="2.8" fill="#3D2747"/>
+  </symbol>
+
+  <!-- アバター：みんなゼリーのいきもの（同じ線なし・つや・ほっぺ） -->
+  <symbol id="av-pururu" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#FFE3EF"/>
+    <g fill="none" stroke-width="2.6" stroke-linecap="round">
+      <path stroke="#FFE38A" d="M18 34 q-2 4 0 8"/><path stroke="#A6EED0" d="M24 35 q2 4 0 8"/><path stroke="#9FDDF7" d="M30 34 q2 4 0 8"/>
+    </g>
+    <path fill="#FFA3CB" d="M10 29 C10 17 16 10 24 10 C32 10 38 17 38 29 C38 32 36 33 34 32.3 C32 31.6 30.6 33.4 28.4 33 C26.6 32.7 25.8 34 24 34 C22.2 34 21.4 32.7 19.6 33 C17.4 33.4 16 31.6 14 32.3 C12 33 10 32 10 29Z"/>
+    <ellipse cx="17.5" cy="17" rx="4.2" ry="2.2" fill="#fff" opacity=".9" transform="rotate(-38 17.5 17)"/>
+    <circle cx="19.6" cy="25" r="1.9" fill="#3D2747"/><circle cx="28.4" cy="25" r="1.9" fill="#3D2747"/>
+    <circle cx="20.2" cy="24.3" r=".6" fill="#fff"/><circle cx="29" cy="24.3" r=".6" fill="#fff"/>
+    <ellipse cx="16" cy="28.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="32" cy="28.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+    <path d="M22.6 27.8 q1.4 1.4 2.8 0" fill="none" stroke="#3D2747" stroke-width="1.3" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="av-shizuku" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#E0F5FD"/>
+    <path fill="#86D6F4" d="M24 8.5 C25.4 8.5 36.5 21 36.5 29.5 C36.5 36.4 30.9 41.5 24 41.5 C17.1 41.5 11.5 36.4 11.5 29.5 C11.5 21 22.6 8.5 24 8.5Z"/>
+    <ellipse cx="18.4" cy="24" rx="2.4" ry="4.6" fill="#fff" opacity=".85" transform="rotate(24 18.4 24)"/>
+    <circle cx="20.2" cy="30" r="1.9" fill="#3D2747"/><circle cx="28.4" cy="30" r="1.9" fill="#3D2747"/>
+    <circle cx="20.8" cy="29.3" r=".6" fill="#fff"/><circle cx="29" cy="29.3" r=".6" fill="#fff"/>
+    <ellipse cx="16.6" cy="33.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="32" cy="33.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+    <path d="M22.9 32.8 q1.4 1.4 2.8 0" fill="none" stroke="#3D2747" stroke-width="1.3" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="av-budou" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#EEE8FF"/>
+    <circle cx="13.5" cy="15" r="5.5" fill="#BBA3FF"/><circle cx="34.5" cy="15" r="5.5" fill="#BBA3FF"/>
+    <circle cx="13.5" cy="15" r="2.6" fill="#E3D8FF"/><circle cx="34.5" cy="15" r="2.6" fill="#E3D8FF"/>
+    <ellipse cx="24" cy="27.5" rx="14.5" ry="12.5" fill="#C4ADFF"/>
+    <ellipse cx="17" cy="20.5" rx="3.6" ry="2" fill="#fff" opacity=".85" transform="rotate(-30 17 20.5)"/>
+    <ellipse cx="24" cy="31.6" rx="5.2" ry="3.8" fill="#E5DBFF"/>
+    <ellipse cx="24" cy="30.2" rx="1.7" ry="1.2" fill="#3D2747"/>
+    <circle cx="18.8" cy="26.4" r="1.9" fill="#3D2747"/><circle cx="29.2" cy="26.4" r="1.9" fill="#3D2747"/>
+    <circle cx="19.4" cy="25.7" r=".6" fill="#fff"/><circle cx="29.8" cy="25.7" r=".6" fill="#fff"/>
+    <ellipse cx="14.6" cy="30.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="33.4" cy="30.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+  </symbol>
+  <symbol id="av-lemon" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#FFF6D2"/>
+    <path fill="#FFDC66" d="M22.4 13.4 C21.6 9.6 24.6 8.2 25.6 10.4 C26.2 8.8 28.6 9.6 27.6 12.2 C26.6 13.6 24 14 22.4 13.4Z"/>
+    <circle cx="24" cy="27" r="14" fill="#FFE070"/>
+    <ellipse cx="17.6" cy="20" rx="3.8" ry="2.1" fill="#fff" opacity=".85" transform="rotate(-34 17.6 20)"/>
+    <path fill="#F5B53F" d="M21.6 29.4 Q24 27.6 26.4 29.4 Q25.6 32.2 24 32.6 Q22.4 32.2 21.6 29.4Z"/>
+    <circle cx="19.4" cy="26" r="1.9" fill="#3D2747"/><circle cx="28.6" cy="26" r="1.9" fill="#3D2747"/>
+    <circle cx="20" cy="25.3" r=".6" fill="#fff"/><circle cx="29.2" cy="25.3" r=".6" fill="#fff"/>
+    <ellipse cx="15.6" cy="30.2" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="32.4" cy="30.2" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+  </symbol>
+  <symbol id="av-melon" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#E0F8EE"/>
+    <circle cx="15.5" cy="19" r="6" fill="#8CE2BD"/><circle cx="32.5" cy="19" r="6" fill="#8CE2BD"/>
+    <ellipse cx="24" cy="29.5" rx="15.5" ry="11" fill="#8CE2BD"/>
+    <ellipse cx="11.6" cy="25" rx="2.2" ry="1.4" fill="#fff" opacity=".8" transform="rotate(-30 11.6 25)"/>
+    <circle cx="15.5" cy="19.4" r="2.2" fill="#3D2747"/><circle cx="32.5" cy="19.4" r="2.2" fill="#3D2747"/>
+    <circle cx="16.2" cy="18.6" r=".7" fill="#fff"/><circle cx="33.2" cy="18.6" r=".7" fill="#fff"/>
+    <path d="M19 30.4 q5 4 10 0" fill="none" stroke="#3D2747" stroke-width="1.4" stroke-linecap="round"/>
+    <ellipse cx="13.6" cy="31" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="34.4" cy="31" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+  </symbol>
+  <symbol id="av-momousa" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#FFE3EF"/>
+    <ellipse cx="18" cy="13" rx="4.4" ry="9.5" fill="#FFBCD9" transform="rotate(-8 18 13)"/>
+    <ellipse cx="30" cy="13" rx="4.4" ry="9.5" fill="#FFBCD9" transform="rotate(8 30 13)"/>
+    <ellipse cx="18" cy="13.6" rx="2" ry="6" fill="#FFE0EE" transform="rotate(-8 18 13.6)"/>
+    <ellipse cx="30" cy="13.6" rx="2" ry="6" fill="#FFE0EE" transform="rotate(8 30 13.6)"/>
+    <circle cx="24" cy="29.5" r="12.5" fill="#FFBCD9"/>
+    <ellipse cx="18.4" cy="23.6" rx="3.4" ry="1.9" fill="#fff" opacity=".85" transform="rotate(-34 18.4 23.6)"/>
+    <circle cx="19.8" cy="29" r="1.9" fill="#3D2747"/><circle cx="28.2" cy="29" r="1.9" fill="#3D2747"/>
+    <circle cx="20.4" cy="28.3" r=".6" fill="#fff"/><circle cx="28.8" cy="28.3" r=".6" fill="#fff"/>
+    <ellipse cx="24" cy="32" rx="1.3" ry="1" fill="#3D2747"/>
+    <ellipse cx="16" cy="32.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="32" cy="32.4" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+  </symbol>
+  <symbol id="av-neko" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="24" fill="#EEE8FF"/>
+    <path fill="#94DAF6" d="M11 24 L12.4 11.6 Q13 9.2 15.2 10.6 L23 16.4Z"/>
+    <path fill="#94DAF6" d="M37 24 L35.6 11.6 Q35 9.2 32.8 10.6 L25 16.4Z"/>
+    <ellipse cx="24" cy="28" rx="14.5" ry="12" fill="#94DAF6"/>
+    <ellipse cx="17" cy="21.6" rx="3.6" ry="2" fill="#fff" opacity=".85" transform="rotate(-30 17 21.6)"/>
+    <circle cx="19" cy="27.4" r="1.9" fill="#3D2747"/><circle cx="29" cy="27.4" r="1.9" fill="#3D2747"/>
+    <circle cx="19.6" cy="26.7" r=".6" fill="#fff"/><circle cx="29.6" cy="26.7" r=".6" fill="#fff"/>
+    <path d="M22 31 q1 1.2 2 0 q1 1.2 2 0" fill="none" stroke="#3D2747" stroke-width="1.3" stroke-linecap="round"/>
+    <ellipse cx="15" cy="31" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/><ellipse cx="33" cy="31" rx="2.4" ry="1.4" fill="#FF6FAE" opacity=".45"/>
+  </symbol>
+
+  <!-- アイコン（2px・丸い線端） -->
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.2 11 5.3a1.6 1.6 0 0 1 2 0l7 5.9V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19Z"/><path d="M10 20.6v-4.4a2 2 0 0 1 4 0v4.4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.4"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 15.6V11a6 6 0 0 1 12 0v4.6l1.4 2H4.6Z"/><path d="M10 20.4a2.2 2.2 0 0 0 4 0"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.8" width="17" height="12.4" rx="3"/><path d="m4.6 7.6 7.4 5.4 7.4-5.4"/></symbol>
+  <symbol id="i-shiori" viewBox="0 0 24 24"><path d="M7.4 4.4h9.2a1.6 1.6 0 0 1 1.6 1.6v14l-6.2-3.8L5.8 20V6a1.6 1.6 0 0 1 1.6-1.6Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.4" r="3.8"/><path d="M4.6 20c1-3.8 3.8-5.8 7.4-5.8s6.4 2 7.4 5.8"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r=".6"/><circle cx="12" cy="12" r=".6"/><circle cx="18" cy="12" r=".6"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M12 4.6c4.6 0 8 3 8 6.9s-3.4 6.9-8 6.9c-1.1 0-2.2-.2-3.2-.5L4.6 19.6l1.1-3.6C4.6 14.8 4 13.2 4 11.5c0-3.9 3.4-6.9 8-6.9Z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M4.4 11V9.6a3 3 0 0 1 3-3h11"/><path d="m15.6 3.6 3 3-3 3"/><path d="M19.6 13v1.4a3 3 0 0 1-3 3h-11"/><path d="m8.4 20.4-3-3 3-3"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M12 14.6V4.6"/><path d="M8.2 8.2 12 4.4l3.8 3.8"/><path d="M5 13v4.4a2.2 2.2 0 0 0 2.2 2.2h9.6a2.2 2.2 0 0 0 2.2-2.2V13"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3.2"/><circle cx="9" cy="10" r="1.6"/><path d="m4.4 17 4.8-4.2 3.6 3 2.6-2 4.2 3.4"/></symbol>
+  <symbol id="i-poll" viewBox="0 0 24 24"><path d="M5 7.4h9M5 12h14M5 16.6h6"/></symbol>
+  <symbol id="i-place" viewBox="0 0 24 24"><path d="M12 20.6c-4-4.4-6.4-7.6-6.4-10.8a6.4 6.4 0 0 1 12.8 0c0 3.2-2.4 6.4-6.4 10.8Z"/><circle cx="12" cy="9.8" r="2.3"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5.4 18.6 1-3.8 9.4-9.4a2.1 2.1 0 0 1 3 3l-9.4 9.4Z"/><path d="m14.2 7 2.8 2.8"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 4.4h6M10 4.4v5L7 13.4h10l-3-4v-5M12 13.4v6.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m6 12.6 4 3.8 8-8.8"/></symbol>
+</svg>
+
+<div class="app" id="top">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="blobs" aria-hidden="true">
+    <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+    <i class="blob b4"></i><i class="blob b5"></i><i class="blob b6"></i>
+  </div>
+
+  <div class="shell">
+    <!-- 左：ナビ -->
+    <aside class="side-l">
+      <nav class="navpanel glass milk" data-glass="panel" aria-label="メインメニュー">
+        <a class="logo" href="#top" aria-label="ぷかり ホーム">
+          <svg aria-hidden="true"><use href="#av-pururu"/></svg>
+          <span class="wordmark" aria-hidden="true"><span class="fu">ふ<i class="maru"></i></span>かり</span>
+        </a>
+        <ul class="nav">
+          <li><a href="#top" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>ホーム</a></li>
+          <li><a href="#search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>さがす</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg>おしらせ<span class="badge" aria-label="新着 3件">3</span></a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>メッセージ</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg>しおり</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg>プロフィール</a></li>
+        </ul>
+      </nav>
+      <button class="jelly" type="button" data-glass="jelly"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg>ぷかりする</button>
+      <a class="me glass milk" data-glass="small" href="#">
+        <svg class="avatar" aria-hidden="true"><use href="#av-neko"/></svg>
+        <div><b>ソーダねこ</b><span>@soda_neko</span></div>
+      </a>
+    </aside>
+
+    <!-- まんなか：タイムライン -->
+    <main class="timeline">
+      <header class="tl-head glass milk" data-glass="bar">
+        <a class="logo logo-m" href="#top" aria-label="ぷかり ホーム">
+          <svg aria-hidden="true"><use href="#av-pururu"/></svg>
+          <span class="wordmark" aria-hidden="true"><span class="fu">ふ<i class="maru"></i></span>かり</span>
+        </a>
+        <h1 class="tl-title">ホーム</h1>
+        <div class="tabs" role="tablist" aria-label="タイムラインのきりかえ" data-active="0">
+          <span class="tab-ind" aria-hidden="true"></span>
+          <button type="button" role="tab" aria-selected="true">おすすめ</button>
+          <button type="button" role="tab" aria-selected="false">フォロー中</button>
+        </div>
+      </header>
+
+      <form class="compose glass milk" data-glass="card" onsubmit="return false">
+        <svg class="avatar" aria-hidden="true"><use href="#av-neko"/></svg>
+        <div>
+          <label class="sr-only" for="compose-text">ぷかりの ないよう</label>
+          <textarea id="compose-text" rows="2" placeholder="なにが ぷかりと うかんだ？"></textarea>
+          <div class="compose-bar">
+            <div class="tools">
+              <button class="tool" type="button" aria-label="画像をそえる"><svg class="ic" aria-hidden="true"><use href="#i-image"/></svg></button>
+              <button class="tool" type="button" aria-label="アンケートをつくる"><svg class="ic" aria-hidden="true"><use href="#i-poll"/></svg></button>
+              <button class="tool" type="button" aria-label="場所をそえる"><svg class="ic" aria-hidden="true"><use href="#i-place"/></svg></button>
+            </div>
+            <button class="btn-main" type="submit">ぷかりする</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 1. ぷるる（公式・ピンどめ） -->
+      <article class="post glass milk" data-glass="card" data-following="true">
+        <svg class="avatar" aria-hidden="true"><use href="#av-pururu"/></svg>
+        <div>
+          <p class="pinned"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>ピンどめ</p>
+          <div class="post-head">
+            <a class="name" href="#">ぷるる</a><span class="handle">@pukari_pururu</span><span class="sep" aria-hidden="true">·</span><time datetime="2026-11-29T07:12">9時間</time>
+            <button class="more" type="button" aria-label="メニュー"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button>
+          </div>
+          <p class="text">おはよう、ぷるるだよ。きょうは あめあがりで、そらが ももいろだったの。みんなの みつけた いろも、ぷかりしてみてね。</p>
+          <figure class="media">
+            <svg viewBox="0 0 520 300" role="img" aria-label="雨あがりの ももいろの空に虹がかかり、ぷるるが ふわりと浮かんでいる絵">
+              <rect width="520" height="300" fill="#FFE3EF"/>
+              <circle cx="404" cy="92" r="92" fill="#FFF1C9"/>
+              <circle cx="404" cy="92" r="58" fill="#FFF8E2"/>
+              <g fill="none">
+                <path d="M-102 330 A242 242 0 0 1 382 330" stroke="#fff" stroke-width="118" opacity=".75"/>
+                <path d="M-90 330 A230 230 0 0 1 370 330" stroke="#FFB8D6" stroke-width="15"/>
+                <path d="M-68 330 A208 208 0 0 1 348 330" stroke="#FFE79A" stroke-width="15"/>
+                <path d="M-46 330 A186 186 0 0 1 326 330" stroke="#AEEFD3" stroke-width="15"/>
+                <path d="M-24 330 A164 164 0 0 1 304 330" stroke="#A8E3F8" stroke-width="15"/>
+                <path d="M-2 330 A142 142 0 0 1 282 330" stroke="#D3C2FF" stroke-width="15"/>
+              </g>
+              <g fill="#fff">
+                <circle cx="-6" cy="300" r="56"/><circle cx="58" cy="306" r="42"/><circle cx="110" cy="318" r="34"/>
+                <circle cx="292" cy="312" r="40"/><circle cx="346" cy="290" r="48"/><circle cx="404" cy="306" r="40"/>
+                <circle cx="462" cy="284" r="50"/><circle cx="526" cy="296" r="46"/>
+              </g>
+              <use href="#pururu" x="326" y="26" width="164" height="205"/>
+              <g fill="none" stroke="#fff" stroke-width="3">
+                <circle cx="306" cy="78" r="9"/><circle cx="292" cy="122" r="5"/><circle cx="494" cy="168" r="7"/>
+              </g>
+            </svg>
+          </figure>
+          <footer class="actions">
+            <button class="act" type="button" aria-label="へんじ 48"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg>48</button>
+            <button class="act" type="button" aria-label="おすそわけ 320"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>320</button>
+            <button class="act awa" type="button" aria-pressed="true" ><span class="sr-only">あわ</span><svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle class="fill" cx="11" cy="13" r="7.4"/><path class="shine" d="M7.6 11.6a4 4 0 0 1 2.4-2.8"/><circle cx="18.6" cy="5.4" r="1.9"/></svg><span class="n">1,204</span></button>
+            <button class="act" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+            <button class="act" type="button" aria-label="共有"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
+          </footer>
+        </div>
+      </article>
+
+      <!-- 2. クリームソーダ -->
+      <article class="post glass milk" data-glass="card" data-following="true">
+        <svg class="avatar" aria-hidden="true"><use href="#av-shizuku"/></svg>
+        <div>
+          <div class="post-head">
+            <a class="name" href="#">ソーダのしずく</a><span class="handle">@soda_shizuku</span><span class="sep" aria-hidden="true">·</span><time datetime="2026-11-29T16:00">12分</time>
+            <button class="more" type="button" aria-label="メニュー"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button>
+          </div>
+          <p class="text">駅前の喫茶店のクリームソーダ。氷がまんまるで、ずっと見ていられる。<a class="tag" href="#">#クリームソーダの日</a></p>
+          <figure class="media">
+            <svg viewBox="0 0 520 320" role="img" aria-label="窓辺のテーブルに置かれた、メロン色のクリームソーダ">
+              <rect width="520" height="320" fill="#E0F5FD"/>
+              <rect x="42" y="36" width="156" height="176" rx="24" fill="#fff" opacity=".85"/>
+              <rect x="56" y="50" width="58" height="70" rx="12" fill="#C9EEFB"/>
+              <rect x="126" y="50" width="58" height="70" rx="12" fill="#C9EEFB"/>
+              <rect x="56" y="128" width="58" height="70" rx="12" fill="#C9EEFB"/>
+              <rect x="126" y="128" width="58" height="70" rx="12" fill="#C9EEFB"/>
+              <g fill="#fff"><circle cx="78" cy="80" r="12"/><circle cx="94" cy="76" r="15"/><circle cx="108" cy="84" r="10"/></g>
+              <rect y="250" width="520" height="70" fill="#FFD3E6"/>
+              <rect y="250" width="520" height="9" fill="#FFE6F1"/>
+              <path d="M58 259 H170 L132 320 H10Z" fill="#fff" opacity=".4"/>
+              <ellipse cx="278" cy="262" rx="90" ry="13" fill="#D6C7FF"/>
+              <ellipse cx="290" cy="262" rx="64" ry="8" fill="#B9A3F5" opacity=".55"/>
+              <path d="M300 128 L356 34" stroke="#8FD8F5" stroke-width="11" stroke-linecap="round"/>
+              <path d="M300 128 L356 34" stroke="#fff" stroke-width="11" stroke-dasharray="9 11" stroke-linecap="round" opacity=".9"/>
+              <path d="M212 118 H330 L319 246 Q318 257 306 257 H236 Q224 257 223 246Z" fill="#A6F0D2"/>
+              <path d="M220 204 H322 L319 246 Q318 257 306 257 H236 Q224 257 223 246Z" fill="#8DE5C0"/>
+              <rect x="238" y="140" width="34" height="30" rx="8" fill="#fff" opacity=".55" transform="rotate(-10 255 155)"/>
+              <rect x="276" y="152" width="30" height="28" rx="8" fill="#fff" opacity=".5" transform="rotate(12 291 166)"/>
+              <rect x="226" y="134" width="8" height="104" rx="4" fill="#fff" opacity=".75"/>
+              <g fill="#fff" opacity=".85"><circle cx="252" cy="200" r="3.5"/><circle cx="268" cy="222" r="2.5"/><circle cx="300" cy="196" r="3"/><circle cx="286" cy="236" r="4"/><circle cx="306" cy="218" r="2.5"/><circle cx="246" cy="232" r="2.5"/></g>
+              <path d="M219 122 C211 92 238 68 270 68 C302 68 330 92 322 122 C316 132 304 126 296 132 C288 138 280 128 271 134 C262 140 254 130 246 134 C238 138 224 132 219 122Z" fill="#FFFDF8"/>
+              <path d="M236 92 C246 80 262 76 274 78" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+              <path d="M226 118 C240 112 262 116 280 112 C296 108 310 112 318 116" fill="none" stroke="#FBE9F1" stroke-width="5" stroke-linecap="round"/>
+              <path d="M283 66 C287 48 298 38 312 32" fill="none" stroke="#56C795" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="280" cy="74" r="15" fill="#FF7DB3"/>
+              <ellipse cx="274.5" cy="68.5" rx="5" ry="3.4" fill="#fff" opacity=".85" transform="rotate(-32 274.5 68.5)"/>
+            </svg>
+          </figure>
+          <footer class="actions">
+            <button class="act" type="button" aria-label="へんじ 5"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg>5</button>
+            <button class="act" type="button" aria-label="おすそわけ 18"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>18</button>
+            <button class="act awa" type="button" aria-pressed="false" ><span class="sr-only">あわ</span><svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle class="fill" cx="11" cy="13" r="7.4"/><path class="shine" d="M7.6 11.6a4 4 0 0 1 2.4-2.8"/><circle cx="18.6" cy="5.4" r="1.9"/></svg><span class="n">142</span></button>
+            <button class="act" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+            <button class="act" type="button" aria-label="共有"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
+          </footer>
+        </div>
+      </article>
+
+      <!-- 3. 凍らせゼリー（文字だけ） -->
+      <article class="post glass milk" data-glass="card" data-following="false">
+        <svg class="avatar" aria-hidden="true"><use href="#av-budou"/></svg>
+        <div>
+          <div class="post-head">
+            <a class="name" href="#">ぐみ山ぶどう</a><span class="handle">@gumiyama_budou</span><span class="sep" aria-hidden="true">·</span><time datetime="2026-11-29T15:34">38分</time>
+            <button class="more" type="button" aria-label="メニュー"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button>
+          </div>
+          <p class="text">ぶどうゼリーを凍らせたら、しゃりしゃりの新しいおやつになった。あしたは もも味で試してみる。<a class="tag" href="#">#凍らせゼリー</a></p>
+          <footer class="actions">
+            <button class="act" type="button" aria-label="へんじ 2"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg>2</button>
+            <button class="act" type="button" aria-label="おすそわけ 6"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>6</button>
+            <button class="act awa" type="button" aria-pressed="false" ><span class="sr-only">あわ</span><svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle class="fill" cx="11" cy="13" r="7.4"/><path class="shine" d="M7.6 11.6a4 4 0 0 1 2.4-2.8"/><circle cx="18.6" cy="5.4" r="1.9"/></svg><span class="n">57</span></button>
+            <button class="act" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+            <button class="act" type="button" aria-label="共有"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
+          </footer>
+        </div>
+      </article>
+
+      <!-- 4. アンケート -->
+      <article class="post glass milk" data-glass="card" data-following="true">
+        <svg class="avatar" aria-hidden="true"><use href="#av-momousa"/></svg>
+        <div>
+          <div class="post-head">
+            <a class="name" href="#">もも うさ</a><span class="handle">@momousa_</span><span class="sep" aria-hidden="true">·</span><time datetime="2026-11-29T15:02">1時間</time>
+            <button class="more" type="button" aria-label="メニュー"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button>
+          </div>
+          <p class="text">つぎに つくるゼリー、どれがいいと思う？</p>
+          <ul class="poll" aria-label="アンケートの結果">
+            <li style="--p:42%; --c:#FFC2DC"><span class="mine"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>もも<span class="sr-only">（あなたの投票）</span></span><span>42%</span></li>
+            <li style="--p:31%; --c:#BDEBFA"><span>ソーダ</span><span>31%</span></li>
+            <li style="--p:17%; --c:#FFEDA6"><span>レモン</span><span>17%</span></li>
+            <li style="--p:10%; --c:#DCD0FF"><span>ぶどう</span><span>10%</span></li>
+          </ul>
+          <p class="poll-meta">286票・のこり5時間</p>
+          <footer class="actions">
+            <button class="act" type="button" aria-label="へんじ 14"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg>14</button>
+            <button class="act" type="button" aria-label="おすそわけ 9"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>9</button>
+            <button class="act awa" type="button" aria-pressed="false" ><span class="sr-only">あわ</span><svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle class="fill" cx="11" cy="13" r="7.4"/><path class="shine" d="M7.6 11.6a4 4 0 0 1 2.4-2.8"/><circle cx="18.6" cy="5.4" r="1.9"/></svg><span class="n">73</span></button>
+            <button class="act" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+            <button class="act" type="button" aria-label="共有"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
+          </footer>
+        </div>
+      </article>
+
+      <!-- 5. レジンのイヤリング -->
+      <article class="post glass milk" data-glass="card" data-following="false">
+        <svg class="avatar" aria-hidden="true"><use href="#av-lemon"/></svg>
+        <div>
+          <div class="post-head">
+            <a class="name" href="#">れもん</a><span class="handle">@lemon_hiyoko</span><span class="sep" aria-hidden="true">·</span><time datetime="2026-11-29T14:10">2時間</time>
+            <button class="more" type="button" aria-label="メニュー"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button>
+          </div>
+          <p class="text">レジンで しずく型のイヤリングを作った。ラメを入れすぎて、光にかざすと ちょっとまぶしい。<a class="tag" href="#">#レジン部</a></p>
+          <figure class="media">
+            <svg viewBox="0 0 520 320" role="img" aria-label="ラベンダー色の布の上に置かれた、ソーダ色と もも色の しずく型イヤリング">
+              <rect width="520" height="320" fill="#ECE5FF"/>
+              <path d="M0 236 C120 206 200 266 320 242 C420 222 470 254 520 246 V320 H0Z" fill="#E2D8FF"/>
+              <path d="M-10 122 C140 100 220 152 360 122 C430 106 480 120 530 110" fill="none" stroke="#F7F3FF" stroke-width="20" stroke-linecap="round"/>
+              <g transform="translate(176 0)">
+                <path d="M10 108 C14 108 56 160 56 192 C56 218 35 236 10 236 C-15 236 -36 218 -36 192 C-36 160 6 108 10 108Z" fill="#CDBEF7" transform="translate(9 11)"/>
+                <path d="M2 60 C2 42 24 40 26 56 C28 70 14 76 10 88" fill="none" stroke="#E2B03A" stroke-width="4.5" stroke-linecap="round"/>
+                <circle cx="10" cy="98" r="8" fill="none" stroke="#E2B03A" stroke-width="4.5"/>
+                <path d="M10 108 C14 108 56 160 56 192 C56 218 35 236 10 236 C-15 236 -36 218 -36 192 C-36 160 6 108 10 108Z" fill="#9FE2F8"/>
+                <path d="M10 108 C14 108 56 160 56 192 C56 218 35 236 10 236 C-15 236 -36 218 -36 192 C-36 160 6 108 10 108Z" fill="url(#glit)" opacity=".9"/>
+                <ellipse cx="-8" cy="170" rx="8" ry="20" fill="#fff" opacity=".8" transform="rotate(22 -8 170)"/>
+              </g>
+              <g transform="translate(336 18) rotate(10 10 170)">
+                <path d="M10 108 C14 108 56 160 56 192 C56 218 35 236 10 236 C-15 236 -36 218 -36 192 C-36 160 6 108 10 108Z" fill="#CDBEF7" transform="translate(9 11)"/>
+                <path d="M2 60 C2 42 24 40 26 56 C28 70 14 76 10 88" fill="none" stroke="#E2B03A" stroke-width="4.5" stroke-linecap="round"/>
+                <circle cx="10" cy="98" r="8" fill="none" stroke="#E2B03A" stroke-width="4.5"/>
+                <path d="M10 108 C14 108 56 160 56 192 C56 218 35 236 10 236 C-15 236 -36 218 -36 192 C-36 160 6 108 10 108Z" fill="#FFB7D7"/>
+                <path d="M10 108 C14 108 56 160 56 192 C56 218 35 236 10 236 C-15 236 -36 218 -36 192 C-36 160 6 108 10 108Z" fill="url(#glit)" opacity=".9"/>
+                <ellipse cx="-8" cy="170" rx="8" ry="20" fill="#fff" opacity=".8" transform="rotate(22 -8 170)"/>
+              </g>
+            </svg>
+          </figure>
+          <footer class="actions">
+            <button class="act" type="button" aria-label="へんじ 11"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg>11</button>
+            <button class="act" type="button" aria-label="おすそわけ 40"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>40</button>
+            <button class="act awa" type="button" aria-pressed="true" ><span class="sr-only">あわ</span><svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle class="fill" cx="11" cy="13" r="7.4"/><path class="shine" d="M7.6 11.6a4 4 0 0 1 2.4-2.8"/><circle cx="18.6" cy="5.4" r="1.9"/></svg><span class="n">389</span></button>
+            <button class="act" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+            <button class="act" type="button" aria-label="共有"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
+          </footer>
+        </div>
+      </article>
+
+      <!-- 6. メロンパン（文字だけ） -->
+      <article class="post glass milk" data-glass="card" data-following="false">
+        <svg class="avatar" aria-hidden="true"><use href="#av-melon"/></svg>
+        <div>
+          <div class="post-head">
+            <a class="name" href="#">メロンかえる</a><span class="handle">@melon_kaeru</span><span class="sep" aria-hidden="true">·</span><time datetime="2026-11-29T13:20">3時間</time>
+            <button class="more" type="button" aria-label="メニュー"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button>
+          </div>
+          <p class="text">在宅の日のお昼は、窓をあけてメロンパン。風がちょうどいい。</p>
+          <footer class="actions">
+            <button class="act" type="button" aria-label="へんじ 1"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg>1</button>
+            <button class="act" type="button" aria-label="おすそわけ 3"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>3</button>
+            <button class="act awa" type="button" aria-pressed="false" ><span class="sr-only">あわ</span><svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle class="fill" cx="11" cy="13" r="7.4"/><path class="shine" d="M7.6 11.6a4 4 0 0 1 2.4-2.8"/><circle cx="18.6" cy="5.4" r="1.9"/></svg><span class="n">28</span></button>
+            <button class="act" type="button" aria-label="しおりにはさむ"><svg class="ic" aria-hidden="true"><use href="#i-shiori"/></svg></button>
+            <button class="act" type="button" aria-label="共有"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
+          </footer>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- 右：さがす・トレンド・おすすめ -->
+    <aside class="side-r" aria-label="サイドメニュー">
+      <label class="search glass milk" data-glass="small" id="search">
+        <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+        <input type="search" placeholder="ぷかりを さがす" aria-label="ぷかりを さがす">
+      </label>
+      <div class="side-hero">
+        <svg class="side-mascot" viewBox="0 0 240 300" role="img" aria-label="ぷかりの マスコット、ももゼリーのくらげ ぷるる"><use href="#pururu"/></svg>
+      </div>
+      <section class="card trend glass milk" data-glass="card">
+        <h2>いま ぷかぷか</h2>
+        <ol>
+          <li><a href="#"><b>#クリームソーダの日</b><span>2,480 ぷかり</span></a></li>
+          <li><a href="#"><b>雨あがりの空</b><span>1,932 ぷかり</span></a></li>
+          <li><a href="#"><b>#凍らせゼリー</b><span>864 ぷかり</span></a></li>
+          <li><a href="#"><b>しずく型イヤリング</b><span>512 ぷかり</span></a></li>
+          <li><a href="#"><b>#レジン部</b><span>390 ぷかり</span></a></li>
+        </ol>
+      </section>
+      <section class="card follow glass milk" data-glass="card">
+        <h2>なかよくなれそう</h2>
+        <ul>
+          <li><svg class="avatar" aria-hidden="true"><use href="#av-budou"/></svg><div><b>ぐみ山ぶどう</b><span>@gumiyama_budou</span></div><button class="btn-sub" type="button">フォロー</button></li>
+          <li><svg class="avatar" aria-hidden="true"><use href="#av-lemon"/></svg><div><b>れもん</b><span>@lemon_hiyoko</span></div><button class="btn-sub" type="button">フォロー</button></li>
+          <li><svg class="avatar" aria-hidden="true"><use href="#av-melon"/></svg><div><b>メロンかえる</b><span>@melon_kaeru</span></div><button class="btn-sub" type="button">フォロー</button></li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- フィードのおわり：ミルクゼリーの丘で ぷるるが ねている -->
+    <section class="feed-end" aria-label="タイムラインのおわり">
+      <svg class="mound" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="#FFC4DF" d="M0 70 C160 30 300 26 430 52 C540 74 600 18 720 12 C860 6 920 70 1060 72 C1200 74 1300 34 1440 40 V140 H0Z"/>
+        <path fill="#FFF9FC" d="M0 92 C160 54 300 48 430 74 C540 96 600 40 720 32 C860 26 920 90 1060 92 C1200 94 1300 56 1440 62 V141 H0Z"/>
+      </svg>
+      <div class="mound-body">
+        <div class="end-inner">
+          <div class="end-cell">
+            <svg class="sleeper" viewBox="0 0 240 300" role="img" aria-label="丘の上で ねむっている ぷるる"><use href="#pururu-sleep"/></svg>
+            <p class="end-words">ここまで ぜんぶ よんだよ。<br>あたらしい ぷかりは、うえに うかんでくるね。</p>
+            <a class="to-top" href="#top">うえに もどる</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- モバイル：下のカプセルと ぷかりボタン -->
+  <nav class="bottombar glass milk" data-glass="bar" aria-label="メインメニュー（モバイル）">
+    <a href="#top" aria-current="page" aria-label="ホーム"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg></a>
+    <a href="#search" aria-label="さがす"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg></a>
+    <a href="#" aria-label="おしらせ 新着3件"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><i class="dot"></i></a>
+    <a href="#" aria-label="メッセージ"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg></a>
+    <a href="#" aria-label="プロフィール"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg></a>
+  </nav>
+  <button class="jelly fab" type="button" data-glass="jelly" aria-label="ぷかりする"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></button>
+</div>
+
+<script src="kawaii-glass.js"></script>
+<script>
+  // ガラス：ページのパレット（もも・レモン・メロン・ソーダ・ぶどう）で縁を色づける
+  (function () {
+    if (!window.kawaiiGlass) return;
+    const tint = ['#FFB3D6', '#FFE89A', '#A8F0D2', '#9FE0F7', '#CDB8FF'];
+    const kinds = {
+      panel: { tint, rim: 20 },
+      card:  { tint, rim: 18 },
+      bar:   { tint, rim: 14, blur: 8 },
+      small: { tint, rim: 12 },
+      jelly: { tint, tintAmount: 0.45 },
+    };
+    // Refraction is costly while scrolling, so only the chrome and the one card over ぷるる get it.
+    // The posts and the compose box stay plain frosted glass from the CSS.
+    document.querySelectorAll('[data-glass]').forEach((el) => {
+      if (el.dataset.glass === 'card' && !el.classList.contains('trend')) return;
+      kawaiiGlass(el, kinds[el.dataset.glass] || { tint });
+    });
+  })();
+
+  // タブ：ゼリーのインジケーターが のびて移動する
+  document.querySelectorAll('.tabs').forEach((tabs) => {
+    const btns = [...tabs.querySelectorAll('[role="tab"]')];
+    btns.forEach((b, i) => b.addEventListener('click', () => {
+      if (tabs.dataset.active === String(i)) return;
+      btns.forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+      tabs.dataset.active = i;
+      tabs.classList.remove('stretch'); void tabs.offsetWidth; tabs.classList.add('stretch');
+      document.querySelectorAll('.post').forEach((p) => { p.hidden = i === 1 && p.dataset.following !== 'true'; });
+    }));
+  });
+
+  // あわ（いいね）
+  document.querySelectorAll('.awa').forEach((btn) => btn.addEventListener('click', () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    const n = btn.querySelector('.n');
+    const v = parseInt(n.textContent.replace(/,/g, ''), 10) + (on ? 1 : -1);
+    btn.setAttribute('aria-pressed', String(on));
+    n.textContent = v.toLocaleString('ja-JP');
+    btn.classList.remove('pop');
+    if (on) { void btn.offsetWidth; btn.classList.add('pop'); }
+  }));
+</script>
+</body>
+</html>

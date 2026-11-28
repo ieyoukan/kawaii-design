@@ -18,6 +18,12 @@ kawaii-design は Claude Code、Codex などで使える Skill です。英語�
 
 どちらも、左は Skill なし、右は kawaii-design あり。違いは `SKILL.md` を渡したかどうかだけです。元のコードは [examples/compare/](examples/compare/) にあります。
 
+### 指示でスタイルを変える
+
+![同じ Skill で作り分けた 4 つの SNS。シンプル、Liquid Glass、ラメ、ようかんの SNS](docs/styles-sns.webp)
+
+同じ Skill に「シンプルに」「カラフルでつるっとした Liquid Glass で」「ラメ入りのガラスで」と一言足して作ったタイムライン画面です。Liquid Glass は、縁だけが後ろの景色を引き伸ばし、パレットの色に少し寄せる自作のガラスです。屈折は重いので、ナビやボタンなど数か所だけに使い、投稿はすりガラスにしています。ラメはメイク用品のラメのように、カードの縁から内側へ少しずつ消えていきます。投稿ボタンだけは、ラメをぎっしり詰めています。右下は、ようかんをキャラクターにした SNS。並べると一番かわいく見えるのはこれで、この Skill がキャラクター性を読むことを一番大事にしている理由でもあります。元のコードは [examples/sns/](examples/sns/) にあります。
+
 ## インストール
 
 ### Claude Code (おすすめ)
@@ -115,12 +121,14 @@ Claude Code では `/kawaii-design` に続けてやりたいことを書きま�
 
 ## サンプル
 
-どちらも、この Skill だけを渡したエージェントに作らせたものです。各 HTML の先頭に、Skill の手順で決めた方向性 (Direction) をコメントで残しています。
+どれも、この Skill だけを渡したエージェントに作らせたものです。各 HTML の先頭に、Skill の手順で決めた方向性 (Direction) をコメントで残しています。
 
 | サンプル | 内容 |
 | --- | --- |
 | [examples/youkan/](examples/youkan/) | 主役がいる例 (Star モード)。VRChat のアバターを主役にした紹介ページ。ワントーン、波の縁、文字ごとの登場アニメーション |
 | [examples/compare/](examples/compare/) | 上の比較画像の元。`character/` (ようかんの紹介ページ) と `sns/` (ゆめかわいい SNS) それぞれに、Skill なし (`without/`) とあり (`with/`) |
+| [examples/sns/](examples/sns/) | 指示ごとに作り分けた SNS。`simple/`、`liquid-glass/`、`glitter/` (ラメ)、`youkan/` (ようかんの SNS) |
+| [examples/styles/liquid-glass/](examples/styles/liquid-glass/) | ようかんの紹介ページを Liquid Glass で作ったもの。ガラスの縁の色の見本 |
 
 `file://` ではフォントや一部の動きが読み込まれないことがあるので、ローカルサーバーで開いてください。
 
@@ -140,9 +148,12 @@ cd examples && python3 -m http.server
 | [anti-patterns.md](skills/kawaii-design/references/anti-patterns.md) | 主役を食う装飾、cute slop、小さい文字、AI っぽい締め、偽物の可愛さ |
 | [tokens.md](skills/kawaii-design/references/tokens.md) | 角丸、余白、色、フォント、アイコン、モーションの初期値 |
 | [shapes-and-patterns.md](skills/kawaii-design/references/shapes-and-patterns.md) | 丸・角丸・有機的な曲線の選び方、イラストの見せ方、セクションの区切り、柄 |
-| [backgrounds-and-images.md](skills/kawaii-design/references/backgrounds-and-images.md) | 背景の空気感 (シンプル / 透明感)、主役の画像と影の仕上げ |
+| [backgrounds-and-images.md](skills/kawaii-design/references/backgrounds-and-images.md) | シンプル・透明感・ゆめかわの背景、主役の画像と影の仕上げ |
+| [liquid-glass.md](skills/kawaii-design/references/liquid-glass.md) | Liquid Glass の色、縁の屈折、ラメの使い方 |
+| [kawaii-glass.js](skills/kawaii-design/references/kawaii-glass.js) | 依存なしの小さなスクリプト。ガラスの縁の屈折と色を付ける。屈折は Chromium だけで、ほかのブラウザではすりガラスになる |
+| [kawaii-glitter.js](skills/kawaii-design/references/kawaii-glitter.js) | 依存なしの小さなスクリプト。縁から内側へ消えるラメと、ぎっしり詰めたラメを付ける。動きはなし |
 | [refs.md](skills/kawaii-design/references/refs.md) | 実在のサイトから集めた手法 |
 
 ## ライセンス
 
-[MIT](LICENSE)。自由に使って、改変して、配ってかまいません。ただし `examples/youkan/` と `examples/compare/character/assets/` の画像 (アバター、写真、商品画像)、`docs/compare-character.webp` に写っているアバターはそれぞれの権利者のもので、MIT の対象外です。
+[MIT](LICENSE)。自由に使って、改変して、配ってかまいません。ただし `examples/youkan/` と `examples/compare/character/assets/` の画像 (アバター、写真、商品画像)、`docs/compare-character.webp` と `docs/styles-sns.webp` に写っているアバターはそれぞれの権利者のもので、MIT の対象外です。

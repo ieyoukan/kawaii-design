@@ -36,11 +36,11 @@ Read the content before drawing the outline. Choose one recognizable feature fro
 | A conversation or reply | A speech-bubble edge with a tail aimed at the speaker |
 | A character with a signature motif | Echo one feature such as a rounded ear, the curve of a ribbon, or a crescent from an accessory |
 
-Use the whole silhouette for a decorative background or illustration frame. Use just part of it at the edge of a text-heavy section. A tinted fill or a short, quiet stroke can suggest a frame. A full outline works when it carries the motif and leaves the contents clear. See the [folded paper](organic-sections.html#paper) and [heart-shaped gift frame](organic-sections.html#wrap) in the same sample.
+Use the whole silhouette for a decorative background or illustration frame. Use just part of it at the edge of a text-heavy section. A tinted fill or a short, quiet stroke can suggest a frame. A full outline works when it carries the motif and leaves the contents clear.
 
 ### Organic surfaces
 
-Use an inline SVG with a closed Bézier path for the visible fill. Put it behind the content as its own decorative layer with `aria-hidden="true"` and `pointer-events: none`, so the text and controls can wrap and size normally. To crop an image or texture to the same shape, clip only that decorative layer with an SVG `<clipPath>` or use a fill pattern on the path. Keep focus indicators and click targets outside the clipping layer. See the patterned shapes in the [HTML example](organic-sections.html).
+Use an inline SVG with a closed Bézier path for the visible fill. Put it behind the content as its own decorative layer with `aria-hidden="true"` and `pointer-events: none`, so the text and controls can wrap and size normally. To crop an image or texture to the same shape, clip only that decorative layer with an SVG `<clipPath>` or use a fill pattern on the path. Keep focus indicators and click targets outside the clipping layer.
 
 ## Borders
 
@@ -65,6 +65,8 @@ A hard, straight edge between two background colors looks like a template, and i
 - Use two to four big rises across the full width, not dozens of tiny bumps. A row of small scallops or lace (under about 24px) reads as a straight band with a texture, so it doesn't count as a curve. Small scallops can decorate a big curve, but never replace it.
 
 **The footer always gets a clear curve.** The footer is where the page usually changes color, so it is the one boundary every page has. Enter it with a big wave, cloud, drip or hill shape, or make the footer itself an organic shape (a large blob rising from the bottom, or a mound with a big rounded top). A footer that starts with a straight edge or a tiny scallop row makes the whole page feel boxed in.
+
+**Apps have no page footer.** In an app screen (a timeline, a chat, a settings view), the rule moves to whatever sits at the bottom. Rest the end of the feed on a big hill or wave in the next tint, give a bottom tab bar a curved top edge, or float it as a rounded capsule above the content. In a multi-column layout, run the hill across the full width of the screen. A hill under the center column alone reads as a box with a wavy top. Don't add a website footer to an app just to have somewhere to put a curve.
 
 ### Curved join between fills
 
@@ -198,7 +200,7 @@ Choose treatments that fit the composition and repeat the ones that connect rela
 
 - **A lettered name.** Set the star's name in the display face, very large, with one detail: a dot or motif replacing a counter or a dakuten, one letter in the accent color, or letters slightly rotated and offset like stickers.
 - **One section title**: use the `h2` itself as the visual feature. A short title can go very large; a longer one can use a smaller display size with the same typeface and weight. Use `clamp()` and check the actual text on narrow screens. Hiragana can soften the title, as in 「つつむもの」.
-- **Background lettering on request**: for 「見出しを背景に重ねる」, 「作品の背面に大きな文字」, or giant outlined headings behind the artwork, use the actual `h2` as a large outlined layer across much of the section width. Put a foreground illustration, image or gallery partly over its lower or trailing edge so the layers visibly intersect. Start with a thin outline in a muted tint of the text color, and keep enough of each character visible to read. If the title draws the eye first, soften the tint or thin the stroke before reducing the scale. Check legibility and layering on mobile. The [紙もの example](organic-sections.html#paper) uses one readable heading with artwork over the edge.
+- **Background lettering on request**: for 「見出しを背景に重ねる」, 「作品の背面に大きな文字」, or giant outlined headings behind the artwork, use the actual `h2` as a large outlined layer across much of the section width. Put a foreground illustration, image or gallery partly over its lower or trailing edge so the layers visibly intersect. Start with a thin outline in a muted tint of the text color, and keep enough of each character visible to read. If the title draws the eye first, soften the tint or thin the stroke before reducing the scale. Check legibility and layering on mobile.
 - **A large title with a small companion**: use a quieter line only when it adds information. For example, 「紙もの」 can sit above 「便箋とメモ帳」 to name what the section contains. Keep only the title in the `h2`. If the companion is a useful reading of a kanji term, use `<ruby>` with `<rt>` to keep the term and its reading together.
 - **A sticker title**: the display face with a thick outline in the background color and a soft offset shadow in the star's dark tint, so the title looks cut out and stuck on.
 - **A custom SVG logotype** for the star's name when the page is about one character. Build the letters from circles and rounded strokes. This is the strongest option and worth the time on a personal page.

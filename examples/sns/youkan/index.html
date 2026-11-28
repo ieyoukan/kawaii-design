@@ -1,0 +1,809 @@
+<!doctype html>
+<!--
+  すずね : ようかんのファンと友達があつまる SNS (タイムライン画面)
+
+  前提 (おまかせのため確認なしで決めたこと)
+  - 見ている人は「ようかん」のファンのひとり (ひつじのアイコン)。ほかのユーザー・投稿・数字・時刻はすべて架空。
+  - サービス名「すずね」、投稿を「ねごと」、いいねを「ちりん」、リポストを「おすそわけ」と呼ぶのは創作。
+  - ようかんの SNS 上のハンドル (@youkan_yokan) は創作。VRChat ID はプロフィールのとおり「ようかんYokan」。
+  - ようかんの新しいセリフは自己紹介の口調 (〜 で伸ばす、「えっと」「かも！」「大好き！」) に合わせた創作。
+
+  Direction
+  - Character : 少女・おっとり (眠たげ) + ときどき元気 (ばんざい)・「〜」で伸ばす、ひらがな多め、「！」は少し・銀髪に水色のリボン、ねこ耳の金の鈴、三日月のヘアピン、メイドエプロン
+  - Product   : ようかんのファンや、ぷぷりえの友達が「ねごと」を投稿しあう、ようかんの世界の SNS。
+  - Dialect   : ゆめかわ。水色の女の子で、SNS・ファンコミュニティ・VRChat のイベントという用途にいちばん合う。
+  - Feel      : ふわっと、のんびり、ねむたげ
+  - World     : ねむる前の水色のゆめ。おふとん、ねこ耳の鈴、三日月のヘアピン、しゃぼん玉。
+  - Star      : 右カラム (モバイルは最初の画面) の立ち絵のようかん = Star。タイムラインは Stage。投稿の写真・絵は小さな Star。
+  - Shape     : タイムラインは角丸のガラス 1 枚の上に投稿をそのまま並べる (投稿ごとの箱はなし)。アバターとアイコンボタンは丸。
+                ようかんの写真は白フチのプリント。自己紹介は頭に向けたしっぽつきのふきだし。
+                タイムラインの終わりは、ふとんの大きな波 (色が変わる唯一の場所)。
+  - Atmosphere: ゆめかわ。水色が主役 (5〜7割)、ピンクとラベンダー、ほんの少しのレモン、色のあいだに白。
+                上にすりガラスの UI。立ち絵のうしろには大きな白い三日月だけ。
+  - Type/Motion: 表示は Kiwi Maru (ロゴ・名前・見出し)、本文は M PLUS Rounded 1c 500。
+                h1「おうち」はタイムライン上、h2「ようかん」は立ち絵の横。動くのは立ち絵の登場 1 回だけ。
+                ロゴの「#top」へのリンクだけがなめらかにスクロールする。
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>すずね | ようかんとねごと</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* 3 hues + white + ink */
+    --aqua-50:  #eef9fd;
+    --aqua-100: #d9f1fb;
+    --aqua-200: #bfe7f8;
+    --aqua-300: #9fd8f2;
+    --aqua-500: #5bb4de;
+    --pink-100: #fbe3ef;
+    --pink-200: #f7c8e4;
+    --lav-100:  #ebe4fb;
+    --lav-200:  #d6c8f6;
+    --lemon:    #ffe58a;
+    --white:    #ffffff;
+    --ink:      #23395a;
+    --ink-soft: #4b6386;
+    --star-dark: 52 78 124;
+
+    --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft:  cubic-bezier(0.22, 1, 0.36, 1);
+
+    --display: "Kiwi Maru", "Hiragino Maru Gothic ProN", serif;
+    --body: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--aqua-50); }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font: 500 15px/1.8 var(--body);
+    letter-spacing: 0.03em;
+    word-break: auto-phrase;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; }
+  button { font: inherit; color: inherit; }
+  a { color: inherit; }
+  :focus-visible { outline: 2.5px solid var(--aqua-500); outline-offset: 3px; border-radius: 12px; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* ---------- ゆめかわ background ---------- */
+  .page { position: relative; isolation: isolate; min-height: 100vh; }
+  .page::before {
+    content: ""; position: fixed; inset: -12%; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(36% 30% at 16% 18%, #a9e3f5 0%, transparent 70%),
+      radial-gradient(44% 36% at 80% 26%, #bfe9f7 0%, transparent 72%),
+      radial-gradient(40% 34% at 62% 80%, #9fd8f2 0%, transparent 70%),
+      radial-gradient(30% 26% at 24% 86%, #b6e4f6 0%, transparent 70%),
+      radial-gradient(22% 20% at 40% 52%, #ffffff 0%, transparent 70%),
+      radial-gradient(20% 16% at 90% 66%, #f7c8e4 0%, transparent 70%),
+      radial-gradient(18% 16% at 6% 56%, #d6c8f6 0%, transparent 70%),
+      radial-gradient(16% 12% at 66% 8%, #f5cfe8 0%, transparent 70%),
+      radial-gradient(10% 8% at 50% 30%, #fff3b8 0%, transparent 70%),
+      linear-gradient(118deg, transparent 28%, #ffffff 40%, transparent 52%),
+      linear-gradient(28deg, transparent 56%, rgb(214 200 246 / .45) 65%, transparent 75%),
+      #e4f5fc;
+    filter: url(#swirl) blur(6px);
+  }
+  .sparkles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  .sparkles svg { position: absolute; width: 14px; height: 14px; color: #fff; opacity: .9; }
+
+  /* ---------- layout ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 600px) minmax(0, 1fr);
+    gap: 28px;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 28px 0;
+  }
+
+  /* ---------- left nav ---------- */
+  .side {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; gap: 28px;
+    padding-block: 28px;
+  }
+  .logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 6px 10px 6px 6px; text-decoration: none;
+    font: 500 28px/1 var(--display); letter-spacing: .06em;
+  }
+  .logo svg { width: 44px; height: 44px; }
+  .nav { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+  .nav a {
+    display: flex; align-items: center; gap: 14px;
+    min-height: 48px; padding: 8px 18px 8px 12px;
+    border-radius: 16px; text-decoration: none; font-size: 16px;
+    transition: background-color 160ms ease-out;
+  }
+  .nav a:hover { background: rgb(255 255 255 / .5); }
+  .nav a[aria-current="page"] { background: rgb(255 255 255 / .72); font-weight: 700; }
+  .nav svg { width: 26px; height: 26px; flex: none; }
+  .post-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 0 26px; border: 0; cursor: pointer;
+    border-radius: 9999px;
+    font: 500 17px/1 var(--display); letter-spacing: .08em; color: var(--ink);
+    background:
+      linear-gradient(var(--aqua-200), var(--aqua-200)) padding-box,
+      linear-gradient(110deg, var(--pink-200), #fff 30%, var(--aqua-300) 55%, var(--lav-200)) border-box;
+    border: 2px solid transparent;
+    box-shadow: 0 8px 20px rgb(var(--star-dark) / .14);
+    transition: transform 140ms ease-out, background-color 140ms;
+  }
+  .post-btn:hover { transform: translateY(-1px); }
+  .post-btn:active { transform: translateY(1px); }
+  .post-btn svg { width: 22px; height: 22px; }
+  .me {
+    margin-top: auto; display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 16px;
+  }
+  .me b { display: block; font-weight: 700; line-height: 1.4; }
+  .me span { display: block; color: var(--ink-soft); font-size: 14px; line-height: 1.4; }
+
+  /* ---------- glass ---------- */
+  .glass {
+    background: rgb(255 255 255 / .7);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgb(255 255 255 / .8);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .9), 0 14px 40px rgb(var(--star-dark) / .12);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass { background: rgb(255 255 255 / .9); }
+  }
+
+  /* ---------- timeline column ---------- */
+  .timeline {
+    position: relative;
+    margin-top: 20px;
+    border-radius: 28px 28px 0 0;
+    border-bottom: 0;
+    min-height: calc(100vh - 20px);
+    overflow: clip;
+  }
+  .tl-head {
+    position: sticky; top: 0; z-index: 3;
+    padding: 18px 28px 0;
+    background: rgb(255 255 255 / .82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 28px 28px 0 0;
+  }
+  .tl-head h1 { margin: 0; font: 500 26px/1.3 var(--display); letter-spacing: .08em; }
+  .tabs { display: flex; gap: 6px; margin-top: 8px; }
+  .tab {
+    position: relative; border: 0; background: none; cursor: pointer;
+    padding: 10px 16px 14px; border-radius: 14px 14px 0 0; font-size: 15px; color: var(--ink-soft);
+  }
+  .tab[aria-selected="true"] { color: var(--ink); font-weight: 700; }
+  .tab[aria-selected="true"]::after {
+    content: ""; position: absolute; left: 50%; bottom: 4px; translate: -50% 0;
+    width: 28px; height: 5px; border-radius: 9999px; background: var(--aqua-300);
+  }
+  .tab:hover { color: var(--ink); }
+
+  /* compose */
+  .compose {
+    display: grid; grid-template-columns: 48px 1fr; gap: 14px;
+    margin: 18px 20px 8px; padding: 18px 18px 14px;
+    border-radius: 22px; background: var(--aqua-50);
+  }
+  .compose textarea {
+    width: 100%; min-height: 56px; resize: none;
+    border: 0; background: transparent; padding: 10px 2px;
+    font: 500 17px/1.7 var(--body); letter-spacing: .03em; color: var(--ink);
+  }
+  .compose textarea::placeholder { color: #6a7f9e; }
+  .compose textarea:focus-visible { outline: none; }
+  .compose:focus-within { box-shadow: 0 0 0 2px var(--aqua-300); }
+  .compose-row { display: flex; align-items: center; gap: 4px; grid-column: 2; }
+  .compose-row .post-btn { margin-left: auto; min-height: 42px; padding: 0 20px; font-size: 15px; box-shadow: none; }
+
+  /* posts */
+  .feed { list-style: none; margin: 0; padding: 0 8px; }
+  .post {
+    display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px;
+    padding: 22px 20px 16px;
+  }
+  .post + .post { border-top: 1.5px dashed rgb(159 216 242 / .7); }
+  .avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; flex: none; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; transform: scale(1.35); }
+  .avatar.youkan { box-shadow: 0 0 0 2.5px #fff, 0 0 0 4.5px var(--aqua-300); }
+  .who { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; line-height: 1.5; }
+  .who b { font-weight: 700; }
+  .who span { color: var(--ink-soft); font-size: 14px; }
+  .pin {
+    display: inline-flex; align-items: center; gap: 4px; margin-bottom: 4px;
+    color: var(--ink-soft); font-size: 14px;
+  }
+  .pin svg { width: 16px; height: 16px; }
+  .text { margin: 4px 0 0; font-size: 16px; line-height: 1.85; }
+  .text .at { color: #2a6f9e; }
+  .post.is-youkan .text { font-size: 17px; }
+
+  .media { margin: 14px 0 4px; }
+  .print {
+    display: inline-block; max-width: 100%; padding: 10px 10px 30px; background: #fff;
+    border-radius: 6px; rotate: -1.6deg;
+    box-shadow: 0 2px 3px rgb(var(--star-dark) / .1), 6px 14px 26px rgb(var(--star-dark) / .14);
+  }
+  .print img { width: 300px; max-width: 100%; height: auto; border-radius: 3px; }
+  .stage-card {
+    position: relative; height: 340px; border-radius: 22px; overflow: hidden;
+    background-color: var(--pink-100);
+    background-image: radial-gradient(circle, rgb(255 255 255 / .95) 2.5px, transparent 3px);
+    background-size: 22px 22px;
+  }
+  .stage-card img {
+    position: absolute; left: 50%; bottom: 18px; translate: -50% 0;
+    height: 300px; width: auto;
+    filter: drop-shadow(0 2px 2px rgb(var(--star-dark) / .16)) drop-shadow(8px 14px 18px rgb(var(--star-dark) / .14));
+  }
+  .stage-card::after {
+    content: ""; position: absolute; left: 50%; bottom: 16px; translate: -50% 0;
+    width: 120px; height: 12px; border-radius: 50%;
+    background: rgb(var(--star-dark) / .2); filter: blur(5px);
+  }
+  .drawing { border-radius: 20px; overflow: hidden; background: var(--lav-100); }
+  .drawing svg { width: 100%; height: auto; }
+
+  .actions { display: flex; gap: 6px; margin: 10px 0 0 -10px; }
+  .act {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 40px; padding: 0 12px; border: 0; border-radius: 9999px;
+    background: none; cursor: pointer; color: var(--ink-soft); font-size: 14px;
+    transition: background-color 140ms ease-out, color 140ms ease-out;
+  }
+  .act svg { width: 22px; height: 22px; }
+  .act:hover { background: var(--aqua-100); color: var(--ink); }
+  .act.chirin[aria-pressed="true"] { color: #8a5a00; background: #fff6cc; }
+  .act.chirin[aria-pressed="true"] .bell-body { fill: var(--lemon); }
+  .act.chirin.ring svg { animation: ring 520ms var(--ease-soft); transform-origin: 50% 12%; }
+  @keyframes ring {
+    0% { rotate: 0deg; } 20% { rotate: 16deg; } 45% { rotate: -12deg; } 70% { rotate: 6deg; } 100% { rotate: 0deg; }
+  }
+
+  /* end of timeline: the futon */
+  .futon {
+    position: relative; margin-top: 96px;
+    padding: 20px 24px 64px; text-align: center;
+    background: var(--aqua-200);
+  }
+  .futon .wave {
+    position: absolute; left: 0; bottom: calc(100% - 1px);
+    width: 100%; height: 80px; color: var(--aqua-200);
+  }
+  .futon .wave.back { color: var(--aqua-100); height: 96px; }
+  .futon .moon { width: 132px; height: auto; margin: -64px auto 0; position: relative; }
+  .futon p { margin: 10px 0 0; font: 500 18px/1.6 var(--display); letter-spacing: .08em; }
+
+  /* ---------- star column ---------- */
+  .star-col {
+    position: sticky; top: 0; height: 100vh;
+    min-width: 0; overflow-x: clip;
+  }
+  .star-wrap { position: relative; height: 100%; }
+  .moon-mat {
+    position: absolute; z-index: 0; pointer-events: none;
+    right: 2%; top: 4%; width: min(72%, 440px); aspect-ratio: 1;
+  }
+  .star {
+    position: absolute; z-index: 1; right: -1%; bottom: 2vh;
+    height: 86vh; aspect-ratio: 706 / 1215;
+    padding: 0; border: 0; background: none; cursor: pointer;
+    border-radius: 0;
+  }
+  .star img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    filter: drop-shadow(0 2px 2px rgb(var(--star-dark) / .2)) drop-shadow(12px 20px 26px rgb(var(--star-dark) / .18));
+    transition: opacity 180ms ease-out;
+  }
+  .star .pose-banzai { opacity: 0; }
+  .star[aria-pressed="true"] .pose-stand { opacity: 0; }
+  .star[aria-pressed="true"] .pose-banzai { opacity: 1; }
+  .star::after {
+    content: ""; position: absolute; left: 50%; bottom: .6%; translate: -50% 0;
+    width: 44%; height: 3.2%; border-radius: 50%;
+    background: rgb(var(--star-dark) / .24); filter: blur(7px); z-index: -1;
+  }
+  .star:focus-visible { outline-offset: -8px; border-radius: 40px; }
+
+  .bubble {
+    position: absolute; z-index: 2;
+    left: 12px; top: 9vh; width: min(224px, 43%);
+    padding: 18px 20px; border-radius: 26px;
+    background: rgb(255 255 255 / .9);
+    box-shadow: 0 10px 26px rgb(var(--star-dark) / .14);
+    font-size: 15px; line-height: 1.85;
+    transition: opacity 180ms ease-out, translate 180ms ease-out;
+  }
+  .bubble p { margin: 0; }
+  .bubble .tail { position: absolute; right: -20px; top: 92px; width: 30px; height: 24px; color: rgb(255 255 255 / .9); }
+  .star-wrap.banzai .bubble { opacity: 0; translate: 0 6px; pointer-events: none; }
+
+  .profile {
+    position: absolute; z-index: 2; left: 12px; bottom: 6vh;
+  }
+  .profile h2 {
+    margin: 0; font: 500 52px/1.1 var(--display); letter-spacing: .06em; white-space: nowrap;
+  }
+  .profile .id { margin: 6px 0 0; color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+  .facts { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; }
+  .facts li { display: flex; align-items: center; gap: 8px; font-size: 15px; }
+  .facts svg { width: 16px; height: 16px; flex: none; }
+  .profile .post-btn { margin-top: 18px; min-height: 46px; font-size: 15px; }
+  .profile .post-btn[aria-pressed="true"] { background: linear-gradient(#fff, #fff) padding-box, linear-gradient(110deg, var(--pink-200), #fff 30%, var(--aqua-300) 55%, var(--lav-200)) border-box; }
+
+  /* the one decorative animation: the star arrives once */
+  @media (prefers-reduced-motion: no-preference) {
+    .star { animation: arrive 820ms var(--ease-poyon) both; }
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(28px) scale(.97); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+
+  /* ---------- mobile chrome ---------- */
+  .m-top, .m-bar { display: none; }
+
+  @media (max-width: 1180px) {
+    .app { grid-template-columns: 88px minmax(0, 600px) minmax(0, 1fr); gap: 20px; padding-left: 16px; }
+    .side .label, .side .me div, .logo b { display: none; }
+    .nav a { justify-content: center; padding: 8px; }
+    .side .post-btn { padding: 0; width: 56px; height: 56px; }
+    .side .post-btn span { display: none; }
+    .profile h2 { font-size: 44px; }
+  }
+
+  @media (max-width: 860px) {
+    body { font-size: 15px; }
+    .app { display: flex; flex-direction: column; gap: 0; padding: 0; }
+    .star-col { order: -1; }
+    .m-top .logo b { display: inline; }
+    .side { display: none; }
+    .m-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px 0; position: relative; z-index: 3;
+    }
+    .m-top .logo { font-size: 24px; padding: 0; }
+    .m-top .logo svg { width: 38px; height: 38px; }
+    .m-top .avatar { width: 38px; height: 38px; }
+
+    .star-col { position: relative; height: min(600px, 72svh); overflow-x: clip; }
+    .star { height: 96%; bottom: 0; right: -2%; }
+    .moon-mat { width: 74%; right: -6%; top: 0; }
+    .bubble { left: 12px; top: 10px; width: 48%; padding: 14px 14px 14px 16px; font-size: 14px; line-height: 1.75; letter-spacing: 0; border-radius: 22px; }
+    .bubble .tail { top: 44px; right: -18px; }
+    .profile { left: 16px; bottom: 18px; width: 44%; }
+    .profile h2 { font-size: 38px; }
+    .facts li { font-size: 14px; }
+    .profile .post-btn { min-height: 44px; padding: 0 18px; }
+
+    .timeline { margin: 0; border-radius: 28px 28px 0 0; border-inline: 0; min-height: 0; padding-bottom: 72px; }
+    .tl-head { padding: 16px 18px 0; }
+    .compose { margin: 14px 12px 6px; padding: 14px 14px 10px; grid-template-columns: 40px 1fr; gap: 10px; }
+    .compose .avatar { width: 40px; height: 40px; }
+    .feed { padding: 0; }
+    .post { grid-template-columns: 42px minmax(0, 1fr); gap: 12px; padding: 18px 16px 12px; }
+    .post .avatar { width: 42px; height: 42px; }
+    .stage-card { height: 300px; }
+    .stage-card img { height: 262px; }
+    .futon { margin-top: 64px; padding-bottom: 40px; }
+    .futon .wave { height: 44px; }
+    .futon .wave.back { height: 56px; }
+    .futon .moon { width: 104px; margin-top: -48px; }
+
+    .m-bar {
+      display: flex; justify-content: space-around; align-items: center;
+      position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 10;
+      height: 64px; padding: 0 8px; border-radius: 24px;
+    }
+    .m-bar a, .m-bar button {
+      display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; border: 0; background: none;
+    }
+    .m-bar svg { width: 26px; height: 26px; }
+    .m-bar .post-btn { width: 54px; height: 54px; padding: 0; min-height: 0; border-radius: 50%; }
+    .m-bar a[aria-current="page"] { background: rgb(255 255 255 / .8); }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="swirl" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.007" numOctaves="2" seed="11"/>
+    <feDisplacementMap in="SourceGraphic" scale="130"/>
+  </filter>
+  <defs>
+    <!-- ひつじ (見ている人) -->
+    <symbol id="av-sheep" viewBox="0 0 48 48">
+      <rect width="48" height="48" fill="#bfe7f8"/>
+      <g fill="#fff">
+        <circle cx="14" cy="24" r="7"/><circle cx="34" cy="24" r="7"/><circle cx="24" cy="15" r="8"/>
+        <circle cx="16" cy="15" r="6"/><circle cx="32" cy="15" r="6"/>
+      </g>
+      <ellipse cx="10" cy="28" rx="5" ry="3" fill="#f7c8e4" transform="rotate(-24 10 28)"/>
+      <ellipse cx="38" cy="28" rx="5" ry="3" fill="#f7c8e4" transform="rotate(24 38 28)"/>
+      <ellipse cx="24" cy="31" rx="11" ry="10" fill="#fff"/>
+      <circle cx="20" cy="31" r="1.6" fill="#23395a"/><circle cx="28" cy="31" r="1.6" fill="#23395a"/>
+      <ellipse cx="17" cy="35" rx="2.2" ry="1.3" fill="#f7c8e4"/><ellipse cx="31" cy="35" rx="2.2" ry="1.3" fill="#f7c8e4"/>
+      <path d="M22.5 35.2q1.5 1.3 3 0" stroke="#23395a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <!-- みずたまうさぎ -->
+    <symbol id="av-usa" viewBox="0 0 48 48">
+      <rect width="48" height="48" fill="#fbe3ef"/>
+      <g fill="#fff"><circle cx="7" cy="9" r="1.6"/><circle cx="40" cy="7" r="1.6"/><circle cx="42" cy="40" r="1.6"/><circle cx="5" cy="38" r="1.6"/></g>
+      <rect x="14" y="3" width="8" height="22" rx="4" fill="#fff" transform="rotate(-10 18 14)"/>
+      <rect x="26" y="3" width="8" height="22" rx="4" fill="#fff" transform="rotate(10 30 14)"/>
+      <rect x="16.5" y="7" width="3" height="14" rx="1.5" fill="#f7c8e4" transform="rotate(-10 18 14)"/>
+      <rect x="28.5" y="7" width="3" height="14" rx="1.5" fill="#f7c8e4" transform="rotate(10 30 14)"/>
+      <ellipse cx="24" cy="32" rx="14" ry="12" fill="#fff"/>
+      <circle cx="19" cy="31" r="1.6" fill="#23395a"/><circle cx="29" cy="31" r="1.6" fill="#23395a"/>
+      <ellipse cx="15.5" cy="35" rx="2.4" ry="1.4" fill="#f7c8e4"/><ellipse cx="32.5" cy="35" rx="2.4" ry="1.4" fill="#f7c8e4"/>
+      <path d="M22.5 34.6q1.5 1.3 3 0" stroke="#23395a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <!-- ねむねこ -->
+    <symbol id="av-neko" viewBox="0 0 48 48">
+      <rect width="48" height="48" fill="#ebe4fb"/>
+      <path d="M11 22 L12.5 9.5 Q13 8 14.3 8.8 L23 16 Z" fill="#d6c8f6"/>
+      <path d="M37 22 L35.5 9.5 Q35 8 33.7 8.8 L25 16 Z" fill="#d6c8f6"/>
+      <ellipse cx="24" cy="29" rx="15" ry="13" fill="#d6c8f6"/>
+      <path d="M17 29q2 1.6 4 0M27 29q2 1.6 4 0" stroke="#23395a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="15.5" cy="33" rx="2.4" ry="1.4" fill="#f7c8e4"/><ellipse cx="32.5" cy="33" rx="2.4" ry="1.4" fill="#f7c8e4"/>
+      <path d="M22.5 33q1.5 1.2 3 0" stroke="#23395a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M38 11 a3.4 3.4 0 1 0 3 5 a2.6 2.6 0 1 1 -3 -5z" fill="#ffe58a"/>
+    </symbol>
+    <!-- そらくま -->
+    <symbol id="av-kuma" viewBox="0 0 48 48">
+      <rect width="48" height="48" fill="#d9f1fb"/>
+      <circle cx="13" cy="16" r="6" fill="#9fd8f2"/><circle cx="35" cy="16" r="6" fill="#9fd8f2"/>
+      <circle cx="13" cy="16" r="3" fill="#f7c8e4"/><circle cx="35" cy="16" r="3" fill="#f7c8e4"/>
+      <ellipse cx="24" cy="29" rx="15" ry="13" fill="#9fd8f2"/>
+      <ellipse cx="24" cy="33" rx="6" ry="4.5" fill="#eef9fd"/>
+      <circle cx="18.5" cy="27.5" r="1.6" fill="#23395a"/><circle cx="29.5" cy="27.5" r="1.6" fill="#23395a"/>
+      <ellipse cx="24" cy="31.6" rx="1.6" ry="1.1" fill="#23395a"/>
+      <ellipse cx="14.5" cy="32" rx="2.4" ry="1.4" fill="#f7c8e4"/><ellipse cx="33.5" cy="32" rx="2.4" ry="1.4" fill="#f7c8e4"/>
+    </symbol>
+    <!-- 鈴 (ちりん) -->
+    <symbol id="i-bell" viewBox="0 0 24 24">
+      <path class="bell-body" d="M5.2 15.5c0-4.6 2.9-8.6 6.8-8.6s6.8 4 6.8 8.6c0 1.1-.9 1.8-2 1.8H7.2c-1.1 0-2-.7-2-1.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M12 6.9V4.6M9.8 4.4h4.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="12" cy="19.3" r="1.6" fill="currentColor"/>
+      <path d="M6.4 12.6h11.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-reply" viewBox="0 0 24 24">
+      <path d="M12 4.5c4.7 0 8 2.9 8 6.6s-3.3 6.6-8 6.6c-.9 0-1.8-.1-2.6-.3L6 19.6c-.5.3-1-.1-.9-.6l.6-2.7C4.6 15.1 4 13.7 4 11.1 4 7.4 7.3 4.5 12 4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-share" viewBox="0 0 24 24">
+      <path d="M5 11.5V9.8C5 8.3 6.2 7 7.8 7H18m0 0-2.8-2.8M18 7l-2.8 2.8M19 12.5v1.7c0 1.5-1.2 2.8-2.8 2.8H6m0 0 2.8 2.8M6 17l2.8-2.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M15.5 3.6a8.6 8.6 0 1 0 4.9 14.1A7.2 7.2 0 0 1 15.5 3.6z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24">
+      <path d="M4.5 11 12 4.8 19.5 11v7.2c0 1-.8 1.8-1.8 1.8H6.3c-1 0-1.8-.8-1.8-1.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M13.6 12.2a2.6 2.6 0 1 0 1 3.6 2 2 0 0 1-1-3.6z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-letter" viewBox="0 0 24 24">
+      <rect x="3.8" y="6" width="16.4" height="12.4" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="m5 8 7 5.2L19 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="10.8" cy="10.8" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="m15.4 15.4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24">
+      <path d="M5 10.5V18c0 1 .8 1.8 1.8 1.8h10.4c1 0 1.8-.8 1.8-1.8v-7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M3.8 9.2 5.6 4.8h12.8l1.8 4.4c0 1.4-1.1 2.3-2.4 2.3s-2.4-.9-2.4-2.3c0 1.4-1.1 2.3-2.4 2.3s-2.4-.9-2.4-2.3c0 1.4-1.1 2.3-2.4 2.3S3.8 10.6 3.8 9.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M10 19.8v-3.6a2 2 0 0 1 4 0v3.6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    </symbol>
+    <symbol id="i-me" viewBox="0 0 24 24">
+      <circle cx="12" cy="9" r="3.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M5.2 19.5c.9-3.4 3.6-5.3 6.8-5.3s5.9 1.9 6.8 5.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24">
+      <path d="M5 19l1-4.2L15.6 5.2a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L9.2 18 5 19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="m14 7 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-photo" viewBox="0 0 24 24">
+      <rect x="4" y="5.5" width="16" height="13" rx="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <circle cx="9" cy="10" r="1.6" fill="currentColor"/>
+      <path d="m5 17 4.4-4 3 2.6 2.6-2.2L19.4 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="logo-mark" viewBox="0 0 48 48">
+            <path d="M24 9.5v-3" stroke="#23395a" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M8.5 31.5C8.5 19.6 15.4 10 24 10s15.5 9.6 15.5 21.5c0 2.6-2 4.3-4.6 4.3H13.1c-2.6 0-4.6-1.7-4.6-4.3z" fill="#9fd8f2"/>
+            <path d="M12.8 25.2h22.4" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="24" cy="40.2" r="3.4" fill="#23395a"/>
+            <path d="M27.8 13.6a5.6 5.6 0 1 0 5.4 8.6 4.6 4.6 0 0 1-5.4-8.6z" fill="#ffe58a"/>
+            <ellipse cx="16.5" cy="19" rx="2.2" ry="3.4" fill="#fff" opacity=".7" transform="rotate(28 16.5 19)"/>
+          </symbol>
+  </defs>
+</svg>
+
+<div class="page" id="top">
+  <div class="sparkles" aria-hidden="true">
+    <svg style="left:31%;top:12%" viewBox="0 0 16 16"><path d="M8 1.5c.5 3.2 1.4 4.6 6 6.5-4.6 1.9-5.5 3.3-6 6.5-.5-3.2-1.4-4.6-6-6.5 4.6-1.9 5.5-3.3 6-6.5z" fill="currentColor"/></svg>
+    <svg style="left:7%;top:62%;width:10px;height:10px" viewBox="0 0 16 16"><path d="M8 1.5c.5 3.2 1.4 4.6 6 6.5-4.6 1.9-5.5 3.3-6 6.5-.5-3.2-1.4-4.6-6-6.5 4.6-1.9 5.5-3.3 6-6.5z" fill="currentColor"/></svg>
+    <svg style="right:4%;top:8%;width:12px;height:12px" viewBox="0 0 16 16"><path d="M8 1.5c.5 3.2 1.4 4.6 6 6.5-4.6 1.9-5.5 3.3-6 6.5-.5-3.2-1.4-4.6-6-6.5 4.6-1.9 5.5-3.3 6-6.5z" fill="currentColor"/></svg>
+    <svg style="right:38%;bottom:14%;width:10px;height:10px" viewBox="0 0 16 16"><path d="M8 1.5c.5 3.2 1.4 4.6 6 6.5-4.6 1.9-5.5 3.3-6 6.5-.5-3.2-1.4-4.6-6-6.5 4.6-1.9 5.5-3.3 6-6.5z" fill="currentColor"/></svg>
+  </div>
+
+  <header class="m-top">
+    <a class="logo" href="#top" aria-label="すずね">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><use href="#logo-mark"/></svg>
+      <b>すずね</b>
+    </a>
+    <span class="avatar" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#av-sheep"/></svg></span>
+  </header>
+
+  <div class="app">
+    <!-- left nav -->
+    <aside class="side">
+      <a class="logo" href="#top">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <use href="#logo-mark"/>
+        </svg>
+        <b>すずね</b>
+      </a>
+      <nav aria-label="メニュー">
+        <ul class="nav">
+          <li><a href="#top" aria-current="page"><svg aria-hidden="true"><use href="#i-home"/></svg><span class="label">おうち</span></a></li>
+          <li><a href="#"><svg aria-hidden="true"><use href="#i-letter"/></svg><span class="label">おてがみ</span></a></li>
+          <li><a href="#"><svg aria-hidden="true"><use href="#i-search"/></svg><span class="label">さがす</span></a></li>
+          <li><a href="#"><svg aria-hidden="true"><use href="#i-shop"/></svg><span class="label">ぷぷりえ</span></a></li>
+          <li><a href="#"><svg aria-hidden="true"><use href="#i-me"/></svg><span class="label">じぶん</span></a></li>
+        </ul>
+      </nav>
+      <button class="post-btn" type="button" aria-label="ねごとする"><svg aria-hidden="true"><use href="#i-pen"/></svg><span>ねごとする</span></button>
+      <div class="me">
+        <span class="avatar" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#av-sheep"/></svg></span>
+        <div><b>もこひつじ</b><span>@moko_hitsuji</span></div>
+      </div>
+    </aside>
+
+    <!-- timeline (Stage) -->
+    <main class="timeline glass" id="timeline">
+      <div class="tl-head">
+        <h1>おうち</h1>
+        <div class="tabs" role="tablist" aria-label="タイムライン">
+          <button class="tab" role="tab" aria-selected="true" type="button">みんな</button>
+          <button class="tab" role="tab" aria-selected="false" type="button">ぷぷりえ</button>
+        </div>
+      </div>
+
+      <form class="compose" onsubmit="return false">
+        <span class="avatar" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#av-sheep"/></svg></span>
+        <label class="vh" for="negoto">ねごと</label>
+        <textarea id="negoto" rows="2" placeholder="なにしてた〜？"></textarea>
+        <div class="compose-row">
+          <button class="act" type="button" aria-label="しゃしんをえらぶ"><svg aria-hidden="true"><use href="#i-photo"/></svg></button>
+          <button class="post-btn" type="submit">ねごとする</button>
+        </div>
+      </form>
+
+      <ul class="feed">
+        <!-- 1: ようかん + ウインク -->
+        <li class="post is-youkan">
+          <span class="avatar youkan"><img src="../../compare/character/assets/youkan-wink.webp" alt="ようかん" width="680" height="565"></span>
+          <div>
+            <div class="who"><b>ようかん</b><span>@youkan_yokan</span><span>・ 8分</span></div>
+            <p class="text">おはよ～。えっと、さっき起きたかも！きょうもぷぷりえでまってるね～</p>
+            <div class="media">
+              <span class="print"><img src="../../compare/character/assets/youkan-wink.webp" alt="ウインクしているようかんの顔" width="680" height="565"></span>
+            </div>
+            <div class="actions">
+              <button class="act" type="button" aria-label="おへんじ 12"><svg aria-hidden="true"><use href="#i-reply"/></svg>12</button>
+              <button class="act" type="button" aria-label="おすそわけ 34"><svg aria-hidden="true"><use href="#i-share"/></svg>34</button>
+              <button class="act chirin" type="button" aria-pressed="true" aria-label="ちりん"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>218</span></button>
+            </div>
+          </div>
+        </li>
+
+        <!-- 2: うさぎ -->
+        <li class="post">
+          <span class="avatar"><svg viewBox="0 0 48 48" role="img" aria-label="みずたまうさぎ"><use href="#av-usa"/></svg></span>
+          <div>
+            <div class="who"><b>みずたまうさぎ</b><span>@mizutama_usa</span><span>・ 25分</span></div>
+            <p class="text">ぷぷりえでようかんちゃんに接客してもらった。耳の鈴がちりんって鳴るたびに、来てよかったなあってなる</p>
+            <div class="actions">
+              <button class="act" type="button" aria-label="おへんじ 3"><svg aria-hidden="true"><use href="#i-reply"/></svg>3</button>
+              <button class="act" type="button" aria-label="おすそわけ 5"><svg aria-hidden="true"><use href="#i-share"/></svg>5</button>
+              <button class="act chirin" type="button" aria-pressed="false" aria-label="ちりん"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>41</span></button>
+            </div>
+          </div>
+        </li>
+
+        <!-- 3: ようかん + ばんざい -->
+        <li class="post is-youkan">
+          <span class="avatar youkan"><img src="../../compare/character/assets/youkan-wink.webp" alt="ようかん" width="680" height="565"></span>
+          <div>
+            <div class="who"><b>ようかん</b><span>@youkan_yokan</span><span>・ 1時間</span></div>
+            <p class="text">ぷぷりえの友達とあそんだ～！たのしかった～。みんな大好き！</p>
+            <div class="media stage-card">
+              <img src="../../compare/character/assets/youkan-banzai.webp" alt="ばんざいしているようかん" width="706" height="1215">
+            </div>
+            <div class="actions">
+              <button class="act" type="button" aria-label="おへんじ 27"><svg aria-hidden="true"><use href="#i-reply"/></svg>27</button>
+              <button class="act" type="button" aria-label="おすそわけ 52"><svg aria-hidden="true"><use href="#i-share"/></svg>52</button>
+              <button class="act chirin" type="button" aria-pressed="false" aria-label="ちりん"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>306</span></button>
+            </div>
+          </div>
+        </li>
+
+        <!-- 4: ねこ + おふとんの絵 -->
+        <li class="post">
+          <span class="avatar"><svg viewBox="0 0 48 48" role="img" aria-label="ねむねこ"><use href="#av-neko"/></svg></span>
+          <div>
+            <div class="who"><b>ねむねこ</b><span>@nemuneko</span><span>・ 2時間</span></div>
+            <p class="text">ようかんちゃんのおふとん、勝手に描いた。水色でふかふかなやつ</p>
+            <div class="media drawing">
+              <svg viewBox="0 0 520 260" role="img" aria-label="水色のおふとんと、三日月のまくらの絵">
+                <rect width="520" height="260" fill="#ebe4fb"/>
+                <g fill="#fff" opacity=".9">
+                  <circle cx="60" cy="48" r="3"/><circle cx="452" cy="40" r="2.5"/><circle cx="400" cy="86" r="2"/><circle cx="120" cy="96" r="2"/>
+                </g>
+                <path d="M470 34a26 26 0 1 0 20 42 21 21 0 0 1-20-42z" fill="#ffe58a"/>
+                <ellipse cx="260" cy="226" rx="200" ry="14" fill="#9b8fd0" opacity=".25"/>
+                <path d="M70 200c0-30 18-52 50-56 70-8 210-10 290-2 32 3 44 26 44 58 0 14-10 24-24 24H94c-14 0-24-10-24-24z" fill="#9fd8f2"/>
+                <path d="M118 166c24-9 46 9 70 0s46 9 70 0 46 9 70 0 46 9 70 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+                <path d="M118 196c24-9 46 9 70 0s46 9 70 0 46 9 70 0 46 9 70 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+                <path d="M128 146c-26-2-44-14-44-30s16-30 44-30 50 10 64 26c-14 22-36 36-64 34z" fill="#fff"/>
+                <path d="M150 98a20 20 0 1 0 18 30 16 16 0 0 1-18-30z" fill="#bfe7f8"/>
+                <g transform="translate(372 112)">
+                  <path d="M-14 16c0-14 6-24 14-24s14 10 14 24c0 3-2 5-5 5h-18c-3 0-5-2-5-5z" fill="#ffe58a"/>
+                  <path d="M-10 10h20" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                  <circle cx="0" cy="25" r="3" fill="#23395a"/>
+                  <path d="M0-8v-6" stroke="#23395a" stroke-width="2.6" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </div>
+            <div class="actions">
+              <button class="act" type="button" aria-label="おへんじ 9"><svg aria-hidden="true"><use href="#i-reply"/></svg>9</button>
+              <button class="act" type="button" aria-label="おすそわけ 18"><svg aria-hidden="true"><use href="#i-share"/></svg>18</button>
+              <button class="act chirin" type="button" aria-pressed="true" aria-label="ちりん"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>97</span></button>
+            </div>
+          </div>
+        </li>
+
+        <!-- 5: くま -->
+        <li class="post">
+          <span class="avatar"><svg viewBox="0 0 48 48" role="img" aria-label="そらくま"><use href="#av-kuma"/></svg></span>
+          <div>
+            <div class="who"><b>そらくま</b><span>@sorakuma</span><span>・ 3時間</span></div>
+            <p class="text"><span class="at">@youkan_yokan</span> 水色の可愛いの、こんどいっしょにさがしにいこ。ぷぷりえのみんなで！</p>
+            <div class="actions">
+              <button class="act" type="button" aria-label="おへんじ 4"><svg aria-hidden="true"><use href="#i-reply"/></svg>4</button>
+              <button class="act" type="button" aria-label="おすそわけ 2"><svg aria-hidden="true"><use href="#i-share"/></svg>2</button>
+              <button class="act chirin" type="button" aria-pressed="false" aria-label="ちりん"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>36</span></button>
+            </div>
+          </div>
+        </li>
+
+        <!-- 6: ようかん おやすみ -->
+        <li class="post is-youkan">
+          <span class="avatar youkan"><img src="../../compare/character/assets/youkan-wink.webp" alt="ようかん" width="680" height="565"></span>
+          <div>
+            <div class="who"><b>ようかん</b><span>@youkan_yokan</span><span>・ きのう</span></div>
+            <p class="text">えっと、きょうはおうちでいっぱい寝たかも！おやすみ～</p>
+            <div class="actions">
+              <button class="act" type="button" aria-label="おへんじ 19"><svg aria-hidden="true"><use href="#i-reply"/></svg>19</button>
+              <button class="act" type="button" aria-label="おすそわけ 21"><svg aria-hidden="true"><use href="#i-share"/></svg>21</button>
+              <button class="act chirin" type="button" aria-pressed="false" aria-label="ちりん"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>254</span></button>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- end of timeline: the futon -->
+      <div class="futon">
+        <svg class="wave back" viewBox="0 0 600 96" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="currentColor" d="M0 70C60 66 92 18 170 20S290 76 360 72 470 14 540 22 590 52 600 54V96H0Z"/>
+        </svg>
+        <svg class="wave" viewBox="0 0 600 80" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="currentColor" d="M0 44C50 40 80 6 150 8S250 62 320 58 420 4 490 10 580 44 600 46V80H0Z"/>
+        </svg>
+        <svg class="moon" viewBox="0 0 132 100" aria-hidden="true">
+          <path d="M70 6a44 44 0 1 0 50 64A36 36 0 0 1 70 6z" fill="#ffe58a"/>
+          <path d="M52 52q5 4 10 0M74 64q5 3 9-1" stroke="#23395a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="50" cy="62" rx="5" ry="3" fill="#f7c8e4"/>
+          <path d="M100 18h10l-10 12h10" stroke="#5bb4de" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M88 4h6l-6 7h6" stroke="#5bb4de" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+        </svg>
+        <p>きょうのねごとは、ここまで～</p>
+      </div>
+    </main>
+
+    <!-- star column (Star) -->
+    <section class="star-col" aria-labelledby="youkan-name">
+      <div class="star-wrap" id="starWrap">
+        <svg class="moon-mat" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M60 4a46 46 0 1 0 36 70A38 38 0 0 1 60 4z" fill="#fff" opacity=".72"/>
+        </svg>
+
+        <div class="bubble">
+          <p>ようかんっていいます～よろしくね～。えっと水色の可愛いのとも好きかも！ぷぷりえの友達と遊ぶのが大好き！</p>
+          <svg class="tail" viewBox="0 0 30 24" aria-hidden="true"><path d="M0 2C10 4 20 6 27 14c2 2.4.6 4.6-2 4.2C16 17 7 15 0 18z" fill="currentColor"/></svg>
+        </div>
+
+        <button class="star" id="star" type="button" aria-pressed="false" aria-label="ようかん、ばんざい">
+          <img class="pose-stand" src="../../compare/character/assets/youkan-stand.webp" alt="" width="706" height="1215">
+          <img class="pose-banzai" src="../../compare/character/assets/youkan-banzai.webp" alt="" width="706" height="1215">
+        </button>
+
+        <div class="profile">
+          <h2 id="youkan-name">ようかん</h2>
+          <p class="id">VRChat ようかんYokan</p>
+          <ul class="facts">
+            <li><svg aria-hidden="true" style="color:#5bb4de"><use href="#i-shop"/></svg>ぷぷりえの店員さん</li>
+            <li><svg aria-hidden="true" style="color:#c9a400"><use href="#i-moon"/></svg>おうちで寝るのがすき</li>
+          </ul>
+          <button class="post-btn" id="follow" type="button" aria-pressed="false">なかよくする</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <nav class="m-bar glass" aria-label="メニュー">
+    <a href="#top" aria-current="page" aria-label="おうち"><svg aria-hidden="true"><use href="#i-home"/></svg></a>
+    <a href="#" aria-label="さがす"><svg aria-hidden="true"><use href="#i-search"/></svg></a>
+    <button class="post-btn" type="button" aria-label="ねごとする"><svg aria-hidden="true"><use href="#i-pen"/></svg></button>
+    <a href="#" aria-label="ぷぷりえ"><svg aria-hidden="true"><use href="#i-shop"/></svg></a>
+    <a href="#" aria-label="おてがみ"><svg aria-hidden="true"><use href="#i-letter"/></svg></a>
+  </nav>
+</div>
+
+<script>
+  // ちりん (いいね)
+  document.querySelectorAll('.act.chirin').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const on = btn.getAttribute('aria-pressed') !== 'true';
+      const n = btn.querySelector('span');
+      btn.setAttribute('aria-pressed', on);
+      n.textContent = Number(n.textContent) + (on ? 1 : -1);
+      btn.classList.remove('ring');
+      if (on && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        void btn.offsetWidth; btn.classList.add('ring');
+      }
+    });
+    btn.addEventListener('animationend', () => btn.classList.remove('ring'));
+  });
+
+  // タブ
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.addEventListener('click', () => tabs.forEach(x => x.setAttribute('aria-selected', x === t))));
+
+  // なかよくする
+  const follow = document.getElementById('follow');
+  follow.addEventListener('click', () => {
+    const on = follow.getAttribute('aria-pressed') !== 'true';
+    follow.setAttribute('aria-pressed', on);
+    follow.textContent = on ? 'なかよし' : 'なかよくする';
+  });
+
+  // 立ち絵: マウスはホバー、タッチとキーボードはタップでばんざい
+  const star = document.getElementById('star');
+  const wrap = document.getElementById('starWrap');
+  const setPose = on => { star.setAttribute('aria-pressed', on); wrap.classList.toggle('banzai', on); };
+  let lastPointer = '';
+  star.addEventListener('pointerenter', e => { lastPointer = e.pointerType; if (e.pointerType === 'mouse') setPose(true); });
+  star.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') setPose(false); });
+  star.addEventListener('pointerdown', e => { lastPointer = e.pointerType; });
+  star.addEventListener('click', e => {
+    if (e.detail !== 0 && lastPointer === 'mouse') return;
+    setPose(star.getAttribute('aria-pressed') !== 'true');
+  });
+</script>
+</body>
+</html>

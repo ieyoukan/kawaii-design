@@ -89,6 +89,7 @@ Display type can be the main decoration of the page. Give a short section headin
 - Weights: medium (500) for body in rounded faces looks warmer than 400. Use bold, chunky ("ぽてっと") weights for headings.
 - Never use handwritten fonts for paragraphs, forms or numbers.
 - **Japanese line breaks**: a heading that breaks mid-word (「おしら/せします」) ruins the softness instantly. Set `word-break: auto-phrase` on the body, `text-wrap: balance` on headings, and add `<wbr>` at phrase boundaries in short headings as a fallback for browsers without `auto-phrase`.
+- **Handles and tags**: keep each `#hashtag` and `@handle` whole with `white-space: nowrap` on the tag, and truncate long handles with an ellipsis. `auto-phrase` alone may break right after the 「#」.
 
 ## Icons
 
@@ -118,6 +119,7 @@ Include one decorative animation per page or app view in normal motion mode. Pic
 ### Idle
 
 - An ambient animation uses the same single slot as an entrance, even when it is behind the content. Keep the motion subtle and stop it after five seconds or provide a pause control if it keeps running alongside content.
+- Effects that only follow the user's own pointer or scroll and rest when nothing moves (a parallax blob, a highlight that follows the pointer) work like hover states. They don't use the slot. Turn them off or hold them still with reduced motion.
 
 ### In-page scrolling
 

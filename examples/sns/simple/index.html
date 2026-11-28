@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>まめつぶ ― ひろば</title>
+<!--
+  Direction (kawaii-design)
+  前提（おまかせのため仮定）: サービス「まめつぶ」、マスコット「まめちゃん」、登場する住人と投稿はすべて架空。
+  - Character: 少女〜若い大人向け・おっとり+少しおちゃめ・やわらかい常体でひらがな多め・ピンクの豆に若葉が一枚（まめちゃん）
+  - Product: 日々のちいさなこと（ひとつぶ）を、まるい生きものの姿で書きとめて見せあう、ゆるい SNS のタイムライン。
+  - Dialect: ゆるかわ。のんびり・ノーマルな日常の共有が主目的で、手描き線の生きものが似合うため。ただし Stage mode なので、くすみ色ではなく澄んだパステルを使う。
+  - Feel: ぽてっと、のんびり、ひなたの午後
+  - World: まるい生きものたちが住む、ちいさな豆の村（ミントの丘、レモンのお日さま、咲く花）。投稿=「ひとつぶ」、いいね=「はなまる」、リポスト=「わけっこ」、ホーム=「ひろば」。
+  - Star: なし、Stage mode（テキストの投稿）。投稿内の絵（パンの朝ごはん）だけが小さな主役。
+  - Shape language: 余白で区切る開いたレイアウト。投稿は「話している」ので、アバターを指すしっぽ付きの吹き出し（角丸長方形+しっぽ）。アバター・アイコンボタンは円。色が変わるのはタイムラインの終わりだけで、ミントの丘の大きなカーブで入る。
+  - Atmosphere: シンプル（ユーザー指定）。ページは淡いいちごミルク一色、パネルは白。パターンなし。
+  - Type and motion: 見出しとロゴは Kiwi Maru、本文は M PLUS Rounded 1c 500。h1「ひろば」、サイドの h2 は同じ書体で小さめ。動くのはロゴのまめちゃんの登場だけ（ぽよん、一回、transform のみ）。ロゴ＝ページ先頭へのリンクはスムーズスクロール。reduced-motion では動きもスムーズスクロールもなし。
+  Palette: いちごミルク（主）/ ミント / レモン + 白 + プラムのインク #3E2A36
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page: #FFEFF4;          /* いちごミルク、いちばん淡い */
+    --white: #FFFFFF;
+    --pink-1: #FFD9E5;
+    --pink-2: #FF9EBB;
+    --pink-3: #B8336A;        /* 文字にも使える濃いピンク */
+    --mint-1: #D3F2E6;
+    --mint-2: #8FD9BF;
+    --mint-3: #2E7D66;
+    --lemon-1: #FFF3B8;
+    --lemon-2: #FFDA6B;
+    --ink: #3E2A36;
+    --ink-soft: #6E5563;
+    --ink-line: 62 42 54;     /* 線と影の RGB */
+
+    --r-chip: 9999px;
+    --r-btn: 14px;
+    --r-input: 14px;
+    --r-card: 22px;
+    --r-img: 16px;
+
+    --ease-poyon: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    word-break: auto-phrase;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .display { font-family: "Kiwi Maru", serif; font-weight: 500; text-wrap: balance; letter-spacing: 0.06em; }
+  button, input, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+  button { cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--pink-3); outline-offset: 3px; border-radius: 10px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* ---------- layout ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 600px) 320px;
+    gap: 40px;
+    justify-content: center;
+    padding: 0 32px;
+    min-height: 100vh;
+  }
+
+  /* ---------- left nav ---------- */
+  .side {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; gap: 28px;
+    padding: 28px 0 28px;
+  }
+  .logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none; padding: 4px 8px 4px 0;
+  }
+  .logo svg.mame { width: 50px; height: 50px; overflow: visible; }
+  .logo .word { font-family: "Kiwi Maru", serif; font-size: 27px; font-weight: 500; letter-spacing: 0.08em; line-height: 1; }
+  .logo .word b { color: var(--pink-3); font-weight: 500; }
+
+  .nav { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .nav a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 18px 10px 12px; border-radius: var(--r-btn);
+    text-decoration: none; font-size: 17px;
+    transition: background-color 160ms ease-out;
+  }
+  .nav a:hover { background: var(--white); }
+  .nav a[aria-current="page"] { background: var(--white); font-weight: 700; }
+  .nav a[aria-current="page"] .icon { color: var(--pink-3); }
+  .nav .dot { margin-left: auto; min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--r-chip); background: var(--mint-2); color: var(--ink); font-size: 12px; line-height: 22px; text-align: center; font-weight: 700; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: 0; border-radius: var(--r-chip);
+    background: var(--pink-2); color: var(--ink);
+    font-weight: 700; font-size: 16px;
+    padding: 12px 24px;
+    box-shadow: 0 6px 16px rgb(184 51 106 / 0.16);
+    transition: transform 120ms ease-out, background-color 160ms ease-out;
+  }
+  .btn-primary:hover { background: #FF8DAF; }
+  .btn-primary:active { transform: translateY(2px); }
+  .btn-primary:disabled { background: var(--pink-1); color: var(--ink-soft); box-shadow: none; cursor: default; }
+  .side .btn-primary { width: 100%; padding: 14px 24px; font-size: 17px; }
+
+  .me {
+    margin-top: auto;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 18px;
+    background: var(--white);
+  }
+  .me .who { line-height: 1.5; min-width: 0; }
+  .me .who b { display: block; font-weight: 700; }
+  .me .who span { color: var(--ink-soft); font-size: 14px; }
+
+  /* ---------- avatars ---------- */
+  .ava { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: none; display: block; }
+  .ava svg { width: 100%; height: 100%; display: block; }
+  .ava.sm { width: 44px; height: 44px; }
+  .bg-pink { background: var(--pink-1); }
+  .bg-mint { background: var(--mint-1); }
+  .bg-lemon { background: var(--lemon-1); }
+
+  /* ---------- timeline ---------- */
+  .main { padding-bottom: 0; min-width: 0; }
+  .tl-head {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--page);
+    padding: 26px 0 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .tl-head h1 { margin: 0; font-size: 30px; line-height: 1.2; }
+  .tabs { display: flex; gap: 4px; padding: 4px; background: var(--white); border-radius: var(--r-chip); }
+  .tabs button {
+    border: 0; background: transparent; border-radius: var(--r-chip);
+    padding: 6px 18px; font-size: 15px; color: var(--ink-soft);
+    transition: background-color 160ms ease-out, color 160ms ease-out;
+  }
+  .tabs button[aria-selected="true"] { background: var(--pink-1); color: var(--ink); font-weight: 700; }
+
+  .compose {
+    display: grid; grid-template-columns: 52px 1fr; gap: 16px;
+    margin: 10px 0 36px;
+  }
+  .compose .box {
+    background: var(--white); border-radius: var(--r-card);
+    padding: 16px 18px 14px 20px;
+    position: relative;
+  }
+  .compose textarea {
+    width: 100%; min-height: 64px; resize: none; border: 0; outline: 0; background: transparent;
+    font-size: 16px; line-height: 1.8; padding: 2px 0;
+  }
+  .compose textarea::placeholder { color: var(--ink-soft); }
+  .compose .box:focus-within { box-shadow: 0 0 0 2px var(--pink-2); }
+  .compose .bar { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .tool {
+    width: 40px; height: 40px; border: 0; border-radius: 50%;
+    display: grid; place-items: center; background: transparent; color: var(--mint-3);
+    transition: background-color 160ms ease-out;
+  }
+  .tool:hover { background: var(--mint-1); }
+  .compose .count { margin-left: auto; color: var(--ink-soft); font-size: 14px; font-variant-numeric: tabular-nums; }
+  .compose .btn-primary { padding: 9px 20px; font-size: 15px; }
+
+  .feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+  .post { display: grid; grid-template-columns: 52px 1fr; gap: 16px; }
+  .bubble {
+    position: relative;
+    background: var(--white);
+    border-radius: var(--r-card);
+    padding: 18px 22px 10px;
+    min-width: 0;
+  }
+  /* 吹き出しのしっぽ：アバター（話している本人）を指す */
+  .bubble::before {
+    content: ""; position: absolute;
+    left: -8px; top: 15px;
+    width: 22px; height: 22px;
+    background: inherit;
+    border-radius: 0 0 0 5px;
+    transform: rotate(45deg);
+  }
+  .bubble.official { background: var(--lemon-1); }
+  .meta { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; line-height: 1.5; }
+  .meta b { font-weight: 700; }
+  .meta .h, .meta time { color: var(--ink-soft); font-size: 14px; }
+  .meta .badge {
+    align-self: center; display: inline-flex; width: 18px; height: 18px; color: var(--pink-3);
+  }
+  .text { margin: 6px 0 0; white-space: pre-line; }
+  .text .tag { color: var(--pink-3); text-decoration: none; white-space: nowrap; }
+  .text .tag:hover { text-decoration: underline; }
+
+  .pic { margin: 14px 0 4px; border-radius: var(--r-img); overflow: hidden; background: var(--pink-1); }
+  .pic svg { display: block; width: 100%; height: auto; }
+
+  .acts { display: flex; gap: 4px; margin: 8px -10px 0; }
+  .act {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 0; background: transparent; color: var(--ink-soft);
+    padding: 6px 12px 6px 10px; border-radius: var(--r-chip);
+    font-size: 14px; font-variant-numeric: tabular-nums;
+    transition: background-color 160ms ease-out, color 160ms ease-out;
+  }
+  .act:hover { background: var(--page); color: var(--ink); }
+  .act.share:hover { color: var(--mint-3); background: var(--mint-1); }
+  .act.mark { margin-left: auto; }
+
+  /* はなまる（いいね）：押すと花が咲く */
+  .act.hana .petals circle { fill: var(--white); transition: fill 200ms ease-out; }
+  .act.hana .core { fill: var(--white); transition: fill 200ms ease-out; }
+  .act.hana .flower { transform-origin: 12px 12px; transition: transform 260ms var(--ease-poyon); }
+  .act.hana:hover { background: var(--pink-1); color: var(--ink); }
+  .act.hana[aria-pressed="true"] { color: var(--pink-3); }
+  .act.hana[aria-pressed="true"] .petals circle { fill: var(--pink-2); }
+  .act.hana[aria-pressed="true"] .core { fill: var(--lemon-2); }
+  .act.hana:active .flower { transform: scale(0.82); }
+
+  /* ---------- end of timeline: ミントの丘 ---------- */
+  .end {
+    position: relative;
+    margin-top: 64px;
+    padding: 0 0 56px;
+    text-align: center;
+  }
+  .end .hill {
+    display: block; width: calc(100% + 64px); margin: 0 -32px;
+    height: clamp(90px, 16vw, 130px);
+    color: var(--mint-1);
+  }
+  .end .ground { display: flow-root; background: var(--mint-1); margin: -1px -32px 0; padding: 0 24px 40px; border-radius: 0 0 28px 28px; }
+  .end .sleepy { width: 120px; height: 92px; display: block; margin: -72px auto 0; position: relative; }
+  .end p .ph { display: inline-block; }
+  .end p { margin: 8px 0 0; font-family: "Kiwi Maru", serif; font-size: 17px; }
+
+  /* ---------- right sidebar ---------- */
+  .aside { padding: 26px 0 40px; display: flex; flex-direction: column; gap: 28px; position: sticky; top: 0; align-self: start; }
+  .search { position: relative; }
+  .search input {
+    width: 100%; border: 0; border-radius: var(--r-input);
+    background: var(--white); padding: 12px 16px 12px 46px; font-size: 15px;
+  }
+  .search input::placeholder { color: var(--ink-soft); }
+  .search input:focus { outline: 2px solid var(--pink-2); outline-offset: 0; }
+  .search .icon { position: absolute; left: 14px; top: 50%; translate: 0 -50%; color: var(--ink-soft); }
+
+  .panel { background: var(--white); border-radius: var(--r-card); padding: 20px 22px 14px; }
+  .panel h2 { margin: 0 0 10px; font-size: 20px; line-height: 1.4; }
+  .trends { list-style: none; margin: 0; padding: 0; }
+  .trends a {
+    display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 10px;
+    padding: 9px 10px; margin: 0 -10px; border-radius: var(--r-btn); text-decoration: none;
+  }
+  .trends a:hover { background: var(--page); }
+  .trends .mini { width: 16px; height: 16px; }
+  .trends .n { color: var(--ink-soft); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+  .friends { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .friends li { display: flex; align-items: center; gap: 12px; }
+  .friends .who { min-width: 0; flex: 1; line-height: 1.5; }
+  .friends .who b { display: block; font-weight: 700; }
+  .friends .who span { color: var(--ink-soft); font-size: 14px; }
+  .btn-soft {
+    border: 0; border-radius: var(--r-chip); padding: 7px 16px;
+    background: var(--mint-1); color: var(--ink); font-weight: 700; font-size: 14px;
+    transition: background-color 160ms ease-out;
+  }
+  .btn-soft:hover { background: var(--mint-2); }
+  .btn-soft[aria-pressed="true"] { background: var(--page); color: var(--ink-soft); }
+
+  /* ---------- mobile chrome ---------- */
+  .topbar, .tabbar, .fab { display: none; }
+
+  @media (max-width: 1180px) {
+    .app { grid-template-columns: 220px minmax(0, 600px); }
+    .aside { display: none; }
+  }
+  @media (max-width: 760px) {
+    body { font-size: 15px; }
+    .app { display: block; padding: 0 16px; }
+    .side { display: none; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0 6px;
+    }
+    .topbar .logo svg.mame { width: 40px; height: 40px; }
+    .topbar .logo .word { font-size: 22px; }
+    .tl-head { padding: 10px 0 12px; }
+    .tl-head h1 { font-size: 24px; }
+    .tabs button { padding: 5px 14px; font-size: 14px; }
+    .compose, .post { grid-template-columns: 44px 1fr; gap: 12px; }
+    .compose .ava, .post .ava { width: 44px; height: 44px; }
+    .bubble { padding: 16px 18px 8px; }
+    .bubble::before { top: 11px; }
+    .acts { margin: 6px -8px 0; }
+    .act { padding: 6px 9px 6px 8px; }
+    .end .hill { width: calc(100% + 32px); margin: 0 -16px; height: 72px; }
+    .end .ground { margin: -1px -16px 0; border-radius: 0; padding-bottom: 180px; }
+    .end { padding-bottom: 0; }
+    .tabbar {
+      display: flex; justify-content: space-around; align-items: center;
+      position: fixed; z-index: 10; left: 12px; right: 12px; bottom: 12px;
+      background: var(--white); border-radius: 24px; padding: 8px 6px;
+      box-shadow: 0 8px 24px rgb(var(--ink-line) / 0.12);
+    }
+    .tabbar a { width: 48px; height: 44px; display: grid; place-items: center; border-radius: 16px; color: var(--ink-soft); position: relative; }
+    .tabbar a[aria-current="page"] { color: var(--pink-3); background: var(--pink-1); }
+    .tabbar .icon { width: 24px; height: 24px; }
+    .tabbar .pip { position: absolute; top: 8px; right: 10px; width: 9px; height: 9px; border-radius: 50%; background: var(--mint-2); box-shadow: 0 0 0 2px var(--white); }
+    .fab {
+      display: grid; place-items: center; position: fixed; z-index: 11;
+      right: 20px; bottom: 92px; width: 60px; height: 60px; padding: 0; border-radius: 50%;
+    }
+    .fab .icon { width: 26px; height: 26px; }
+  }
+
+  /* ---------- the one decorative animation: まめちゃんが ぽよんと着地 ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .logo svg.mame { transform-origin: 50% 90%; animation: poyon 760ms var(--ease-poyon) 200ms both; }
+  }
+  @keyframes poyon {
+    0%   { transform: translateY(-12px) scale(0.92, 1.06); }
+    60%  { transform: translateY(0) scale(1.06, 0.94); }
+    100% { transform: none; }
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- ===== shared drawings ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- まめちゃん（マスコット）-->
+    <symbol id="mame" viewBox="0 0 48 48">
+      <g class="mame-body">
+        <path d="M24 13 C23 9 24 6 27 4.5" fill="none" stroke="#3E2A36" stroke-width="2" stroke-linecap="round"/>
+        <path d="M26 7 C29 3 35 3.5 37 6 C34 9 29.5 9.5 26 7 Z" fill="#8FD9BF" stroke="#3E2A36" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M24 12 C33 11 40 17 40 26 C40 36 33 43 24.5 43 C15 43 8 37 8.5 28 C9 23.5 12 22 13.5 20 C15.5 16.5 18 12.5 24 12 Z" fill="#FF9EBB" stroke="#3E2A36" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="19" cy="28" r="1.9" fill="#3E2A36"/>
+        <circle cx="29" cy="28" r="1.9" fill="#3E2A36"/>
+        <path d="M22.4 31.5 q1.6 1.7 3.2 0" fill="none" stroke="#3E2A36" stroke-width="1.8" stroke-linecap="round"/>
+        <ellipse cx="15.5" cy="32" rx="2.6" ry="1.6" fill="#FFF3B8" opacity=".9"/>
+        <ellipse cx="32.5" cy="32" rx="2.6" ry="1.6" fill="#FFF3B8" opacity=".9"/>
+      </g>
+    </symbol>
+
+    <!-- うさぎ -->
+    <symbol id="usa" viewBox="0 0 48 48">
+      <path d="M17.5 25 C13.5 14 15 6 18.5 6 C22 6 22.5 15 22 24" fill="#fff" stroke="#3E2A36" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M30.5 25 C34.5 14 33 6 29.5 6 C26 6 25.5 15 26 24" fill="#fff" stroke="#3E2A36" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M18.6 12 C18.3 16 19 20 19.6 22" stroke="#FF9EBB" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <path d="M29.4 12 C29.7 16 29 20 28.4 22" stroke="#FF9EBB" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <ellipse cx="24" cy="36" rx="15" ry="13" fill="#fff" stroke="#3E2A36" stroke-width="2"/>
+      <circle cx="19" cy="34.5" r="1.8" fill="#3E2A36"/><circle cx="29" cy="34.5" r="1.8" fill="#3E2A36"/>
+      <path d="M22.5 38 q1.5 1.5 3 0" fill="none" stroke="#3E2A36" stroke-width="1.7" stroke-linecap="round"/>
+      <ellipse cx="15.5" cy="38.5" rx="2.6" ry="1.6" fill="#FF9EBB" opacity=".7"/><ellipse cx="32.5" cy="38.5" rx="2.6" ry="1.6" fill="#FF9EBB" opacity=".7"/>
+    </symbol>
+
+    <!-- くま -->
+    <symbol id="kuma" viewBox="0 0 48 48">
+      <circle cx="12.5" cy="22" r="5.5" fill="#FFDA6B" stroke="#3E2A36" stroke-width="2"/>
+      <circle cx="35.5" cy="22" r="5.5" fill="#FFDA6B" stroke="#3E2A36" stroke-width="2"/>
+      <ellipse cx="24" cy="35" rx="16" ry="14" fill="#FFDA6B" stroke="#3E2A36" stroke-width="2"/>
+      <ellipse cx="24" cy="38.5" rx="6" ry="4.5" fill="#FFF3B8"/>
+      <circle cx="18.5" cy="32" r="1.8" fill="#3E2A36"/><circle cx="29.5" cy="32" r="1.8" fill="#3E2A36"/>
+      <ellipse cx="24" cy="36.6" rx="2" ry="1.4" fill="#3E2A36"/>
+      <path d="M22.4 39.4 q1.6 1.4 3.2 0" fill="none" stroke="#3E2A36" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="14.5" cy="37" rx="2.4" ry="1.5" fill="#FF9EBB" opacity=".75"/><ellipse cx="33.5" cy="37" rx="2.4" ry="1.5" fill="#FF9EBB" opacity=".75"/>
+    </symbol>
+
+    <!-- かえる -->
+    <symbol id="kero" viewBox="0 0 48 48">
+      <ellipse cx="24" cy="37" rx="17" ry="13" fill="#8FD9BF" stroke="#3E2A36" stroke-width="2"/>
+      <circle cx="16" cy="25" r="6" fill="#8FD9BF" stroke="#3E2A36" stroke-width="2"/>
+      <circle cx="32" cy="25" r="6" fill="#8FD9BF" stroke="#3E2A36" stroke-width="2"/>
+      <path d="M11 30 C14 32 34 32 37 30" fill="#8FD9BF"/>
+      <circle cx="16" cy="25" r="2.6" fill="#fff"/><circle cx="32" cy="25" r="2.6" fill="#fff"/>
+      <circle cx="16.4" cy="25.4" r="1.6" fill="#3E2A36"/><circle cx="32.4" cy="25.4" r="1.6" fill="#3E2A36"/>
+      <path d="M19 37 q5 4 10 0" fill="none" stroke="#3E2A36" stroke-width="1.8" stroke-linecap="round"/>
+      <ellipse cx="13" cy="36" rx="2.6" ry="1.6" fill="#FF9EBB" opacity=".75"/><ellipse cx="35" cy="36" rx="2.6" ry="1.6" fill="#FF9EBB" opacity=".75"/>
+    </symbol>
+
+    <!-- ねこ -->
+    <symbol id="neko" viewBox="0 0 48 48">
+      <path d="M10 30 L10.5 17.5 Q11 15 13 16.3 L21 22" fill="#fff" stroke="#3E2A36" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M38 30 L37.5 17.5 Q37 15 35 16.3 L27 22" fill="#fff" stroke="#3E2A36" stroke-width="2" stroke-linejoin="round"/>
+      <ellipse cx="24" cy="35.5" rx="16" ry="13.5" fill="#fff" stroke="#3E2A36" stroke-width="2"/>
+      <path d="M17 23.5 C19 22 21 22.5 22 25 C20 25.6 18 25.2 17 23.5 Z" fill="#FFDA6B"/>
+      <path d="M15.5 33.5 q2 -2 4 0" fill="none" stroke="#3E2A36" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M28.5 33.5 q2 -2 4 0" fill="none" stroke="#3E2A36" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M21.5 37.5 q1.25 1.4 2.5 0 q1.25 1.4 2.5 0" fill="none" stroke="#3E2A36" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="14" cy="38" rx="2.5" ry="1.5" fill="#FF9EBB" opacity=".75"/><ellipse cx="34" cy="38" rx="2.5" ry="1.5" fill="#FF9EBB" opacity=".75"/>
+    </symbol>
+
+    <!-- はむすたー（じぶん）-->
+    <symbol id="hamu" viewBox="0 0 48 48">
+      <circle cx="14" cy="24.5" r="4" fill="#FF9EBB" stroke="#3E2A36" stroke-width="2"/>
+      <circle cx="34" cy="24.5" r="4" fill="#FF9EBB" stroke="#3E2A36" stroke-width="2"/>
+      <path d="M24 22 C35 22 42 29 42 38 C42 46 34 50 24 50 C14 50 6 46 6 38 C6 29 13 22 24 22 Z" fill="#fff" stroke="#3E2A36" stroke-width="2"/>
+      <path d="M13.5 26.5 C17 23.4 20.5 22.6 24 22.6 C27.5 22.6 31 23.4 34.5 26.5 C31 28.6 27.5 29.2 24 27.4 C20.5 29.2 17 28.6 13.5 26.5 Z" fill="#FFDA6B"/>
+      <circle cx="18.5" cy="32" r="1.8" fill="#3E2A36"/><circle cx="29.5" cy="32" r="1.8" fill="#3E2A36"/>
+      <path d="M22.5 36.6 q1.5 1.3 3 0" fill="none" stroke="#3E2A36" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="14.5" cy="36" rx="2.5" ry="1.6" fill="#FF9EBB" opacity=".8"/><ellipse cx="33.5" cy="36" rx="2.5" ry="1.6" fill="#FF9EBB" opacity=".8"/>
+    </symbol>
+
+    <!-- ちいさな花（世界のモチーフ：はなまる・目印）-->
+    <symbol id="flower-mini" viewBox="0 0 24 24">
+      <g fill="#FFD9E5" stroke="#B8336A" stroke-width="1.6">
+        <circle cx="12" cy="6.6" r="3.6"/><circle cx="17.1" cy="10.3" r="3.6"/><circle cx="15.2" cy="16.4" r="3.6"/><circle cx="8.8" cy="16.4" r="3.6"/><circle cx="6.9" cy="10.3" r="3.6"/>
+      </g>
+      <circle cx="12" cy="12" r="2.8" fill="#FFDA6B" stroke="#B8336A" stroke-width="1.6"/>
+    </symbol>
+
+    <!-- line icons -->
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.5H9v5.5H5.5A1.5 1.5 0 0 1 4 19z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-letter" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="m4.5 7.5 7.5 5.5 7.5-5.5"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M7 4.5h10a1 1 0 0 1 1 1v14.5l-6-4-6 4V5.5a1 1 0 0 1 1-1z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="9" r="4"/><path d="M4.5 20c1-3.6 4-5.5 7.5-5.5s6.5 1.9 7.5 5.5"/></symbol>
+    <symbol id="i-reply" viewBox="0 0 24 24"><path d="M12 4.5c4.7 0 8 2.9 8 6.6s-3.3 6.6-8 6.6c-.9 0-1.8-.1-2.6-.3L5 19.5l1.2-3.6C4.8 14.7 4 13 4 11.1 4 7.4 7.3 4.5 12 4.5z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M5 10V9a3 3 0 0 1 3-3h10"/><path d="m15.5 3.5 2.5 2.5-2.5 2.5"/><path d="M19 14v1a3 3 0 0 1-3 3H6"/><path d="m8.5 20.5-2.5-2.5 2.5-2.5"/></symbol>
+    <symbol id="i-pic" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="10" r="1.8"/><path d="m4.5 17.5 4.5-4 3.5 3 3-2.5 4 3.5"/></symbol>
+    <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 14.2c1.6 1.6 4.4 1.6 6 0"/><path d="M9.2 9.8h.01M14.8 9.8h.01" stroke-width="2.6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 20.5s-6.5-5.4-6.5-10.5a6.5 6.5 0 0 1 13 0c0 5.1-6.5 10.5-6.5 10.5z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M15.5 5.5 18.5 8.5 9 18l-4 1 1-4z"/><path d="m13.5 7.5 3 3"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 20v-7"/><path d="M12 13c-.5-3.5-3-5.5-7-5.5 0 3.5 3 5.5 7 5.5z"/><path d="M12 11c.3-3.2 2.6-5.5 7-5.5 0 3.8-3 5.5-7 5.5z"/></symbol>
+  </defs>
+</svg>
+
+<template id="hana-icon">
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+    <g class="flower">
+      <g class="petals" stroke-width="1.8">
+        <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/>
+      </g>
+      <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/>
+    </g>
+  </svg>
+</template>
+
+<div class="app">
+
+  <!-- ===== left: nav ===== -->
+  <nav class="side" aria-label="メニュー">
+    <a class="logo" href="#top" aria-label="まめつぶ ひろばの先頭へ">
+      <svg class="mame" viewBox="0 0 48 48" aria-hidden="true"><use href="#mame"/></svg>
+      <span class="word">まめ<b>つ</b>ぶ</span>
+    </a>
+    <ul class="nav">
+      <li><a href="#top" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>ひろば</a></li>
+      <li><a href="#search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>さがす</a></li>
+      <li><a href="#"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>おしらせ<span class="dot">3</span></a></li>
+      <li><a href="#"><svg class="icon" aria-hidden="true"><use href="#i-letter"/></svg>おてがみ</a></li>
+      <li><a href="#"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg>しおり</a></li>
+      <li><a href="#"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg>じぶん</a></li>
+    </ul>
+    <button class="btn-primary" type="button" data-focus-compose><svg class="icon" aria-hidden="true"><use href="#i-pencil"/></svg>ひとつぶ おく</button>
+    <div class="me">
+      <span class="ava sm bg-pink"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#hamu"/></svg></span>
+      <span class="who"><b>はむこ</b><span>@hamuko</span></span>
+    </div>
+  </nav>
+
+  <!-- ===== center: timeline ===== -->
+  <main class="main">
+    <div class="topbar">
+      <a class="logo" href="#top" aria-label="まめつぶ ひろばの先頭へ">
+        <svg class="mame" viewBox="0 0 48 48" aria-hidden="true"><use href="#mame"/></svg>
+        <span class="word">まめ<b>つ</b>ぶ</span>
+      </a>
+      <span class="ava sm bg-pink"><svg viewBox="0 0 48 48" role="img" aria-label="はむこ"><use href="#hamu"/></svg></span>
+    </div>
+
+    <header class="tl-head">
+      <h1>ひろば</h1>
+      <div class="tabs" role="tablist" aria-label="ひろばの表示">
+        <button role="tab" aria-selected="true" type="button">みんな</button>
+        <button role="tab" aria-selected="false" type="button">なかよし</button>
+      </div>
+    </header>
+
+    <form class="compose" id="compose" autocomplete="off">
+      <span class="ava bg-pink"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#hamu"/></svg></span>
+      <div class="box">
+        <label class="sr-only" for="compose-text">ひとつぶを書く</label>
+        <textarea id="compose-text" maxlength="140" placeholder="きょうのひとつぶを、どうぞ"></textarea>
+        <div class="bar">
+          <button class="tool" type="button" aria-label="絵をそえる"><svg class="icon" aria-hidden="true"><use href="#i-pic"/></svg></button>
+          <button class="tool" type="button" aria-label="きもちをそえる"><svg class="icon" aria-hidden="true"><use href="#i-smile"/></svg></button>
+          <button class="tool" type="button" aria-label="ばしょをそえる"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></button>
+          <span class="count" aria-live="polite"><span id="count">140</span></span>
+          <button class="btn-primary" type="submit" id="send" disabled>おく</button>
+        </div>
+      </div>
+    </form>
+
+    <ol class="feed" id="feed">
+      <li class="post">
+        <span class="ava bg-mint"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#usa"/></svg></span>
+        <article class="bubble">
+          <div class="meta"><b>ももうさ</b><span class="h">@momousa</span><time datetime="2026-11-28T08:12">8分まえ</time></div>
+          <p class="text">朝のパン、まんまるに焼けた。
+きょうはいい日になりそう。<a class="tag" href="#">#はじめてのパン</a></p>
+          <figure class="pic" style="margin-inline:0">
+            <svg viewBox="0 0 520 270" role="img" aria-label="ピンクのギンガムのテーブルに、まるいパンと ミントのカップ">
+              <defs>
+                <pattern id="gingham" width="36" height="36" patternUnits="userSpaceOnUse">
+                  <rect width="36" height="36" fill="#FFEFF4"/>
+                  <rect width="18" height="36" fill="#FFD9E5" opacity=".7"/>
+                  <rect width="36" height="18" fill="#FFD9E5" opacity=".7"/>
+                </pattern>
+              </defs>
+              <rect width="520" height="270" fill="url(#gingham)"/>
+              <ellipse cx="220" cy="168" rx="150" ry="70" fill="#3E2A36" opacity=".08"/>
+              <ellipse cx="212" cy="158" rx="148" ry="68" fill="#fff" stroke="#3E2A36" stroke-width="3"/>
+              <ellipse cx="212" cy="158" rx="112" ry="48" fill="none" stroke="#FFD9E5" stroke-width="4"/>
+              <path d="M128 150 C126 104 168 80 212 80 C258 80 298 104 296 150 C294 178 258 186 212 186 C166 186 130 178 128 150 Z" fill="#FFDA6B" stroke="#3E2A36" stroke-width="3"/>
+              <path d="M150 128 C170 104 196 98 214 98" fill="none" stroke="#FFF3B8" stroke-width="8" stroke-linecap="round"/>
+              <path d="M176 140 q10 -14 22 -18 M210 136 q10 -14 22 -18 M244 140 q8 -12 18 -16" fill="none" stroke="#3E2A36" stroke-width="3" stroke-linecap="round"/>
+              <g transform="translate(372 96)">
+                <ellipse cx="44" cy="104" rx="56" ry="14" fill="#3E2A36" opacity=".08"/>
+                <path d="M0 22 H88 V70 C88 92 72 104 44 104 C16 104 0 92 0 70 Z" fill="#8FD9BF" stroke="#3E2A36" stroke-width="3" stroke-linejoin="round"/>
+                <path d="M88 38 C110 36 112 66 88 70" fill="none" stroke="#3E2A36" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="44" cy="22" rx="44" ry="10" fill="#D3F2E6" stroke="#3E2A36" stroke-width="3"/>
+                <path d="M26 -2 c-8 -10 8 -16 0 -28 M50 -6 c-8 -10 8 -16 0 -28" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+                <g transform="translate(30 46) scale(1.2)"><use href="#flower-mini" width="24" height="24"/></g>
+              </g>
+            </svg>
+          </figure>
+          <div class="acts" data-like="24"><button class="act" type="button" aria-label="へんじ 3"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">3</span></button><button class="act share" type="button" aria-label="わけっこ 5"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true">5</span></button><button class="act hana" type="button" aria-pressed="false" aria-label="はなまる" data-n="24"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"> <g class="flower"> <g class="petals" stroke-width="1.8"> <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/> </g> <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/> </g> </svg><span class="n">24</span></button><button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button></div>
+        </article>
+      </li>
+
+      <li class="post">
+        <span class="ava bg-lemon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#kuma"/></svg></span>
+        <article class="bubble">
+          <div class="meta"><b>くまのすけ</b><span class="h">@kumanosuke</span><time datetime="2026-11-28T07:40">40分まえ</time></div>
+          <p class="text">雨あがりの帰り道。水たまりに空がうつっていて、思わず遠まわりした。</p>
+          <div class="acts" data-like="18"><button class="act" type="button" aria-label="へんじ 2"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">2</span></button><button class="act share" type="button" aria-label="わけっこ 1"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true">1</span></button><button class="act hana" type="button" aria-pressed="false" aria-label="はなまる" data-n="18"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"> <g class="flower"> <g class="petals" stroke-width="1.8"> <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/> </g> <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/> </g> </svg><span class="n">18</span></button><button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button></div>
+        </article>
+      </li>
+
+      <li class="post">
+        <span class="ava bg-pink"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#mame"/></svg></span>
+        <article class="bubble official">
+          <div class="meta"><b>まめちゃん</b><svg class="badge" viewBox="0 0 24 24" role="img" aria-label="公式"><use href="#flower-mini"/></svg><span class="h">@mametsubu</span><time datetime="2026-11-28T06:00">2時間まえ</time></div>
+          <p class="text">「しおり」ができました。
+あとで読みたいひとつぶに、そっとはさんでおけます。</p>
+          <div class="acts" data-like="302"><button class="act" type="button" aria-label="へんじ 12"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">12</span></button><button class="act share" type="button" aria-label="わけっこ 48"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true">48</span></button><button class="act hana" type="button" aria-pressed="false" aria-label="はなまる" data-n="302"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"> <g class="flower"> <g class="petals" stroke-width="1.8"> <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/> </g> <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/> </g> </svg><span class="n">302</span></button><button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button></div>
+        </article>
+      </li>
+
+      <li class="post">
+        <span class="ava bg-lemon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#kero"/></svg></span>
+        <article class="bubble">
+          <div class="meta"><b>けろみ</b><span class="h">@keromi</span><time datetime="2026-11-28T05:30">3時間まえ</time></div>
+          <p class="text">新しいノートをおろしました。1ページめに何を書くか、もう30分まよってる。</p>
+          <div class="acts" data-like="41"><button class="act" type="button" aria-label="へんじ 7"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">7</span></button><button class="act share" type="button" aria-label="わけっこ 0"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true"></span></button><button class="act hana" type="button" aria-pressed="false" aria-label="はなまる" data-n="41"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"> <g class="flower"> <g class="petals" stroke-width="1.8"> <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/> </g> <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/> </g> </svg><span class="n">41</span></button><button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button></div>
+        </article>
+      </li>
+
+      <li class="post">
+        <span class="ava bg-pink"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#neko"/></svg></span>
+        <article class="bubble">
+          <div class="meta"><b>ねこまる</b><span class="h">@nekomaru</span><time datetime="2026-11-28T03:10">5時間まえ</time></div>
+          <p class="text">ひなたぼっこ、3時間め。日なたが移動するので、こちらも少しずつ移動しています。<a class="tag" href="#">#ひなたぼっこ部</a></p>
+          <div class="acts" data-like="87"><button class="act" type="button" aria-label="へんじ 9"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">9</span></button><button class="act share" type="button" aria-label="わけっこ 15"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true">15</span></button><button class="act hana" type="button" aria-pressed="false" aria-label="はなまる" data-n="87"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"> <g class="flower"> <g class="petals" stroke-width="1.8"> <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/> </g> <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/> </g> </svg><span class="n">87</span></button><button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button></div>
+        </article>
+      </li>
+
+      <li class="post">
+        <span class="ava bg-mint"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#kuma"/></svg></span>
+        <article class="bubble">
+          <div class="meta"><b>こぐまのみつ</b><span class="h">@mitsu_kuma</span><time datetime="2026-11-27T22:05">きのう</time></div>
+          <p class="text">はちみつの瓶のふた、やっと開いた。手伝ってくれたとなりの人、ありがとう。</p>
+          <div class="acts" data-like="36"><button class="act" type="button" aria-label="へんじ 4"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">4</span></button><button class="act share" type="button" aria-label="わけっこ 2"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true">2</span></button><button class="act hana" type="button" aria-pressed="false" aria-label="はなまる" data-n="36"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"> <g class="flower"> <g class="petals" stroke-width="1.8"> <circle cx="12" cy="6.6" r="3.4"/><circle cx="17.1" cy="10.3" r="3.4"/><circle cx="15.2" cy="16.4" r="3.4"/><circle cx="8.8" cy="16.4" r="3.4"/><circle cx="6.9" cy="10.3" r="3.4"/> </g> <circle class="core" cx="12" cy="12" r="2.6" stroke-width="1.8"/> </g> </svg><span class="n">36</span></button><button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button></div>
+        </article>
+      </li>
+    </ol>
+
+    <section class="end" aria-label="タイムラインのおわり">
+      <svg class="hill" viewBox="0 0 600 130" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="currentColor" d="M0 96 C70 92 110 58 190 58 C250 58 270 22 330 20 C410 18 430 70 500 74 C548 76 575 60 600 52 V130 H0 Z"/>
+      </svg>
+      <div class="ground">
+        <svg class="sleepy" viewBox="0 0 120 92" aria-hidden="true">
+          <g transform="translate(26 20) scale(1.45)">
+            <path d="M24 13 C23 9 24 6 27 4.5" fill="none" stroke="#3E2A36" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M26 7 C29 3 35 3.5 37 6 C34 9 29.5 9.5 26 7 Z" fill="#8FD9BF" stroke="#3E2A36" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M24 12 C33 11 40 17 40 26 C40 36 33 43 24.5 43 C15 43 8 37 8.5 28 C9 23.5 12 22 13.5 20 C15.5 16.5 18 12.5 24 12 Z" fill="#FF9EBB" stroke="#3E2A36" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M16.5 28.5 q2.5 2 5 0 M26.5 28.5 q2.5 2 5 0" fill="none" stroke="#3E2A36" stroke-width="1.5" stroke-linecap="round"/>
+            <ellipse cx="15.5" cy="32.5" rx="2.6" ry="1.6" fill="#FFF3B8"/><ellipse cx="32.5" cy="32.5" rx="2.6" ry="1.6" fill="#FFF3B8"/>
+          </g>
+          <path d="M92 18 h8 l-8 9 h8 M104 6 h5 l-5 6 h5" fill="none" stroke="#2E7D66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p><span class="ph">きょうのぶんは、ここまで。</span><span class="ph">またあしたね。</span></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== right: aside ===== -->
+  <aside class="aside" aria-label="ひろばのまわり">
+    <div class="search" id="search">
+      <label class="sr-only" for="q">さがす</label>
+      <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <input id="q" type="search" placeholder="ひとつぶ・すんでる人をさがす">
+    </div>
+
+    <section class="panel">
+      <h2>いまのはなし</h2>
+      <ol class="trends">
+        <li><a href="#"><svg class="mini" aria-hidden="true"><use href="#flower-mini"/></svg><span>#はじめてのパン</span><span class="n">1,204</span></a></li>
+        <li><a href="#"><svg class="mini" aria-hidden="true"><use href="#flower-mini"/></svg><span>雨あがり</span><span class="n">862</span></a></li>
+        <li><a href="#"><svg class="mini" aria-hidden="true"><use href="#flower-mini"/></svg><span>#ひなたぼっこ部</span><span class="n">540</span></a></li>
+        <li><a href="#"><svg class="mini" aria-hidden="true"><use href="#flower-mini"/></svg><span>新しいノート</span><span class="n">318</span></a></li>
+      </ol>
+    </section>
+
+    <section class="panel">
+      <h2>なかよくなれそう</h2>
+      <ul class="friends">
+        <li><span class="ava sm bg-lemon"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#usa"/></svg></span><span class="who"><b>しろたま</b><span>@shirotama</span></span><button class="btn-soft" type="button" aria-pressed="false">なかよし</button></li>
+        <li><span class="ava sm bg-pink"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#kero"/></svg></span><span class="who"><b>あまがえる</b><span>@amagaeru</span></span><button class="btn-soft" type="button" aria-pressed="false">なかよし</button></li>
+        <li><span class="ava sm bg-mint"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#neko"/></svg></span><span class="who"><b>みけさん</b><span>@mikesan</span></span><button class="btn-soft" type="button" aria-pressed="false">なかよし</button></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<!-- ===== mobile chrome ===== -->
+<button class="btn-primary fab" type="button" aria-label="ひとつぶ おく" data-focus-compose><svg class="icon" aria-hidden="true"><use href="#i-pencil"/></svg></button>
+<nav class="tabbar" aria-label="メニュー">
+  <a href="#top" aria-current="page" aria-label="ひろば"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></a>
+  <a href="#" aria-label="さがす"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></a>
+  <a href="#" aria-label="おしらせ"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg><span class="pip"></span></a>
+  <a href="#" aria-label="おてがみ"><svg class="icon" aria-hidden="true"><use href="#i-letter"/></svg></a>
+  <a href="#" aria-label="じぶん"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></a>
+</nav>
+
+<script>
+  // 投稿のボタン列（へんじ・わけっこ・はなまる・しおり）
+  const hana = document.getElementById('hana-icon');
+  function buildActs(el) {
+    const [reply, share, like] = el.dataset.acts.split(',').map(Number);
+    el.innerHTML = `
+      <button class="act" type="button" aria-label="へんじ ${reply}"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg><span aria-hidden="true">${reply || ''}</span></button>
+      <button class="act share" type="button" aria-label="わけっこ ${share}"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span aria-hidden="true">${share || ''}</span></button>
+      <button class="act hana" type="button" aria-pressed="false" aria-label="はなまる"><span class="n">${like || ''}</span></button>
+      <button class="act mark" type="button" aria-pressed="false" aria-label="しおりをはさむ"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button>`;
+    const h = el.querySelector('.hana');
+    h.prepend(hana.content.cloneNode(true));
+    h.dataset.n = like;
+  }
+  // 最初の投稿のボタンは HTML に書いてある。JS は新しく書いた投稿にだけ組み立てる
+
+  document.addEventListener('click', (e) => {
+    const h = e.target.closest('.act.hana');
+    if (h) {
+      const on = h.getAttribute('aria-pressed') !== 'true';
+      h.setAttribute('aria-pressed', on);
+      const n = Number(h.dataset.n) + (on ? 1 : 0);
+      h.querySelector('.n').textContent = n || '';
+      return;
+    }
+    const m = e.target.closest('.act.mark');
+    if (m) {
+      const on = m.getAttribute('aria-pressed') !== 'true';
+      m.setAttribute('aria-pressed', on);
+      m.style.color = on ? 'var(--pink-3)' : '';
+      m.querySelector('svg').style.fill = on ? 'var(--pink-1)' : '';
+      return;
+    }
+    const f = e.target.closest('.btn-soft');
+    if (f) {
+      const on = f.getAttribute('aria-pressed') !== 'true';
+      f.setAttribute('aria-pressed', on);
+      f.textContent = on ? 'なかよし中' : 'なかよし';
+      return;
+    }
+    const t = e.target.closest('[role="tab"]');
+    if (t) {
+      t.parentElement.querySelectorAll('[role="tab"]').forEach(b => b.setAttribute('aria-selected', b === t));
+      return;
+    }
+    if (e.target.closest('[data-focus-compose]')) {
+      document.getElementById('compose-text').focus();
+    }
+  });
+
+  // 書く
+  const ta = document.getElementById('compose-text');
+  const send = document.getElementById('send');
+  const count = document.getElementById('count');
+  ta.addEventListener('input', () => {
+    count.textContent = 140 - ta.value.length;
+    send.disabled = ta.value.trim() === '';
+  });
+  document.getElementById('compose').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = ta.value.trim();
+    if (!text) return;
+    const li = document.createElement('li');
+    li.className = 'post';
+    li.innerHTML = `
+      <span class="ava bg-pink"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#hamu"/></svg></span>
+      <article class="bubble">
+        <div class="meta"><b>はむこ</b><span class="h">@hamuko</span><time>いま</time></div>
+        <p class="text"></p>
+        <div class="acts" data-acts="0,0,0"></div>
+      </article>`;
+    li.querySelector('.text').textContent = text;
+    buildActs(li.querySelector('.acts'));
+    document.getElementById('feed').prepend(li);
+    ta.value = ''; count.textContent = 140; send.disabled = true;
+  });
+</script>
+</body>
+</html>

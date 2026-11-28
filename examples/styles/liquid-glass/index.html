@@ -509,13 +509,14 @@ section { scroll-margin-block-start: 96px; }
   </footer>
 </main>
 
-<script src="liquid-glass.js"></script>
+<script src="kawaii-glass.js"></script>
 <script>
-  // Liquid Glass on the chrome. Stronger bend on small pieces.
-  const strengths = { nav: 60, chip: 80, tape: 90, 'bubble-card': 46, like: 55, 'foot-glass': 60 };
+  // Glass on the chrome. The rim leans toward ようかん's colors: aqua first, then pink and lavender.
+  const tint = ['#A9E3F5', '#F7C8E4', '#BFE9F7', '#D6C8F6'];
   document.querySelectorAll('.liquid').forEach(el => {
-    const key = Object.keys(strengths).find(k => el.classList.contains(k));
-    window.liquidGlass && liquidGlass(el, { strength: strengths[key] || 60, rim: key === 'bubble-card' ? 0.16 : 0.14 });
+    if (!window.kawaiiGlass) return;
+    if (el.classList.contains('bubble-card')) kawaiiGlass(el, { tint, tintAmount: 0.3, rim: 18 });
+    else kawaiiGlass(el, { tint });
   });
 
   // Pose change: hover with a mouse, tap or keyboard otherwise.

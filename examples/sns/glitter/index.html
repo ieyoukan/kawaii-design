@@ -1,0 +1,1029 @@
+<!doctype html>
+<!--
+Direction（おまかせのため、調べられる既存アセットはなし。以下はすべて仮定）
+前提: 実在のサービス・キャラクターはない。サービス名「しゃらん」、マスコットのくらげ「ぷるり」、
+      ユーザー（もも金魚・こんぺいとう・しんじゅ・ビー玉・あわ・ゆきうさ）、アバター、投稿イラスト、投稿文はすべて創作（仮）。
+- Character: 少女・おっとり＋好奇心・ひらがな多めで語尾「〜よ」「〜ね」・水色のくらげ、ピンクのフリル、ほっぺ、ラメの六角ピン
+- Product: ラメやきらきらしたもの（レジン、ネイル、スノードーム）が好きな人が、短い投稿を見せ合う Twitter 型の SNS。
+- Dialect: ゆめかわ。SNS・コミュニティ向けで、虹色の背景とガラスの面が「ラメ入りのガラス」という依頼にそのまま重なるから。
+- Feel: しゃらっと光る、つるっと冷たいガラス、ゆったり沈むラメ
+- World: ラメ入りのスノードーム。ふるとラメが舞って、しずかに沈む。投稿＝「ひとふり」、いいね＝「きらっ」、
+         リポスト＝「おすそわけ」、ブックマーク＝「びんづめ」、DM＝「おてがみ」。
+- Star: なし、Stage mode。投稿内のイラストだけが小さな主役。右カラムのスノードームの中のぷるりはキャラクターの居場所。
+- Shape language: 角丸長方形（ガラスカード 28px、ボタンは pill）＋円（アバター、スノードーム、泡）。
+                  ナビは背景に直接置いて開いたまま。フィードの終わりはスノードームの底の雪山（大きな起伏が3つ）に着地する。
+- Atmosphere: ゆめかわ＋白いラメ。水色が主の虹色背景（水色・ピンク・ラベンダー、背景の中だけ差し色にレモンとミント）と、
+              大きなにじんだ色だまり・泡。面はすりガラス（屈折なし）。ラメはパレットの水色・ピンク・ラベンダー。
+              ヘッダーと投稿カードは、縁から内側へ少しずつ消えるラメ。カードの縁の線は引かず、外にも少しこぼす。
+              スノードームの中は白いラメ（雪）。「ひとふりする」ボタンだけ、ぎっしり詰めた水色のラメ（メイクのラメパレット）。
+              文字はガラスの中で濃い紺のまま。
+- Type and motion: ロゴと見出しは M PLUS Rounded 1c 800、字間広め。本文は Zen Kaku Gothic New。
+                   ラメは光らせない（静止したラメ）。スノードームをタップすると、ぷるりがゆれる。
+                   「ひとふりする」と「さがす」はスムーズスクロール。
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>しゃらん｜ホーム</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='14' r='12' fill='%23A6E6FA'/%3E%3Cpath d='M6 24h20l2 5H4z' fill='%23BBA8FF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #27305A;
+    --ink-soft: #545C8A;
+    --aqua-50: #E8F8FE;
+    --aqua-100: #D3F2FC;
+    --aqua-200: #A6E6FA;
+    --aqua-300: #7DD8F5;
+    --pink-50: #FFEEF6;
+    --pink-100: #FFDDEE;
+    --pink-200: #FFC6E2;
+    --pink-300: #FF9ECD;
+    --lav-50: #F2EEFF;
+    --lav-100: #E6DEFF;
+    --lav-200: #D6CAFF;
+    --lav-300: #BBA8FF;
+    --shadow: 88 78 168;
+    --display: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+    --body: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background: #E9F7FD;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    word-break: auto-phrase;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2 { text-wrap: balance; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid #FF6FB5; outline-offset: 3px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ic {
+    width: 24px; height: 24px; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* ---------- the foil: aqua-led iridescent background, fixed ---------- */
+  .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .foil {
+    position: absolute; inset: -10%;
+    background:
+      radial-gradient(40% 32% at 16% 20%, #9BE1F8 0%, transparent 70%),
+      radial-gradient(44% 36% at 80% 24%, #B2EAFA 0%, transparent 72%),
+      radial-gradient(40% 34% at 58% 82%, #93DAF5 0%, transparent 70%),
+      radial-gradient(30% 26% at 40% 50%, #FFFFFF 0%, transparent 70%),
+      radial-gradient(28% 24% at 90% 70%, #FFBCDE 0%, transparent 70%),
+      radial-gradient(28% 22% at 8% 76%, #D0C0FF 0%, transparent 70%),
+      radial-gradient(24% 18% at 30% 94%, #FFC4E2 0%, transparent 70%),
+      radial-gradient(14% 12% at 52% 12%, #FFF0A6 0%, transparent 70%),
+      radial-gradient(12% 10% at 70% 56%, #C2F3DE 0%, transparent 70%),
+      linear-gradient(118deg, transparent 30%, #FFFFFF 42%, transparent 54%),
+      linear-gradient(28deg, transparent 55%, rgb(255 188 222 / .5) 64%, transparent 74%),
+      #E6F6FD;
+    filter: url(#swirl) blur(6px);
+  }
+  .blob { position: absolute; border-radius: 50%; filter: blur(22px); }
+  .b1 { width: 34vmax; height: 30vmax; left: -8vmax; top: 34vh; background: rgb(127 214 245 / .62); }
+  .b2 { width: 26vmax; height: 23vmax; right: -5vmax; top: 4vh; background: rgb(255 168 212 / .55); }
+  .b3 { width: 26vmax; height: 22vmax; left: 36vw; bottom: -10vh; background: rgb(191 170 255 / .55); }
+  .b4 { width: 22vmax; height: 18vmax; left: 42vw; top: -8vh; background: rgb(127 214 245 / .5); }
+  .b5 { width: 11vmax; height: 10vmax; left: 24vw; top: 58vh; background: rgb(255 236 148 / .6); }
+  .bub { position: absolute; }
+  .u1 { width: 128px; left: 5vw; top: 66vh; }
+  .u2 { width: 92px; right: 4vw; top: 62vh; }
+  .u3 { width: 160px; left: 46vw; top: 30vh; }
+  .u4 { width: 58px; left: 63vw; top: 80vh; }
+  .u5 { width: 44px; left: 28vw; top: 12vh; }
+
+  /* ---------- frosted glass (kawaii-glitter.js adds the white glitter) ----------
+     No edge line: the glitter thins out toward the middle and spills a little past the edge,
+     so the card melts into the background instead of ending at a line. */
+  .glass {
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgb(255 222 240 / .5), rgb(255 255 255 / .42) 46%, rgb(206 240 252 / .5));
+    box-shadow: 0 16px 40px rgb(var(--shadow) / .10);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass { background: rgb(255 255 255 / .86); }
+  }
+  /* long text sits on more white */
+  .glass.text {
+    background: linear-gradient(135deg, rgb(255 226 242 / .74), rgb(255 255 255 / .7) 46%, rgb(214 243 253 / .74));
+  }
+
+  /* ---------- layout ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 600px) 340px;
+    gap: 40px;
+    justify-content: center;
+    padding: 0 28px;
+  }
+
+  /* left nav: open, straight on the foil */
+  .nav {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 26px 0 24px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; padding: 2px 12px 18px; }
+  .logo svg { width: 44px; height: 48px; flex: none; }
+  .logo b {
+    font-family: var(--display); font-weight: 800; font-size: 27px; letter-spacing: .1em;
+  }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .nav li a {
+    display: flex; align-items: center; gap: 16px;
+    padding: 11px 18px; border-radius: 18px;
+    font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: .06em;
+    transition: background-color .2s ease;
+  }
+  .nav li a:hover { background: rgb(255 255 255 / .45); }
+  .nav li a[aria-current] {
+    background: rgb(255 255 255 / .7);
+    box-shadow: inset 0 1px 1px #fff, 0 6px 18px rgb(var(--shadow) / .1);
+  }
+  .nav .ic { width: 26px; height: 26px; }
+  .count {
+    margin-left: auto; min-width: 26px; padding: 0 8px; border-radius: 9999px;
+    background: var(--pink-300); color: var(--ink);
+    font-family: var(--body); font-size: 13px; font-weight: 700; line-height: 24px; text-align: center; letter-spacing: 0;
+  }
+  /* the one packed-glitter piece: a pressed glitter pan, label on a white pill */
+  .btn-main {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin: 18px 0 0; height: 60px; border-radius: 9999px;
+    font-family: var(--display); font-weight: 800; font-size: 19px; letter-spacing: .14em;
+    background: #A6E6FA;
+    box-shadow: 0 12px 26px rgb(var(--shadow) / .22), inset 0 0 0 3px #fff;
+    transition: transform .5s var(--ease-soft);
+  }
+  .btn-main .label, .fab .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 18px; border-radius: 9999px;
+    background: rgb(255 255 255 / .9); box-shadow: 0 2px 8px rgb(var(--shadow) / .12);
+  }
+  .btn-main:active { transform: scale(1.03, .96); }
+  .btn-main .ic { display: none; }
+  .me {
+    margin-top: auto; display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 22px;
+  }
+  .me:hover { background: rgb(255 255 255 / .45); }
+  .me .av { width: 44px; height: 44px; }
+  .who { display: grid; line-height: 1.45; min-width: 0; }
+  .who b { font-family: var(--display); font-weight: 800; font-size: 15px; }
+  .who span { font-size: 13px; color: var(--ink-soft); }
+
+  /* ---------- timeline ---------- */
+  .feed { padding: 16px 0 0; min-width: 0; }
+  .tl-head {
+    position: sticky; top: 14px; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    height: 68px; padding: 0 12px 0 28px; margin-bottom: 20px;
+    border-radius: 9999px;
+  }
+  .tl-head h1 {
+    margin: 0; font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: .12em;
+  }
+  .m-logo { display: none; }
+  .tabs { display: flex; gap: 4px; }
+  .tabs [role=tab] {
+    border: 0; background: none; padding: 9px 20px; border-radius: 9999px;
+    font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--ink-soft);
+    transition: background-color .25s ease, color .25s ease;
+  }
+  .tabs [aria-selected=true] {
+    color: var(--ink); background: rgb(255 255 255 / .85);
+    box-shadow: inset 0 1px 1px #fff, 0 4px 12px rgb(var(--shadow) / .12);
+  }
+
+  .stack { display: grid; gap: 20px; }
+
+  .av {
+    width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: none;
+    display: block;
+    box-shadow: inset 0 0 0 2px rgb(255 255 255 / .8);
+  }
+  .av svg { display: block; width: 100%; height: 100%; }
+  .t-aqua { background: var(--aqua-100); }
+  .t-pink { background: var(--pink-100); }
+  .t-lav { background: var(--lav-100); }
+
+  .compose { display: grid; grid-template-columns: 52px 1fr; gap: 16px; padding: 22px 24px 16px; scroll-margin-top: 100px; }
+  .compose textarea {
+    width: 100%; resize: none; border: 0; outline: 0; background: none;
+    padding: 12px 0 6px; font-size: 18px; line-height: 1.7;
+  }
+  .compose textarea::placeholder { color: var(--ink-soft); }
+  .compose:focus-within { box-shadow: 0 14px 36px rgb(var(--shadow) / .16), inset 0 1px 1px #fff, inset 0 0 0 2px rgb(255 158 205 / .7); }
+  .compose-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+  .btn-post {
+    border: 0; height: 44px; padding: 0 26px; border-radius: 9999px;
+    font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: .12em;
+    background: linear-gradient(135deg, #FFD3E9, #FFF3F9 50%, #CDEFFC);
+    box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1.5px rgb(255 255 255 / .9), 0 8px 18px rgb(var(--shadow) / .16);
+    transition: transform .4s var(--ease-soft);
+  }
+  .btn-post:active { transform: scale(1.04, .95); }
+
+  .post { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; padding: 22px 26px 12px 24px; }
+  .post-head { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; line-height: 1.6; }
+  .name { font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: .06em; }
+  .meta { font-size: 14px; color: var(--ink-soft); letter-spacing: .02em; }
+  .post p { margin: 6px 0 0; font-size: 16px; line-height: 1.85; }
+  .pic {
+    margin: 14px 0 0; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 10px 24px rgb(var(--shadow) / .16), 0 1px 2px rgb(var(--shadow) / .12);
+  }
+  .pic svg { display: block; width: 100%; height: auto; }
+  .acts { display: flex; justify-content: space-between; max-width: 430px; margin: 8px 0 0 -10px; }
+  .act {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 42px; padding: 0 12px;
+    border: 0; border-radius: 16px; background: none;
+    font-size: 14px; color: var(--ink-soft);
+    transition: background-color .2s ease, color .2s ease;
+  }
+  .act:hover { background: rgb(255 255 255 / .6); color: var(--ink); }
+  .act .ic { width: 21px; height: 21px; }
+  .kira[aria-pressed=true] { color: #C2266F; }
+  .kira[aria-pressed=true] .ic { fill: var(--pink-300); stroke: #C2266F; }
+  .kira:active .ic { transform: scale(1.25); }
+  .kira .ic { transition: transform .45s var(--ease-soft); }
+  .keep[aria-pressed=true] { color: #1B78A8; }
+  .keep[aria-pressed=true] .ic { fill: var(--aqua-200); stroke: #1B78A8; }
+
+  /* the end of the feed rests on the snow at the bottom of the globe */
+  .feed-end { position: relative; margin-top: 88px; }
+  .hill { display: block; width: 100%; height: clamp(88px, 9vw, 132px); }
+  .end-body {
+    margin-top: -1px; background: #FBFDFF;
+    display: grid; justify-items: center; gap: 4px;
+    padding: 0 24px 80px; text-align: center;
+  }
+  .end-body svg { width: 128px; height: 136px; margin-top: -96px; filter: drop-shadow(0 14px 18px rgb(var(--shadow) / .18)); }
+  .end-body p {
+    margin: 0; font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: .08em;
+    text-wrap: balance;
+  }
+
+  /* ---------- right column ---------- */
+  .side {
+    position: sticky; top: 0; align-self: start;
+    display: grid; gap: 20px; padding: 16px 0 24px;
+  }
+  .search {
+    display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 22px; border-radius: 9999px;
+  }
+  .search .ic { color: var(--ink-soft); }
+  .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-size: 16px; }
+  .search input::placeholder { color: var(--ink-soft); }
+  .search:focus-within { box-shadow: 0 14px 36px rgb(var(--shadow) / .16), inset 0 0 0 2px rgb(255 158 205 / .7); }
+
+  .greet { display: grid; grid-template-columns: 1fr 190px; align-items: center; gap: 14px; }
+  .bubble {
+    position: relative; margin: 0 0 40px; padding: 14px 18px;
+    background: #fff; border-radius: 24px;
+    font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1.7; letter-spacing: .06em;
+    box-shadow: 0 10px 24px rgb(var(--shadow) / .14);
+  }
+  .bubble::after {               /* the tail points right, at ぷるり */
+    content: ""; position: absolute; right: -7px; top: calc(50% - 9px);
+    width: 18px; height: 18px; background: #fff; border-radius: 4px; rotate: 45deg;
+  }
+  .globe-wrap { position: relative; width: 190px; padding-bottom: 26px; }
+  .globe {
+    position: relative; display: block; width: 190px; height: 190px; padding: 0; border: 0;
+    border-radius: 9999px; background: none;
+  }
+  .globe-scene { position: absolute; inset: 0; width: 100%; height: 100%; clip-path: circle(50%); }
+  .globe-glass {
+    position: absolute; inset: 0; border-radius: 9999px;
+    background: radial-gradient(circle at 32% 26%, rgb(255 255 255 / .34), rgb(255 255 255 / .06) 46%, rgb(255 214 236 / .2) 100%);
+    box-shadow: inset 0 2px 2px rgb(255 255 255 / .9), inset 0 0 0 1.5px rgb(255 255 255 / .65), 0 18px 34px rgb(var(--shadow) / .2);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  .globe-base { position: absolute; left: 50%; bottom: 0; width: 150px; translate: -50% 0; }
+  .pururi { transform-box: fill-box; transform-origin: 50% 30%; }
+  .pururi.sway { animation: sway 1.4s var(--ease-soft); }
+  @keyframes sway {
+    0% { transform: rotate(0) translateY(0); }
+    25% { transform: rotate(-7deg) translateY(-6px); }
+    55% { transform: rotate(5deg) translateY(-3px); }
+    100% { transform: rotate(0) translateY(0); }
+  }
+
+  .card { padding: 22px 22px 14px; }
+  .card h2 {
+    margin: 0 0 8px 6px; font-family: var(--display); font-weight: 800; font-size: 19px; letter-spacing: .1em;
+  }
+  .trends, .people { list-style: none; margin: 0; padding: 0; }
+  .trends a {
+    display: grid; grid-template-columns: 14px 1fr; column-gap: 12px; align-items: center;
+    padding: 9px 8px; border-radius: 16px; line-height: 1.55;
+  }
+  .trends a:hover, .people li:hover { background: rgb(255 255 255 / .55); }
+  .flake { width: 12px; height: 13px; grid-row: 1 / 3; }
+  .tag { font-weight: 700; font-size: 15px; }
+  .trends .meta { grid-column: 2; font-size: 13px; }
+  .people li { display: flex; align-items: center; gap: 12px; padding: 9px 8px; border-radius: 18px; }
+  .people .av { width: 44px; height: 44px; }
+  .people .who { flex: 1; }
+  .btn-follow {
+    border: 0; height: 36px; padding: 0 16px; border-radius: 9999px;
+    font-family: var(--display); font-weight: 800; font-size: 14px; letter-spacing: .06em;
+    background: rgb(255 255 255 / .85);
+    box-shadow: inset 0 0 0 1.5px var(--pink-200), 0 4px 10px rgb(var(--shadow) / .1);
+  }
+  .btn-follow[aria-pressed=true] { background: var(--pink-100); }
+
+  .m-greet, .tabbar, .fab { display: none; }
+
+  /* ---------- in between ---------- */
+  @media (max-width: 1179px) {
+    .side { display: none; }
+    .app { grid-template-columns: 236px minmax(0, 600px); }
+  }
+  @media (max-height: 860px) {
+    .side { position: static; }
+  }
+  @media (max-width: 900px) and (min-width: 721px) {
+    .app { grid-template-columns: 76px minmax(0, 600px); gap: 28px; }
+    .nav li a span, .logo b, .btn-main .label, .me .who { display: none; }
+    .nav li a { justify-content: center; padding: 12px; }
+    .count { display: none; }
+    .btn-main { width: 60px; }
+    .btn-main .ic { display: block; width: 36px; height: 36px; padding: 7px; border-radius: 50%; background: rgb(255 255 255 / .9); }
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 720px) {
+    body { font-size: 15px; }
+    .app { display: block; padding: 0 12px; }
+    .nav { display: none; }
+    .feed { padding-top: 10px; }
+    .tl-head { top: 10px; height: 60px; padding: 0 8px 0 14px; margin-bottom: 14px; }
+    .tl-head h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .m-logo { display: flex; align-items: center; gap: 6px; }
+    .m-logo svg { width: 34px; height: 37px; }
+    .m-logo b { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: .08em; }
+    .tabs [role=tab] { padding: 8px 13px; font-size: 14px; }
+
+    .m-greet {
+      display: grid; grid-template-columns: 1fr 128px; align-items: center; gap: 10px;
+      margin: 0 4px 16px;
+    }
+    .m-greet .bubble { margin-bottom: 26px; font-size: 14px; padding: 12px 15px; }
+    .m-greet .globe-wrap { width: 128px; padding-bottom: 18px; }
+    .m-greet .globe { width: 128px; height: 128px; }
+    .m-greet .globe-base { width: 102px; }
+
+    .stack { gap: 14px; }
+    .compose { display: none; }
+    .compose:target, .compose:focus-within { display: grid; }
+    .compose { grid-template-columns: 42px 1fr; gap: 12px; padding: 16px 18px 12px; }
+    .compose .av { width: 42px; height: 42px; }
+    .post { grid-template-columns: 42px minmax(0, 1fr); gap: 12px; padding: 18px 18px 8px 16px; }
+    .post .av { width: 42px; height: 42px; }
+    .post p { font-size: 15px; }
+    .meta { font-size: 13px; }
+    .pic { border-radius: 16px; margin-top: 12px; }
+    .acts { margin-left: -12px; }
+    .act { padding: 0 10px; font-size: 13px; }
+
+    .feed-end { margin-top: 64px; }
+    .end-body { padding-bottom: 176px; }
+    .end-body svg { width: 104px; height: 110px; margin-top: -78px; }
+    .end-body p { font-size: 15px; }
+
+    .tabbar {
+      position: fixed; z-index: 20; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+      display: flex; justify-content: space-around; align-items: center;
+      height: 66px; padding: 0 6px; border-radius: 9999px;
+    }
+    .tabbar a { display: grid; place-items: center; width: 52px; height: 48px; border-radius: 9999px; position: relative; }
+    .tabbar a[aria-current] { background: rgb(255 255 255 / .8); box-shadow: inset 0 1px 1px #fff, 0 4px 12px rgb(var(--shadow) / .12); }
+    .tabbar .ic { width: 26px; height: 26px; }
+    .tabbar .dot { position: absolute; top: 9px; right: 11px; width: 9px; height: 9px; border-radius: 50%; background: #FF6FB5; box-shadow: 0 0 0 2px #fff; }
+    .fab {
+      position: fixed; z-index: 21; right: 16px; bottom: calc(92px + env(safe-area-inset-bottom));
+      display: flex; align-items: center; height: 56px; padding: 0 8px; border-radius: 9999px;
+      font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: .12em;
+      background: #A6E6FA;
+      box-shadow: 0 12px 28px rgb(var(--shadow) / .26), inset 0 0 0 3px #fff;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pururi.sway { animation: none; }
+    .btn-main, .btn-post, .kira .ic { transition: none; }
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- sprite: icons, creatures, filters -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="swirl">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.007" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="120"/>
+    </filter>
+    <linearGradient id="iri" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF9ECD"/><stop offset=".48" stop-color="#FFFFFF"/><stop offset="1" stop-color="#6FD2F4"/>
+    </linearGradient>
+
+    <!-- ぷるり（くらげ） -->
+    <g id="pururi-body">
+      <g fill="none" stroke-linecap="round" stroke-width="7">
+        <path d="M46 104c-7 10 5 18-2 30s3 18-1 26" stroke="#C9B8FF"/>
+        <path d="M63 108c-4 10 6 16 0 27s4 15 1 21" stroke="#FFA6D2"/>
+        <path d="M80 110c3 9-5 15 0 25s-3 14 0 19" stroke="#C9B8FF"/>
+        <path d="M97 108c4 10-6 16 0 27s-4 15-1 21" stroke="#FFA6D2"/>
+        <path d="M114 104c7 10-5 18 2 30s-3 18 1 26" stroke="#C9B8FF"/>
+      </g>
+      <g fill="#FFC6E2">
+        <circle cx="30" cy="103" r="9"/><circle cx="46.5" cy="106.5" r="9"/><circle cx="63" cy="108.5" r="9"/>
+        <circle cx="80" cy="109" r="9"/><circle cx="97" cy="108.5" r="9"/><circle cx="113.5" cy="106.5" r="9"/><circle cx="130" cy="103" r="9"/>
+      </g>
+      <path d="M20 97C20 54 46 22 80 22s60 32 60 75c0 5.5-4.5 9-10 8.6-16-1.2-33-1.8-50-1.8s-34 .6-50 1.8C24.5 106 20 102.5 20 97z" fill="#9FE2F8"/>
+      <path d="M38 64c6-17 22-29 42-29 14 0 27 6 35 16" fill="none" stroke="#C8F1FC" stroke-width="9" stroke-linecap="round"/>
+      <ellipse cx="45" cy="52" rx="10" ry="5.5" transform="rotate(-38 45 52)" fill="#fff" opacity=".92"/>
+      <circle cx="59" cy="38" r="3" fill="#fff" opacity=".92"/>
+      <path d="M114 33.5l8.7 5v10l-8.7 5-8.7-5v-10z" fill="#FF6FB5" stroke="#FF6FB5" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M110.4 40.6l3.6-2.1 3.6 2.1" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="51" cy="84" rx="8.5" ry="4.8" fill="#FF9ECD" opacity=".85"/>
+      <ellipse cx="109" cy="84" rx="8.5" ry="4.8" fill="#FF9ECD" opacity=".85"/>
+    </g>
+    <g id="cr-pururi">
+      <use href="#pururi-body"/>
+      <circle cx="64" cy="74" r="5.2" fill="#27305A"/><circle cx="96" cy="74" r="5.2" fill="#27305A"/>
+      <circle cx="65.8" cy="72.2" r="1.7" fill="#fff"/><circle cx="97.8" cy="72.2" r="1.7" fill="#fff"/>
+      <path d="M75 83q5 4.5 10 0" fill="none" stroke="#27305A" stroke-width="3.4" stroke-linecap="round"/>
+    </g>
+    <g id="cr-pururi-sleep">
+      <use href="#pururi-body"/>
+      <path d="M58 74q6 4.5 12 0M90 74q6 4.5 12 0" fill="none" stroke="#27305A" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M76.5 84q3.5 2.4 7 0" fill="none" stroke="#27305A" stroke-width="3" stroke-linecap="round"/>
+    </g>
+
+    <!-- もも金魚 -->
+    <g id="cr-kingyo">
+      <path d="M104 86c14-22 34-28 44-22-6 14-6 30 0 44-10 6-30 0-44-22z" fill="#D6CAFF" stroke="#D6CAFF" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M58 56c8-13 24-16 32-9-7 3-11 9-11 16z" fill="#FFC6E2" stroke="#FFC6E2" stroke-width="5" stroke-linejoin="round"/>
+      <ellipse cx="72" cy="88" rx="42" ry="35" fill="#FFAED6"/>
+      <ellipse cx="70" cy="104" rx="25" ry="11" fill="#FFD9EC"/>
+      <ellipse cx="50" cy="68" rx="9" ry="5" transform="rotate(-34 50 68)" fill="#fff" opacity=".92"/>
+      <circle cx="58" cy="84" r="5.2" fill="#27305A"/><circle cx="86" cy="84" r="5.2" fill="#27305A"/>
+      <circle cx="59.8" cy="82.2" r="1.7" fill="#fff"/><circle cx="87.8" cy="82.2" r="1.7" fill="#fff"/>
+      <path d="M67.5 93q4.5 4 9 0" fill="none" stroke="#27305A" stroke-width="3.2" stroke-linecap="round"/>
+      <ellipse cx="45" cy="94" rx="7.5" ry="4.4" fill="#FF7FBE" opacity=".7"/>
+      <ellipse cx="99" cy="94" rx="7.5" ry="4.4" fill="#FF7FBE" opacity=".7"/>
+      <circle cx="26" cy="52" r="7" fill="none" stroke="#7DD8F5" stroke-width="3"/>
+      <circle cx="36" cy="34" r="4" fill="none" stroke="#7DD8F5" stroke-width="2.5"/>
+    </g>
+
+    <!-- こんぺいとう -->
+    <g id="cr-konpei" fill="#D2C4FF">
+      <circle cx="80" cy="86" r="40"/>
+      <circle cx="118" cy="86" r="13"/><circle cx="110.7" cy="108.3" r="13"/><circle cx="91.7" cy="122.1" r="13"/>
+      <circle cx="68.3" cy="122.1" r="13"/><circle cx="49.3" cy="108.3" r="13"/><circle cx="42" cy="86" r="13"/>
+      <circle cx="49.3" cy="63.7" r="13"/><circle cx="68.3" cy="49.9" r="13"/><circle cx="91.7" cy="49.9" r="13"/><circle cx="110.7" cy="63.7" r="13"/>
+      <ellipse cx="58" cy="62" rx="10" ry="5.5" transform="rotate(-36 58 62)" fill="#fff" opacity=".92"/>
+      <circle cx="73" cy="50" r="3" fill="#fff" opacity=".92"/>
+      <circle cx="64" cy="86" r="5.2" fill="#27305A"/><circle cx="96" cy="86" r="5.2" fill="#27305A"/>
+      <circle cx="65.8" cy="84.2" r="1.7" fill="#fff"/><circle cx="97.8" cy="84.2" r="1.7" fill="#fff"/>
+      <path d="M75 95q5 4.5 10 0" fill="none" stroke="#27305A" stroke-width="3.4" stroke-linecap="round"/>
+      <ellipse cx="52" cy="97" rx="8" ry="4.6" fill="#FF9ECD" opacity=".85"/>
+      <ellipse cx="108" cy="97" rx="8" ry="4.6" fill="#FF9ECD" opacity=".85"/>
+    </g>
+
+    <!-- あわ -->
+    <g id="cr-awa">
+      <circle cx="80" cy="86" r="44" fill="#F6FCFF"/>
+      <circle cx="80" cy="86" r="44" fill="none" stroke="url(#iri)" stroke-width="6"/>
+      <path d="M50 66a38 38 0 0 1 20-17" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="80" cy="47" r="3" fill="#fff"/>
+      <path d="M58 70a30 30 0 0 1 12-10" fill="none" stroke="#A6E6FA" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+      <circle cx="64" cy="88" r="5.2" fill="#27305A"/><circle cx="96" cy="88" r="5.2" fill="#27305A"/>
+      <circle cx="65.8" cy="86.2" r="1.7" fill="#fff"/><circle cx="97.8" cy="86.2" r="1.7" fill="#fff"/>
+      <path d="M75 97q5 4.5 10 0" fill="none" stroke="#27305A" stroke-width="3.4" stroke-linecap="round"/>
+      <ellipse cx="52" cy="99" rx="8" ry="4.6" fill="#FF9ECD" opacity=".75"/>
+      <ellipse cx="108" cy="99" rx="8" ry="4.6" fill="#FF9ECD" opacity=".75"/>
+    </g>
+
+    <!-- しんじゅ -->
+    <g id="cr-shinju">
+      <path d="M80 130 36 78a56 56 0 0 1 88 0z" fill="#FFC6E2" stroke="#FFC6E2" stroke-width="12" stroke-linejoin="round"/>
+      <g fill="none" stroke="#FF9ECD" stroke-width="3.5" stroke-linecap="round">
+        <path d="M80 124 52 60M80 124 80 46M80 124l28-64M80 124 38 76M80 124l42-48"/>
+      </g>
+      <circle cx="80" cy="98" r="30" fill="#F7F4FF"/>
+      <ellipse cx="80" cy="117" rx="22" ry="8" fill="#E4DBFF" opacity=".8"/>
+      <ellipse cx="66" cy="84" rx="7" ry="4" transform="rotate(-36 66 84)" fill="#fff"/>
+      <circle cx="69" cy="98" r="4.4" fill="#27305A"/><circle cx="91" cy="98" r="4.4" fill="#27305A"/>
+      <circle cx="70.5" cy="96.5" r="1.4" fill="#fff"/><circle cx="92.5" cy="96.5" r="1.4" fill="#fff"/>
+      <path d="M76.5 105.5q3.5 3.2 7 0" fill="none" stroke="#27305A" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="60.5" cy="106" rx="6" ry="3.6" fill="#FF9ECD" opacity=".85"/>
+      <ellipse cx="99.5" cy="106" rx="6" ry="3.6" fill="#FF9ECD" opacity=".85"/>
+    </g>
+
+    <!-- ビー玉 -->
+    <g id="cr-biidama">
+      <circle cx="80" cy="86" r="43" fill="#A6E6FA"/>
+      <path d="M44 106c16-12 30 6 46-4s22-9 30-2" fill="none" stroke="#FFAED6" stroke-width="9" stroke-linecap="round"/>
+      <path d="M50 118c14-6 26 2 40-2" fill="none" stroke="#C9B8FF" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="58" cy="62" rx="12" ry="6.5" transform="rotate(-38 58 62)" fill="#fff" opacity=".92"/>
+      <circle cx="74" cy="50" r="3.2" fill="#fff" opacity=".92"/>
+      <circle cx="64" cy="80" r="5.2" fill="#27305A"/><circle cx="96" cy="80" r="5.2" fill="#27305A"/>
+      <circle cx="65.8" cy="78.2" r="1.7" fill="#fff"/><circle cx="97.8" cy="78.2" r="1.7" fill="#fff"/>
+      <path d="M75 89q5 4.5 10 0" fill="none" stroke="#27305A" stroke-width="3.4" stroke-linecap="round"/>
+      <ellipse cx="51" cy="90" rx="8" ry="4.6" fill="#FF9ECD" opacity=".85"/>
+      <ellipse cx="109" cy="90" rx="8" ry="4.6" fill="#FF9ECD" opacity=".85"/>
+    </g>
+
+    <!-- ゆきうさ（あなた） -->
+    <g id="cr-yukiusa">
+      <path d="M62 64c-12-16-10-34 0-42 10 9 12 28 0 42z" fill="#7DD8F5" stroke="#7DD8F5" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M98 64c12-16 10-34 0-42-10 9-12 28 0 42z" fill="#9FE2F8" stroke="#9FE2F8" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M62 60c-4-10-3-22 0-30M98 60c4-10 3-22 0-30" fill="none" stroke="#D3F2FC" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="80" cy="98" rx="46" ry="36" fill="#fff"/>
+      <ellipse cx="80" cy="120" rx="34" ry="10" fill="#ECE6FF"/>
+      <ellipse cx="58" cy="78" rx="9" ry="4.5" transform="rotate(-28 58 78)" fill="#E8F8FE"/>
+      <circle cx="65" cy="94" r="5.2" fill="#FF6FB5"/><circle cx="95" cy="94" r="5.2" fill="#FF6FB5"/>
+      <circle cx="66.8" cy="92.2" r="1.7" fill="#fff"/><circle cx="96.8" cy="92.2" r="1.7" fill="#fff"/>
+      <path d="M76 103q4 3.6 8 0" fill="none" stroke="#27305A" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="52" cy="106" rx="8" ry="4.6" fill="#FFAED6" opacity=".8"/>
+      <ellipse cx="108" cy="106" rx="8" ry="4.6" fill="#FFAED6" opacity=".8"/>
+    </g>
+
+    <!-- 泡 -->
+    <g id="bubble">
+      <circle cx="50" cy="50" r="46" fill="#fff" fill-opacity=".24"/>
+      <circle cx="50" cy="50" r="46" fill="none" stroke="url(#iri)" stroke-width="3.5"/>
+      <path d="M21 42a31 31 0 0 1 19-21" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".95"/>
+      <circle cx="52" cy="16" r="3" fill="#fff"/>
+    </g>
+
+    <!-- ロゴの小さなスノードーム -->
+    <g id="logo-globe">
+      <ellipse cx="22" cy="46" rx="14" ry="2.4" fill="#5850A8" opacity=".16"/>
+      <circle cx="22" cy="19" r="17" fill="#C9EEFB"/>
+      <path d="M6 25c6-3 11-3 16-2s10 1 16-1v14H6z" fill="#fff"/>
+      <use href="#cr-pururi" x="7" y="3" width="30" height="32"/>
+      <circle cx="22" cy="19" r="17" fill="none" stroke="#fff" stroke-width="2"/>
+      <path d="M10 13a14 14 0 0 1 7-7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M10 33h24l3 8.5c.4 1.4-.5 2.5-2 2.5H9c-1.5 0-2.4-1.1-2-2.5z" fill="#BBA8FF"/>
+      <path d="M8 38h28" stroke="#FFC6E2" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <!-- icons: 24px, 2px rounded strokes -->
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.6 11 5.2a1.6 1.6 0 0 1 2 0l6.5 5.4V18a2.5 2.5 0 0 1-2.5 2.5H7A2.5 2.5 0 0 1 4.5 18z"/><path d="M10 20.5v-4a2 2 0 0 1 4 0v4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></symbol>
+  <symbol id="i-letter" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="3.5"/><path d="m5 8 6 4.4a1.7 1.7 0 0 0 2 0L19 8"/></symbol>
+  <symbol id="i-bottle" viewBox="0 0 24 24"><path d="M9.5 3.5h5M10.5 3.5v3.1c0 .7-.4 1.2-.9 1.6C7.6 9.6 6.5 11.3 6.5 13.6V18a2.5 2.5 0 0 0 2.5 2.5h6a2.5 2.5 0 0 0 2.5-2.5v-4.4c0-2.3-1.1-4-3.1-5.4-.5-.4-.9-.9-.9-1.6V3.5"/><path d="m12 12.2 1.6.9v1.9l-1.6.9-1.6-.9v-1.9z"/></symbol>
+  <symbol id="i-me" viewBox="0 0 24 24"><circle cx="12" cy="8.8" r="3.6"/><path d="M5.5 19.5c1.3-3.1 3.8-4.7 6.5-4.7s5.2 1.6 6.5 4.7"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M12 4.5c4.6 0 8 2.9 8 6.6s-3.4 6.6-8 6.6c-.9 0-1.7-.1-2.5-.3L6 19.5l.6-3.4C5 14.9 4 13.1 4 11.1 4 7.4 7.4 4.5 12 4.5z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M5.5 10.5V9.5A2.5 2.5 0 0 1 8 7h10"/><path d="m15.5 4.5 2.5 2.5-2.5 2.5"/><path d="M18.5 13.5v1a2.5 2.5 0 0 1-2.5 2.5H6"/><path d="M8.5 19.5 6 17l2.5-2.5"/></symbol>
+  <symbol id="i-kira" viewBox="0 0 24 24"><path d="M12 3.6 19.2 7.8v8.4L12 20.4l-7.2-4.2V7.8z"/><path d="m9.2 9.4 2.8-1.6 2.8 1.6"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="9.6" r="1.7"/><path d="m4.5 17 4.3-4a1.6 1.6 0 0 1 2.2 0l1.5 1.4 2.6-2.4a1.6 1.6 0 0 1 2.2 0l3.2 3"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M5 19l1-4.2 9.6-9.6a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L9.2 18z"/><path d="m13.8 7 3.2 3.2"/></symbol>
+</svg>
+
+<div class="bg" aria-hidden="true">
+  <div class="foil"></div>
+  <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i><i class="blob b5"></i>
+  <svg class="bub u1" viewBox="0 0 100 100"><use href="#bubble"/></svg>
+  <svg class="bub u2" viewBox="0 0 100 100"><use href="#bubble"/></svg>
+  <svg class="bub u3" viewBox="0 0 100 100"><use href="#bubble"/></svg>
+  <svg class="bub u4" viewBox="0 0 100 100"><use href="#bubble"/></svg>
+  <svg class="bub u5" viewBox="0 0 100 100"><use href="#bubble"/></svg>
+</div>
+
+<div class="app">
+
+  <!-- ===== left: navigation ===== -->
+  <nav class="nav" aria-label="メニュー">
+    <a class="logo" href="#top" aria-label="しゃらん ホーム">
+      <svg viewBox="0 0 44 48" aria-hidden="true"><use href="#logo-globe"/></svg>
+      <b>しゃらん</b>
+    </a>
+    <ul>
+      <li><a href="#top" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg><span>ホーム</span></a></li>
+      <li><a href="#search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span>さがす</span></a></li>
+      <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span>おしらせ</span><em class="count" aria-label="3件">3</em></a></li>
+      <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-letter"/></svg><span>おてがみ</span></a></li>
+      <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg><span>びんづめ</span></a></li>
+      <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-me"/></svg><span>わたし</span></a></li>
+    </ul>
+    <a class="btn-main" data-glitter="dense" href="#compose" aria-label="ひとふりする"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><span class="label">ひとふりする</span></a>
+    <a class="me" href="#">
+      <span class="av t-lav"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-yukiusa"/></svg></span>
+      <span class="who"><b>ゆきうさ</b><span>@yuki_usa</span></span>
+    </a>
+  </nav>
+
+  <!-- ===== center: timeline ===== -->
+  <main class="feed">
+    <header class="tl-head glass" data-glitter="rim">
+      <a class="m-logo" href="#top" aria-label="しゃらん ホーム">
+        <svg viewBox="0 0 44 48" aria-hidden="true"><use href="#logo-globe"/></svg>
+        <b>しゃらん</b>
+      </a>
+      <h1>ホーム</h1>
+      <div class="tabs" role="tablist" aria-label="タイムライン">
+        <button role="tab" aria-selected="true">おすすめ</button>
+        <button role="tab" aria-selected="false">フォロー中</button>
+      </div>
+    </header>
+
+    <div class="m-greet">
+      <p class="bubble">きょう、きらっとした？</p>
+      <div class="globe-wrap">
+        <button class="globe" type="button" aria-label="スノードームをふる">
+          <svg class="globe-scene" viewBox="0 0 220 220" aria-hidden="true">
+            <circle cx="110" cy="110" r="110" fill="#BFEBFA"/>
+            <path d="M0 168c34-20 70-22 110-14s76 6 110-10v76H0z" fill="#fff"/>
+            <g fill="#fff"><circle cx="40" cy="80" r="4"/><circle cx="176" cy="70" r="3.5"/><circle cx="60" cy="140" r="3"/><circle cx="168" cy="128" r="3"/><circle cx="110" cy="22" r="3"/><circle cx="190" cy="104" r="2.5"/><circle cx="30" cy="118" r="2.5"/></g>
+            <g class="pururi"><svg x="40" y="22" width="140" height="150" viewBox="0 0 160 170"><use href="#cr-pururi"/></svg></g>
+          </svg>
+          <span class="globe-glass" data-glitter="globe"></span>
+        </button>
+        <svg class="globe-base" viewBox="0 0 150 40" aria-hidden="true">
+          <ellipse cx="75" cy="36" rx="60" ry="4" fill="#5850A8" opacity=".16"/>
+          <path d="M22 2h106l12 28c1.2 3-1 6-4.4 6H14.4C11 36 8.8 33 10 30z" fill="#BBA8FF"/>
+          <path d="M14 20h122" stroke="#FFC6E2" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="stack" id="stack">
+      <form class="compose glass text" id="compose" action="#" autocomplete="off">
+        <span class="av t-lav"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-yukiusa"/></svg></span>
+        <div>
+          <label class="sr" for="say">ひとふりの内容</label>
+          <textarea id="say" name="say" rows="2" maxlength="140" placeholder="いま、なにがきらっとした？"></textarea>
+          <div class="compose-bar">
+            <button type="button" class="act" aria-label="画像をそえる"><svg class="ic" aria-hidden="true"><use href="#i-image"/></svg></button>
+            <button type="submit" class="btn-post">ひとふり</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 1 -->
+      <article class="post glass text" data-glitter="rim">
+        <span class="av t-pink"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-pururi"/></svg></span>
+        <div>
+          <div class="post-head"><b class="name">ぷるり</b><span class="meta">@sharan_pururi · <time datetime="2026-11-29T08:58">2分</time></span></div>
+          <p>おはよう。けさは、雪いろのラメがびんの底にしずんでたよ。きょうもきらっとしたことがあったら、ひとふりしてね。</p>
+          <div class="acts">
+            <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>24</span></button>
+            <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>58</span></button>
+            <button class="act kira" aria-pressed="false" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="612">612</span></button>
+            <button class="act keep" aria-pressed="false" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="post glass text" data-glitter="rim">
+        <span class="av t-aqua"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-kingyo"/></svg></span>
+        <div>
+          <div class="post-head"><b class="name">もも金魚</b><span class="meta">@momo_kingyo · <time datetime="2026-11-29T08:46">14分</time></span></div>
+          <p>三日月のレジンチャーム、ラメを二色にしてみた。光にかざすと、ラベンダーと水色がいれかわるの。</p>
+          <figure class="pic">
+            <svg viewBox="0 0 520 300" role="img" aria-label="ラベンダーと水色の二色のラメが入った、三日月のレジンチャーム">
+              <defs>
+                <pattern id="pa-dot" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="13" cy="13" r="2" fill="#FF9ECD" opacity=".3"/></pattern>
+                <pattern id="pa-glit" width="44" height="44" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+                  <circle cx="6" cy="8" r="1.7" fill="#FF4FA3"/><circle cx="30" cy="5" r="1.3" fill="#fff"/>
+                  <path d="M22 20l3 1.7v3.4l-3 1.7-3-1.7v-3.4z" fill="#8466FF"/><circle cx="38" cy="26" r="1.6" fill="#18A8E0"/>
+                  <circle cx="12" cy="34" r="1.2" fill="#fff"/><path d="M34 37l2.4 1.4v2.8L34 42.6l-2.4-1.4v-2.8z" fill="#FF4FA3"/>
+                  <circle cx="4" cy="22" r="1" fill="#18A8E0"/><path d="M14 12l1.6.9v1.8l-1.6.9-1.6-.9v-1.8z" fill="#fff"/>
+                </pattern>
+                <clipPath id="pa-moon"><path d="M278.5 74.4A92 92 0 1 0 331 225.6A80 80 0 0 1 278.5 74.4Z"/></clipPath>
+              </defs>
+              <rect width="520" height="300" fill="#FFE8F3"/>
+              <rect width="520" height="300" fill="url(#pa-dot)"/>
+              <ellipse cx="248" cy="276" rx="76" ry="9" fill="#5850A8" opacity=".14"/>
+              <path d="M278 0v40" stroke="#BBA8FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="0.1 9"/>
+              <circle cx="278" cy="60" r="10" fill="none" stroke="#BBA8FF" stroke-width="4.5"/>
+              <g clip-path="url(#pa-moon)">
+                <rect x="160" y="60" width="200" height="210" fill="#A6E6FA"/>
+                <path d="M160 60h200v70c-26 16-52-6-84 6s-62 18-116 0z" fill="#D6CAFF"/>
+                <path d="M160 136c54 18 84 12 116 0s58 10 84-6" fill="none" stroke="#fff" stroke-width="7" opacity=".85"/>
+                <rect x="160" y="60" width="200" height="210" fill="url(#pa-glit)"/>
+              </g>
+              <path d="M278.5 74.4A92 92 0 1 0 331 225.6A80 80 0 0 1 278.5 74.4Z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" opacity=".8"/>
+              <path d="M187 137.6A80 80 0 0 0 187 192.4" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>
+            </svg>
+          </figure>
+          <div class="acts">
+            <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>8</span></button>
+            <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>21</span></button>
+            <button class="act kira" aria-pressed="true" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="183">184</span></button>
+            <button class="act keep" aria-pressed="false" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="post glass text" data-glitter="rim">
+        <span class="av t-pink"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-konpei"/></svg></span>
+        <div>
+          <div class="post-head"><b class="name">こんぺいとう</b><span class="meta">@konpei_10 · <time datetime="2026-11-29T08:22">38分</time></span></div>
+          <p>朝の電車、窓の霜に日があたったところだけ、ぜんぶきらきらしてた。いい日になりそう。</p>
+          <div class="acts">
+            <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>3</span></button>
+            <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>12</span></button>
+            <button class="act kira" aria-pressed="false" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="96">96</span></button>
+            <button class="act keep" aria-pressed="false" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="post glass text" data-glitter="rim">
+        <span class="av t-aqua"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-shinju"/></svg></span>
+        <div>
+          <div class="post-head"><b class="name">しんじゅ</b><span class="meta">@shinju_nail · <time datetime="2026-11-29T07:51">1時間</time></span></div>
+          <p>ラメネイル、三色かさねてみました。指を動かすたびに色がかわるので、キーボードを打つ手がとまります。</p>
+          <figure class="pic">
+            <svg viewBox="0 0 520 300" role="img" aria-label="ピンク、水色、ラベンダーのラメネイルのボトルが三本">
+              <defs>
+                <pattern id="pc-glit" width="36" height="36" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+                  <circle cx="5" cy="6" r="1.5" fill="#fff"/><path d="M20 9l2.6 1.5v3L20 15l-2.6-1.5v-3z" fill="#fff" opacity=".9"/>
+                  <circle cx="30" cy="20" r="1.4" fill="#8466FF"/><circle cx="10" cy="26" r="1.6" fill="#FF4FA3"/>
+                  <circle cx="26" cy="32" r="1.1" fill="#fff"/><circle cx="33" cy="4" r="1.2" fill="#18A8E0"/>
+                </pattern>
+              </defs>
+              <rect width="520" height="300" fill="#EEE8FF"/>
+              <circle cx="260" cy="176" r="150" fill="#FFE8F3"/>
+              <g fill="#5850A8" opacity=".14">
+                <ellipse cx="156" cy="268" rx="50" ry="7"/><ellipse cx="260" cy="268" rx="52" ry="7"/><ellipse cx="364" cy="268" rx="50" ry="7"/>
+              </g>
+              <g>
+                <rect x="112" y="150" width="88" height="112" rx="28" fill="#FF9ECD"/>
+                <rect x="112" y="150" width="88" height="112" rx="28" fill="url(#pc-glit)"/>
+                <rect x="124" y="166" width="10" height="66" rx="5" fill="#fff" opacity=".7"/>
+                <rect x="138" y="136" width="36" height="18" rx="6" fill="#fff" opacity=".9"/>
+                <rect x="135" y="70" width="42" height="70" rx="14" fill="#545C8A"/>
+                <rect x="144" y="80" width="6" height="48" rx="3" fill="#fff" opacity=".3"/>
+              </g>
+              <g>
+                <rect x="216" y="138" width="88" height="124" rx="28" fill="#7DD8F5"/>
+                <rect x="216" y="138" width="88" height="124" rx="28" fill="url(#pc-glit)"/>
+                <rect x="228" y="154" width="10" height="74" rx="5" fill="#fff" opacity=".7"/>
+                <rect x="242" y="124" width="36" height="18" rx="6" fill="#fff" opacity=".9"/>
+                <rect x="239" y="54" width="42" height="74" rx="14" fill="#545C8A"/>
+                <rect x="248" y="64" width="6" height="50" rx="3" fill="#fff" opacity=".3"/>
+              </g>
+              <g>
+                <rect x="320" y="150" width="88" height="112" rx="28" fill="#BBA8FF"/>
+                <rect x="320" y="150" width="88" height="112" rx="28" fill="url(#pc-glit)"/>
+                <rect x="332" y="166" width="10" height="66" rx="5" fill="#fff" opacity=".7"/>
+                <rect x="346" y="136" width="36" height="18" rx="6" fill="#fff" opacity=".9"/>
+                <rect x="343" y="70" width="42" height="70" rx="14" fill="#545C8A"/>
+                <rect x="352" y="80" width="6" height="48" rx="3" fill="#fff" opacity=".3"/>
+              </g>
+            </svg>
+          </figure>
+          <div class="acts">
+            <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>15</span></button>
+            <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>42</span></button>
+            <button class="act kira" aria-pressed="false" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="312">312</span></button>
+            <button class="act keep" aria-pressed="true" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="post glass text" data-glitter="rim">
+        <span class="av t-lav"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-biidama"/></svg></span>
+        <div>
+          <div class="post-head"><b class="name">ビー玉</b><span class="meta">@biidama_r · <time datetime="2026-11-29T06:58">2時間</time></span></div>
+          <p>雑貨屋さんで、ちいさなスノードームを見つけた。ゆっくりさかさにすると、雪がおうちのまわりを一周してからしずむ。</p>
+          <figure class="pic">
+            <svg viewBox="0 0 520 300" role="img" aria-label="ちいさなおうちと木が入ったスノードーム">
+              <defs><clipPath id="pb-in"><circle cx="260" cy="130" r="100"/></clipPath></defs>
+              <rect width="520" height="300" fill="#D6F3FD"/>
+              <circle cx="260" cy="150" r="146" fill="#EAF9FE"/>
+              <ellipse cx="260" cy="284" rx="100" ry="8" fill="#5850A8" opacity=".15"/>
+              <circle cx="260" cy="130" r="100" fill="#BDEAFA"/>
+              <g clip-path="url(#pb-in)">
+                <path d="M150 192c34-24 72-28 110-20s78 6 112 20v90H150z" fill="#fff"/>
+                <path d="M322 182l18-42 18 42z" fill="#7DD8F5" stroke="#7DD8F5" stroke-width="10" stroke-linejoin="round"/>
+                <rect x="336" y="184" width="8" height="12" rx="3" fill="#BBA8FF"/>
+                <path d="M180 178l12-28 12 28z" fill="#A6E6FA" stroke="#A6E6FA" stroke-width="8" stroke-linejoin="round"/>
+                <rect x="224" y="140" width="62" height="50" rx="8" fill="#FFC6E2"/>
+                <path d="M216 146l39-34 39 34z" fill="#BBA8FF" stroke="#BBA8FF" stroke-width="10" stroke-linejoin="round"/>
+                <rect x="246" y="160" width="18" height="30" rx="9" fill="#FF9ECD"/>
+                <circle cx="274.5" cy="160" r="6" fill="#fff"/>
+                <g fill="#fff">
+                  <circle cx="200" cy="80" r="4"/><circle cx="232" cy="62" r="3"/><circle cx="300" cy="70" r="4"/><circle cx="322" cy="104" r="3"/>
+                  <circle cx="212" cy="116" r="3"/><circle cx="300" cy="122" r="2.5"/><circle cx="186" cy="140" r="3"/><circle cx="340" cy="146" r="3.5"/>
+                  <circle cx="262" cy="92" r="2.5"/><circle cx="330" cy="72" r="2.5"/><circle cx="176" cy="104" r="2.5"/><circle cx="246" cy="44" r="2.5"/>
+                </g>
+              </g>
+              <circle cx="260" cy="130" r="100" fill="none" stroke="#fff" stroke-width="4"/>
+              <path d="M194 84a80 80 0 0 1 40-36" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+              <circle cx="252" cy="40" r="4" fill="#fff"/>
+              <path d="M192 218h136l12 46c1.4 5-1.6 9-6.8 9H186.8c-5.2 0-8.2-4-6.8-9z" fill="#BBA8FF"/>
+              <path d="M186 244h148" stroke="#FFC6E2" stroke-width="8" stroke-linecap="round"/>
+            </svg>
+          </figure>
+          <div class="acts">
+            <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>6</span></button>
+            <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>33</span></button>
+            <button class="act kira" aria-pressed="false" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="228">228</span></button>
+            <button class="act keep" aria-pressed="false" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="post glass text" data-glitter="rim">
+        <span class="av t-lav"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-awa"/></svg></span>
+        <div>
+          <div class="post-head"><b class="name">あわ</b><span class="meta">@awa_awa · <time datetime="2026-11-29T05:40">3時間</time></span></div>
+          <p>お風呂の泡にも、ちいさな虹がうつってた。きょうはそれだけ。</p>
+          <div class="acts">
+            <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>1</span></button>
+            <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>4</span></button>
+            <button class="act kira" aria-pressed="false" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="57">57</span></button>
+            <button class="act keep" aria-pressed="false" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- ===== right ===== -->
+  <aside class="side" aria-label="さがす・おすすめ">
+    <form class="search glass" role="search" id="search" action="#">
+      <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="sr" for="q">しゃらんをさがす</label>
+      <input id="q" type="search" placeholder="しゃらんをさがす">
+    </form>
+
+    <div class="greet">
+      <p class="bubble">きょう、きらっとした？</p>
+      <div class="globe-wrap">
+        <button class="globe" type="button" aria-label="スノードームをふる">
+          <svg class="globe-scene" viewBox="0 0 220 220" aria-hidden="true">
+            <circle cx="110" cy="110" r="110" fill="#BFEBFA"/>
+            <path d="M0 168c34-20 70-22 110-14s76 6 110-10v76H0z" fill="#fff"/>
+            <g fill="#fff"><circle cx="40" cy="80" r="4"/><circle cx="176" cy="70" r="3.5"/><circle cx="60" cy="140" r="3"/><circle cx="168" cy="128" r="3"/><circle cx="110" cy="22" r="3"/><circle cx="190" cy="104" r="2.5"/><circle cx="30" cy="118" r="2.5"/></g>
+            <g class="pururi"><svg x="40" y="22" width="140" height="150" viewBox="0 0 160 170"><use href="#cr-pururi"/></svg></g>
+          </svg>
+          <span class="globe-glass" data-glitter="globe"></span>
+        </button>
+        <svg class="globe-base" viewBox="0 0 150 40" aria-hidden="true">
+          <ellipse cx="75" cy="36" rx="60" ry="4" fill="#5850A8" opacity=".16"/>
+          <path d="M22 2h106l12 28c1.2 3-1 6-4.4 6H14.4C11 36 8.8 33 10 30z" fill="#BBA8FF"/>
+          <path d="M14 20h122" stroke="#FFC6E2" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <section class="card glass text" aria-labelledby="h-trend">
+      <h2 id="h-trend">いまのきらきら</h2>
+      <ol class="trends">
+        <li><a href="#"><svg class="flake" viewBox="0 0 12 13" aria-hidden="true"><path d="M6 .8l4.6 2.7v6L6 12.2 1.4 9.5v-6z" fill="#FF9ECD"/></svg><span class="tag">#はじめてのレジン</span><span class="meta">1,204 ひとふり</span></a></li>
+        <li><a href="#"><svg class="flake" viewBox="0 0 12 13" aria-hidden="true"><path d="M6 .8l4.6 2.7v6L6 12.2 1.4 9.5v-6z" fill="#7DD8F5"/></svg><span class="tag">#ふゆのラメネイル</span><span class="meta">862 ひとふり</span></a></li>
+        <li><a href="#"><svg class="flake" viewBox="0 0 12 13" aria-hidden="true"><path d="M6 .8l4.6 2.7v6L6 12.2 1.4 9.5v-6z" fill="#BBA8FF"/></svg><span class="tag">#スノードームのある部屋</span><span class="meta">541 ひとふり</span></a></li>
+        <li><a href="#"><svg class="flake" viewBox="0 0 12 13" aria-hidden="true"><path d="M6 .8l4.6 2.7v6L6 12.2 1.4 9.5v-6z" fill="#FF9ECD"/></svg><span class="tag">#まどの霜</span><span class="meta">233 ひとふり</span></a></li>
+      </ol>
+    </section>
+
+    <section class="card glass text" aria-labelledby="h-hello">
+      <h2 id="h-hello">はじめましての人</h2>
+      <ul class="people">
+        <li>
+          <span class="av t-lav"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-awa"/></svg></span>
+          <span class="who"><b>あわ</b><span>@awa_awa</span></span>
+          <button class="btn-follow" type="button" aria-pressed="false">フォロー</button>
+        </li>
+        <li>
+          <span class="av t-aqua"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-shinju"/></svg></span>
+          <span class="who"><b>しんじゅ</b><span>@shinju_nail</span></span>
+          <button class="btn-follow" type="button" aria-pressed="false">フォロー</button>
+        </li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<!-- the end of the feed: snow at the bottom of the globe -->
+<section class="feed-end" aria-label="タイムラインのおわり">
+  <svg class="hill" viewBox="0 0 1440 132" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 52C190 6 340 10 500 44s300 62 470 34 300-70 470-46V132H0z" fill="#D6CAFF" opacity=".75"/>
+    <path d="M0 74C160 26 330 22 480 58s290 64 480 22 330-66 480-30V132H0z" fill="#FBFDFF"/>
+  </svg>
+  <div class="end-body">
+    <svg class="pururi" viewBox="0 0 160 170" aria-hidden="true"><use href="#cr-pururi-sleep"/></svg>
+    <p>あたらしいひとふりが届いたら、<wbr>ここにふってくるよ</p>
+  </div>
+</section>
+
+<!-- mobile -->
+<nav class="tabbar glass" aria-label="メニュー">
+  <a href="#top" aria-current="page" aria-label="ホーム"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg></a>
+  <a href="#" aria-label="さがす"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg></a>
+  <a href="#" aria-label="おしらせ 3件"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><i class="dot"></i></a>
+  <a href="#" aria-label="おてがみ"><svg class="ic" aria-hidden="true"><use href="#i-letter"/></svg></a>
+  <a href="#" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></a>
+</nav>
+<a class="fab" data-glitter="dense" href="#compose"><span class="pill"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg>ひとふり</span></a>
+
+<template id="tpl-post">
+  <article class="post glass text" data-glitter="rim">
+    <span class="av t-lav"><svg viewBox="10 12 140 140" aria-hidden="true"><use href="#cr-yukiusa"/></svg></span>
+    <div>
+      <div class="post-head"><b class="name">ゆきうさ</b><span class="meta">@yuki_usa · <time>いま</time></span></div>
+      <p class="text"></p>
+      <div class="acts">
+        <button class="act" aria-label="おへんじ"><svg class="ic" aria-hidden="true"><use href="#i-reply"/></svg><span>0</span></button>
+        <button class="act" aria-label="おすそわけ"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>0</span></button>
+        <button class="act kira" aria-pressed="false" aria-label="きらっ"><svg class="ic" aria-hidden="true"><use href="#i-kira"/></svg><span data-n="0">0</span></button>
+        <button class="act keep" aria-pressed="false" aria-label="びんづめ"><svg class="ic" aria-hidden="true"><use href="#i-bottle"/></svg></button>
+      </div>
+    </div>
+  </article>
+</template>
+
+<script src="kawaii-glitter.js"></script>
+<script>
+(function () {
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  // Glitter in the page palette. It doesn't move or flash.
+  const kinds = {
+    rim: { mode: 'rim', tone: ['#5CCBF2', '#FF8CC6', '#A68CFF'] },  // thins out toward the middle, spills a little past the edge
+    globe: { mode: 'rim', tone: 'white', depth: 70, spill: 0 },     // snow settled inside the globe
+    dense: { mode: 'dense', tone: '#7DD8F5' },                       // packed aqua, like a glitter pan
+  };
+  const glassify = (el) => {
+    if (typeof window.kawaiiGlitter !== 'function') return;
+    kawaiiGlitter(el, kinds[el.dataset.glitter] || kinds.rim);
+  };
+  document.querySelectorAll('[data-glitter]').forEach(glassify);
+
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('.kira, .keep, .btn-follow');
+    if (toggle) {
+      const on = toggle.getAttribute('aria-pressed') !== 'true';
+      toggle.setAttribute('aria-pressed', String(on));
+      const n = toggle.querySelector('[data-n]');
+      if (n) n.textContent = (Number(n.dataset.n) + (on ? 1 : 0)).toLocaleString('ja-JP');
+      if (toggle.classList.contains('btn-follow')) toggle.textContent = on ? 'フォロー中' : 'フォロー';
+      return;
+    }
+    const tab = e.target.closest('[role=tab]');
+    if (tab) {
+      tab.parentElement.querySelectorAll('[role=tab]').forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+      return;
+    }
+    const globe = e.target.closest('.globe');
+    if (globe) {
+      if (still.matches) return;
+      const p = globe.querySelector('.pururi');
+      p.classList.remove('sway'); void p.getBoundingClientRect(); p.classList.add('sway');
+    }
+  });
+  document.querySelectorAll('.pururi').forEach((p) => p.addEventListener('animationend', () => p.classList.remove('sway')));
+
+  const form = document.getElementById('compose');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = form.say.value.trim();
+    if (!text) { form.say.focus(); return; }
+    const node = document.getElementById('tpl-post').content.firstElementChild.cloneNode(true);
+    node.querySelector('.text').textContent = text;
+    form.after(node);
+    glassify(node);
+    form.reset();
+  });
+})();
+</script>
+</body>
+</html>

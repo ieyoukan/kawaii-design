@@ -9,7 +9,7 @@ Decide this in the direction. It depends on what the page should feel like, not 
 | **Simple** | clear, focused, graphic | White, or one flat pale tint taken from the star | A single strong character, chunky or chibi art, ポップ, ワントーン |
 | **透明感** | airy, light, a little grown-up | One page-wide pastel gradient, very gentle | Dreamy illustration, 大人かわいい, beauty and fashion, pages with several colors in the art |
 | **ゆめかわ** | dreamy, iridescent, rich | A complex multi-point pastel gradient (marble or bubbles) with glass UI on top | ゆめかわ, SNS and community apps, fan pages, music, anything asked for as 「ゆめかわいい」 |
-| **Liquid Glass** | smooth, glossy, iridescent, fluid | The iridescent background behind refractive, glossy glass shapes | Modern apps and SNS, music, fan pages, anything asked for as 「Liquid Glass」「つるっと」「ぬるぬる動く」 |
+| **Liquid Glass** | colorful, smooth, glossy, fluid | A colorful iridescent background with color blobs, behind a few pieces of glass whose rim stretches and tints what it shows. Heavier than frosted glass | Modern apps and SNS, music, fan pages, anything asked for as 「Liquid Glass」「カラフル」「つるっと」「ぬるぬる動く」 |
 
 A page in one flat color from top to bottom can feel dull. When the star has several colors (pink hair and a blue dress, for example), 透明感 often fits better than one-tone.
 
@@ -110,41 +110,11 @@ body { background: #EEF8FC; }
 - Raise the white to 65 to 75% behind long text. Lower it to 35 to 45% for small floating elements.
 - Buttons: a more opaque glass pill, or a solid pastel pill from the palette with white text only if the contrast passes. An iridescent rim (a thin pink-to-aqua gradient border) is a nice accent for the one primary button.
 - Provide a fallback for browsers without `backdrop-filter`: a more opaque white.
+- This frosted glass is the default glass. It is light enough for every card in a feed. Use refracting [Liquid Glass](liquid-glass.md) only when the user asks for it.
 
 ### Liquid Glass
 
-Glossy glass that bends what is behind it at its rim, with a soft prism fringe, over a colorful background. Plain liquid glass looks cool and techy. Make it kawaii with color: a pastel gradient tint in the glass, iridescent rims and a colorful background for it to bend.
-
-**Where to use it**: the UI chrome, not the content. The header (often floating as a capsule), cards, the footer and buttons. Long text sits inside the glass, where it stays readable.
-
-**How**: use the helper in [liquid-glass.js](liquid-glass.js). Copy it next to the page and call it on each glass element. It builds a displacement map for the element's size, bends the backdrop only in a band at the rim (the middle stays still), splits the bend per color channel for the prism fringe, and falls back to a frosted blur outside Chromium.
-
-```html
-<script src="liquid-glass.js"></script>
-<script>document.querySelectorAll('.liquid').forEach(el => liquidGlass(el));</script>
-```
-
-```css
-.liquid {
-  border-radius: 28px;                                   /* the helper reads this */
-  background: linear-gradient(135deg,                    /* pastel tint: the kawaii part */
-    rgb(255 214 236 / 0.35), rgb(255 255 255 / 0.18) 45%, rgb(190 232 248 / 0.35));
-  box-shadow:
-    0 14px 36px rgb(var(--star-dark) / 0.22),            /* soft colored shadow */
-    inset 0 1px 1px rgb(255 255 255 / 0.8),              /* specular top edge */
-    inset 0 -6px 16px rgb(255 255 255 / 0.15),
-    inset 0 0 0 1px rgb(255 255 255 / 0.45);             /* the glass edge */
-}
-```
-
-- **Color makes it cute.** Tint every glass piece with a soft pastel gradient taken from the palette (the character's main color plus a partner), and keep the background colorful (the iridescent background, bubbles, the character). Add an iridescent rim to the primary button.
-- **Refraction needs something to bend.** Let colorful shapes, the title or the character pass behind the glass, for example a fixed header over scrolling content, or cards over bubbles. Over an empty, smooth area the glass just looks frosted.
-- **Strength**: `strength` 40 to 70 for cards and headers, a little more for small buttons. If text inside smears, lower `strength` or raise `rim`.
-- **Readability**: raise the white in the tint behind long text. Text on glass stays solid deep ink.
-- **Size**: keep glass pieces under about 800px per side, for performance.
-- **No glass inside glass.** A glass element can only bend what is behind it on the page, not another glass panel. Buttons inside a glass header or footer get the highlights and tint only, without the helper.
-- **Glass header**: a floating capsule with in-page links is fine on a single-character page. Don't put a site name in it.
-- **Motion**: buttons can stretch slightly on press. Smooth, long ease-out curves. Respect `prefers-reduced-motion`.
+See [Liquid Glass](liquid-glass.md) for the iridescent backdrop, tinted rim and refraction helper, and for white glitter (ラメ).
 
 ## Make the star's image good
 
